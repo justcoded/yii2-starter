@@ -10,6 +10,7 @@ return [
 	'last_name' => $faker->lastName,
 	'username' => $email,
 	'email' => $email,
+	'password' => 'password_' . $index,
 	'password_hash' => Yii::$app->getSecurity()->generatePasswordHash('password_' . $index),
 	'auth_key' => Yii::$app->getSecurity()->generateRandomString(),
 	'status' => 10,

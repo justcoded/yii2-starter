@@ -1,12 +1,7 @@
 {
   "name": "justcoded/yii2-starter-kit",
   "description": "Yii 2 Project Template",
-  "keywords": [
-    "yii2",
-    "framework",
-    "starter kit",
-    "project template"
-  ],
+  "keywords": [ "yii2", "framework", "starter kit", "project template" ],
   "type": "project",
   "license": "BSD-3-Clause",
   "minimum-stability": "dev",
@@ -34,6 +29,11 @@
       "url": "https://asset-packagist.org"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "app\\fixtures\\": "database/fixtures"
+    }
+  },
   "scripts": {
     "post-install-cmd": [
       "yii\\composer\\Installer::postInstall"

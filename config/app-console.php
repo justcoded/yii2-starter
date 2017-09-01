@@ -15,19 +15,21 @@ $config = [
 	'controllerNamespace' => 'app\console\controllers',
 	'aliases'    => [
 		'@config'=> dirname(__DIR__) . '/config',
-		'@database' => dirname(__DIR__) . '/database',
+		'@migrations' => dirname(__DIR__) . '/database/migrations',
+		'@fixtures' => dirname(__DIR__) . '/database/fixtures',
+		'@app/fixtures' => '@fixtures',
 	],
 	'controllerMap' => [
 		'migrate' => [
 			'class' => 'app\console\controllers\MigrateController',
 			'migrationTable' => '_migrations',
-			'migrationPath' => '@database/migrations',
+			'migrationPath' => '@migrations',
 		],
 		'fixture' => [
 			'class' => 'yii\faker\FixtureController',
-			'namespace' => 'database\fixtures',
-			'templatePath' => '@database/fixtures/templates',
-			'fixtureDataPath' => '@database/fixtures/data',
+			'namespace' => 'app\fixtures',
+			'templatePath' => '@fixtures/templates',
+			'fixtureDataPath' => '@fixtures/data',
 		],
 	],
 	'components'          => [
@@ -43,9 +45,6 @@ $config = [
 			],
 		],
 		'db'    => $db,
-		'user'         => [
-			'identityClass'   => 'app\models\User',
-		],
 	],
 	'params'              => $params,
 	/*

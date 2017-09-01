@@ -1,8 +1,6 @@
 <?php
 
-namespace database\fixtures;
-
-use yii\test\ActiveFixture;
+namespace app\fixtures;
 
 class UserFixture extends ActiveFixture
 {
