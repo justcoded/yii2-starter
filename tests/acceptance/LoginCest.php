@@ -14,7 +14,7 @@ class LoginCest
         $I->click('login-button');
         $I->wait(2); // wait for button to be clicked
 
-        $I->expectTo('see user info');
-        $I->see('Logout');
+        $I->expectTo('see error');
+        $I->see('Incorrect username or password');
     }
 }
