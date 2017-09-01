@@ -4,7 +4,6 @@ namespace app\forms;
 
 use app\models\User;
 use Yii;
-use yii\base\Model;
 
 /**
  * LoginForm is the model behind the login form.
@@ -12,7 +11,7 @@ use yii\base\Model;
  * @property User|null $user This property is read-only.
  *
  */
-class LoginForm extends Model
+class LoginForm extends Form
 {
 	public $username;
 	public $password;

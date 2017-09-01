@@ -3,12 +3,11 @@
 namespace app\forms;
 
 use Yii;
-use yii\base\Model;
 
 /**
  * ContactForm is the model behind the contact form.
  */
-class ContactForm extends Model
+class ContactForm extends Form
 {
 	public $name;
 	public $email;
