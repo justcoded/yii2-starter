@@ -14,7 +14,21 @@ $config = [
 	'bootstrap'  => ['log'],
 	'controllerNamespace' => 'app\console\controllers',
 	'aliases'    => [
-		'@config'=> '@app/../config',
+		'@config'=> dirname(__DIR__) . '/config',
+		'@database' => dirname(__DIR__) . '/database',
+	],
+	'controllerMap' => [
+		'migrate' => [
+			'class' => 'app\console\controllers\MigrateController',
+			'migrationTable' => '_migrations',
+			'migrationPath' => '@database/migrations',
+		],
+		'fixture' => [
+			'class' => 'yii\faker\FixtureController',
+			'namespace' => 'database\fixtures',
+			'templatePath' => '@database/fixtures/templates',
+			'fixtureDataPath' => '@database/fixtures/data',
+		],
 	],
 	'components'          => [
 		'cache' => [

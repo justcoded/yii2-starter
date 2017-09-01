@@ -15,12 +15,12 @@
     "yiisoft/yii2": "~2.0.11",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
+    "yiisoft/yii2-faker": "~2.0.0",
     "vlucas/phpdotenv": "~2.2"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
     "yiisoft/yii2-gii": "~2.0.0",
-    "yiisoft/yii2-faker": "~2.0.0",
     "codeception/base": "^2.2.3",
     "codeception/verify": "~0.3.1",
     "codeception/specify": "~0.4.3"
