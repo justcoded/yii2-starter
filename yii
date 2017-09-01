@@ -20,8 +20,8 @@ defined('YII_ENV') or define('YII_ENV', env('APP_ENV', 'production'));
 
 require __DIR__ . '/vendor/yiisoft/yii2/Yii.php';
 
-$config = require __DIR__ . '/config/console.php';
+$config = require __DIR__ . '/config/app-console.php';
 
-$application = new yii\console\Application($config);
+$application = new \app\console\Application($config);
 $exitCode = $application->run();
 exit($exitCode);

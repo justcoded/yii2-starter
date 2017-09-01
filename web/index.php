@@ -11,6 +11,6 @@ defined('YII_ENV') or define('YII_ENV', env('APP_ENV', 'production'));
 
 require(__DIR__ . '/../app/web/Yii.php');
 
-$config = require(__DIR__ . '/../config/web.php');
+$config = require(__DIR__ . '/../config/app-web.php');
 
 (new \app\web\Application($config))->run();
