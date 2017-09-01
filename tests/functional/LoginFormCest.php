@@ -16,17 +16,20 @@ class LoginFormCest
 	// demonstrates `amLoggedInAs` method
 	public function internalLoginById(\FunctionalTester $I)
 	{
+		$user = \app\models\User::findIdentity(1);
+
 		$I->amLoggedInAs(1);
 		$I->amOnPage('/');
-		$I->see('Logout (admin)');
+		$I->see("Logout ($user->username)");
 	}
 
 	// demonstrates `amLoggedInAs` method
 	public function internalLoginByInstance(\FunctionalTester $I)
 	{
-		$I->amLoggedInAs(\app\models\User::findIdentity(1));
+		$user = \app\models\User::findIdentity(1);
+		$I->amLoggedInAs($user);
 		$I->amOnPage('/');
-		$I->see('Logout (admin)');
+		$I->see("Logout ($user->username)");
 	}
 
 	public function loginWithEmptyCredentials(\FunctionalTester $I)
@@ -49,11 +52,13 @@ class LoginFormCest
 
 	public function loginSuccessfully(\FunctionalTester $I)
 	{
+		$user = \app\models\User::findIdentity(1);
+
 		$I->submitForm('#login-form', [
-			'LoginForm[username]' => 'admin',
-			'LoginForm[password]' => 'admin',
+			'LoginForm[username]' => $user->username,
+			'LoginForm[password]' => 'password_0',
 		]);
-		$I->see('Logout (admin)');
+		$I->see("Logout ($user->username)");
 		$I->dontSeeElement('form#login-form');
 	}
 }
