@@ -2,9 +2,9 @@
 
 return [
 	'/' => 'site/index',
-	'login' => 'site/login',
-	'password/request' => 'site/password-request',
-	'password/update' => 'site/password-update',
+	'login' => 'auth/login',
+	'password/forgot' => 'auth/password-request',
+	'password/update' => 'auth/password-update',
 	'logout' => 'site/logout',
 
 	'<controller>/<id:\d>/<action>' => '<controller>/<action>',

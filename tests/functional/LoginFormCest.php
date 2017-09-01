@@ -4,7 +4,7 @@ class LoginFormCest
 {
 	public function _before(\FunctionalTester $I)
 	{
-		$I->amOnRoute('site/login');
+		$I->amOnRoute('auth/login');
 	}
 
 	public function openLoginPage(\FunctionalTester $I)
@@ -16,7 +16,7 @@ class LoginFormCest
 	// demonstrates `amLoggedInAs` method
 	public function internalLoginById(\FunctionalTester $I)
 	{
-		$I->amLoggedInAs(100);
+		$I->amLoggedInAs(1);
 		$I->amOnPage('/');
 		$I->see('Logout (admin)');
 	}
@@ -24,7 +24,7 @@ class LoginFormCest
 	// demonstrates `amLoggedInAs` method
 	public function internalLoginByInstance(\FunctionalTester $I)
 	{
-		$I->amLoggedInAs(\app\models\User::findByUsername('admin'));
+		$I->amLoggedInAs(\app\models\User::findIdentity(1));
 		$I->amOnPage('/');
 		$I->see('Logout (admin)');
 	}

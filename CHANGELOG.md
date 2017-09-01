@@ -5,6 +5,9 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 Develop
 ---------------------
-* Task: Basic template file structure improved
-* Task: Dotenv support
- 
+* Basic template file structure improved
+* Dotenv support
+* Codeception tests are running okay
+* Migration custom templates / custom methods
+* Fixtures moved to /database/fixtures
+* Added User with AR from advanced template

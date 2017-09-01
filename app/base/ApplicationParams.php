@@ -26,4 +26,11 @@ class ApplicationParams extends BaseObject
 	 * @var string|array
 	 */
 	public $adminEmail;
+
+	/**
+	 * Password reset token expire time in seconds
+	 *
+	 * @var int
+	 */
+	public $passwordResetTokenExpire = 3600;
 }
