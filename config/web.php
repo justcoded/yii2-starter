@@ -1,7 +1,12 @@
 <?php
 
+\Yii::setAlias('@app', dirname(__DIR__) . '/app');
+
 $params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
+$routes  = require __DIR__ . '/routes.php';
+
+dotenv()->required('APP_KEY')->notEmpty();
 
 $config = [
 	'id'         => 'main',
@@ -10,21 +15,30 @@ $config = [
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
 	'bootstrap'  => ['log'],
 	'aliases'    => [
+		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
-		'@config'=> '@app/../config',
 	],
 	'components' => [
 		'request'      => [
-			// !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-			'cookieValidationKey' => 'wUZvVVKJyHFGDB9qK_Lop4QE1vwb4bYU',
+			// TODO: move generator to console command
+			'cookieValidationKey' => env('APP_KEY'),
 		],
 		'cache'        => [
 			'class' => 'yii\caching\FileCache',
 		],
+		'db'           => $db,
 		'user'         => [
 			'identityClass'   => 'app\models\User',
 			'enableAutoLogin' => true,
+		],
+		'urlManager' => [
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'rules' => $routes,
+		],
+		'formatter' => [
+			'class' => 'app\components\i18n\Formatter',
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',
@@ -45,15 +59,6 @@ $config = [
 				],
 			],
 		],
-		'db'           => $db,
-		/*
-		'urlManager' => [
-			'enablePrettyUrl' => true,
-			'showScriptName' => false,
-			'rules' => [
-			],
-		],
-		*/
 	],
 	'params'     => $params,
 ];

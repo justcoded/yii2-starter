@@ -2,6 +2,8 @@
 
 namespace app\web;
 
+use app\base\ApplicationParams;
+
 /**
  * Custom App class to allow custom components IDE
  *
@@ -17,4 +19,21 @@ class Application extends \yii\web\Application
 	 * Please refer to the [guide about class autoloading](guide:concept-autoloading.md) for more details.
 	 */
 	public $controllerNamespace = 'app\\web\\controllers';
+
+	/**
+	 * @var ApplicationParams
+	 */
+	public $params;
+
+	public function preInit(&$config)
+	{
+		parent::preInit($config);
+
+		if (isset($config['params'])) {
+			$config['params'] = \Yii::createObject(array_merge(
+				['class' => ApplicationParams::class],
+				$config['params']
+			));
+		}
+	}
 }
