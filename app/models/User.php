@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\traits\models\HasStatus;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
@@ -14,7 +15,7 @@ use yii\web\IdentityInterface;
  * @property string  $password_hash
  * @property string  $password_reset_token
  * @property string  $email
- * @property string  $fist_name
+ * @property string  $first_name
  * @property string  $last_name
  * @property string  $auth_key
  * @property integer $status
@@ -24,8 +25,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+	use HasStatus;
+
 	const STATUS_BLOCKED = 0;
-	const STATUS_ACTIVE = 10;
 
 	/**
 	 * @inheritdoc
@@ -43,7 +45,33 @@ class User extends ActiveRecord implements IdentityInterface
 		return [
 			['status', 'default', 'value' => self::STATUS_ACTIVE],
 			['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED]],
-			[['first_name', 'last_name'], 'string'],
+			[['first_name', 'last_name', 'email', 'username'], 'string'],
+			[['email', 'username'], 'unique'],
+			['email', 'email'],
+		];
+	}
+
+	/**
+	 * User full name
+	 * (as first/last name)
+	 *
+	 * @return string
+	 */
+	public function getFullName()
+	{
+		return "{$this->first_name} {$this->last_name}";
+	}
+
+	/**
+	 * List of user status aliases
+	 *
+	 * @return array
+	 */
+	public static function getStatusesList()
+	{
+		return [
+			static::STATUS_ACTIVE => 'Active',
+			static::STATUS_BLOCKED => 'Blocked',
 		];
 	}
 

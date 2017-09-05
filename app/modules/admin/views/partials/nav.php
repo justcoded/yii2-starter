@@ -8,7 +8,11 @@
 				'items'   => [
 					['label' => 'MAIN NAVIGATION', 'options' => ['class' => 'header']],
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/admin/dashboard']],
-					['label' => 'Users', 'icon' => 'users', 'url' => ['/admin/users']],
+					['label' => 'Users',
+					 	'icon' => 'users',
+					 	'url' => ['/admin/users'],
+					 	'active' => 'users' === Yii::$app->controller->id,
+					],
 					[
 						'label' => 'Drop example',
 						'icon'  => 'share',

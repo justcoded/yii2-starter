@@ -32,22 +32,7 @@ $this->beginPage() ?>
 	<?= $this->render('/partials/nav', ['adminlteAssets' => $adminlteAssets]); ?>
 
 	<div class="content-wrapper">
-		<section class="content-header">
-			<h1>
-				<?= Html::encode(ArrayHelper::getValue($this->params, 'heading', $this->title)) ?>
-				<?php if (!empty($this->params['subheading'])) : ?>
-					<small><?= Html::encode($this->params['subheading']); ?></small>
-				<?php endif; ?>
-			</h1>
-			<?= Breadcrumbs::widget([
-				'homeLink' => [
-						'label' => '<i class="fa fa-dashboard"></i> Dashboard',
-						'url' => ['/admin/dashboard'],
-						'encode' => false,
-					],
-				'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-			]) ?>
-		</section>
+		<?= $this->render('/partials/content-header'); ?>
 
 		<section class="content">
 			<?= Alert::widget() ?>

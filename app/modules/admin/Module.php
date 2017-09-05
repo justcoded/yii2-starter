@@ -23,8 +23,15 @@ class Module extends \yii\base\Module
 	{
 		parent::init();
 
-		// reset theme options to module theme.
-		Yii::$app->view->theme->setBasePath('@app/modules/admin/theme');
-		Yii::$app->errorHandler->errorAction = 'admin/dashboard/error';
+		// reconfigure app
+		$app_config = require(__DIR__ . '/config/app.php');
+		Yii::configure(Yii::$container, $app_config['container']);
+
+		foreach ($app_config['components'] as $component => $options) {
+			Yii::configure(Yii::$app->get($component), $options);
+		}
+
+		// configure module
+		Yii::configure($this, require(__DIR__ . '/config/mod.php'));
 	}
 }

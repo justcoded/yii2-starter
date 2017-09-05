@@ -1,3 +1,30 @@
-.extra{
-	background:#35f389;
+.grid-view .pagination{
+	margin: 0;
+}
+
+.grid-view table thead:first-child > tr:first-child a{
+	position: relative;
+	display: block;
+	padding: 0 16px 0 0;
+}
+.grid-view table thead:first-child > tr:first-child a:after,
+.grid-view table thead:first-child > tr:first-child a.asc:after,
+.grid-view table thead:first-child > tr:first-child a.desc:after{
+	position: absolute;
+	bottom: 0px;
+	right: 8px;
+	display: block;
+	font-family: 'Glyphicons Halflings';
+	opacity: 0.7;
+	color: #333;
+}
+.grid-view table thead:first-child > tr:first-child a:after {
+	content: "\e150";
+	opacity: 0.2;
+}
+.grid-view table thead:first-child > tr:first-child a.asc:after {
+	content: "\e155";
+}
+.grid-view table thead:first-child > tr:first-child a.desc:after {
+	content: "\e156";
 }

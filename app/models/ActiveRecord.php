@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\web\NotFoundHttpException;
 
 /**
  * ActiveRecord model
@@ -12,6 +13,7 @@ use yii\behaviors\TimestampBehavior;
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+	const STATUS_ACTIVE = 10;
 
 	/**
 	 * @inheritdoc
@@ -21,6 +23,20 @@ class ActiveRecord extends \yii\db\ActiveRecord
 		return [
 			TimestampBehavior::className(),
 		];
+	}
+
+	/**
+	 * @inheritdoc
+	 * @return static ActiveRecord instance matching the condition, or throw exception.
+	 * @throws NotFoundHttpException
+	 */
+	public static function findOneOrFail($id)
+	{
+		if (($model = static::findOne($id)) !== null) {
+			return $model;
+		}
+
+		throw new NotFoundHttpException('The requested page does not exist.');
 	}
 
 }
