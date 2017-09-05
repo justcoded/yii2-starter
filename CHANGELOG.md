@@ -14,10 +14,10 @@ Develop
 * Admin module with dummy dashboard
 * Base / Admin themes structure
 * Admin 404 page
+* Admin users management
 
 TODO:
 ----------------------
 * db rbac
-* admin users management
 * custom mailer, debug email
 * readme / docs
