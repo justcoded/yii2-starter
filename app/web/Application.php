@@ -25,6 +25,9 @@ class Application extends \yii\web\Application
 	 */
 	public $params;
 
+	/**
+	 * @inheritdoc
+	 */
 	public function preInit(&$config)
 	{
 		parent::preInit($config);
@@ -35,5 +38,22 @@ class Application extends \yii\web\Application
 				$config['params']
 			));
 		}
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function init()
+	{
+		parent::init();
+
+		$this->configureContainer();
+	}
+
+	/**
+	 * Update container definitions to rewrite some important parts.
+	 */
+	public function configureContainer()
+	{
 	}
 }

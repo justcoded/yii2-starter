@@ -19,6 +19,9 @@ $config = [
 		'@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
 	],
+	'modules' => [
+		'admin' => 'app\modules\admin\Module',
+	],
 	'components' => [
 		'request'      => [
 			// TODO: move generator to console command
@@ -30,6 +33,7 @@ $config = [
 		'db'           => $db,
 		'user'         => [
 			'identityClass'   => 'app\models\User',
+			'loginUrl' => ['auth/login'],
 			'enableAutoLogin' => true,
 		],
 		'urlManager' => [

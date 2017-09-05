@@ -11,3 +11,11 @@ Develop
 * Migration custom templates / custom methods
 * Fixtures moved to /database/fixtures
 * Added User with AR from advanced template
+
+TODO:
+----------------------
+* admin module
+* themes
+* db rbac
+* custom mailer, debug email
+* readme / docs

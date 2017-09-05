@@ -1,3 +1,5 @@
+Allow from all
+
 # fonts declaration
 AddType x-font/otf .otf
 AddType x-font/ttf .ttf
@@ -39,10 +41,6 @@ AddType image/x-icon .ico
 		order allow,deny
 		allow from all
 	</Files>
-	<files wp-config.php>
-		order allow,deny
-		deny from all
-	</files>
 </IfModule>
 
 <IfModule mod_rewrite.c>
@@ -51,10 +49,6 @@ AddType image/x-icon .ico
     </IfModule>
 
     RewriteEngine On
-
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
