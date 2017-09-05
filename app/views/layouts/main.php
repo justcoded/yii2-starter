@@ -4,7 +4,7 @@
 
 /* @var $content string */
 
-use app\widgets\Alert;
+use app\widgets\FlashAlert;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use app\theme\AssetBundle;
@@ -33,7 +33,7 @@ AssetBundle::register($this);
 		<?= Breadcrumbs::widget([
 			'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 		]) ?>
-		<?= Alert::widget() ?>
+		<?= FlashAlert::widget() ?>
 		<?= $content ?>
 	</div>
 </div>
