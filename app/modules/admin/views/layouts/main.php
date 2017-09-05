@@ -1,75 +1,63 @@
 <?php
+use dmstr\widgets\Alert;
+use yii\widgets\Breadcrumbs;
+use app\modules\admin\theme\AssetBundle;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 /* @var $this \yii\web\View */
-
 /* @var $content string */
 
-use app\widgets\Alert;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use app\assets\AssetBundle;
-
 AssetBundle::register($this);
-?>
-<?php $this->beginPage() ?>
+
+$adminlteAssets = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
+
+$this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html>
 <head>
-	<meta charset="<?= Yii::$app->charset ?>">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="<?= Yii::$app->charset ?>"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?= Html::csrfMetaTags() ?>
 	<title><?= Html::encode($this->title) ?></title>
 	<?php $this->head() ?>
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-	<?php
-	NavBar::begin([
-		'brandLabel' => 'My Company',
-		'brandUrl'   => Yii::$app->homeUrl,
-		'options'    => [
-			'class' => 'navbar-inverse navbar-fixed-top',
-		],
-	]);
-	echo Nav::widget([
-		'options' => ['class' => 'navbar-nav navbar-right'],
-		'items'   => [
-			['label' => 'Home', 'url' => ['/site/index']],
-			['label' => 'About', 'url' => ['/site/about']],
-			['label' => 'Contact', 'url' => ['/site/contact']],
-			Yii::$app->user->isGuest ? (
-			['label' => 'Login', 'url' => ['/auth/login']]
-			) : (
-				'<li>'
-				. Html::beginForm(['/auth/logout'], 'post')
-				. Html::submitButton(
-					'Logout (' . Yii::$app->user->identity->username . ')',
-					['class' => 'btn btn-link logout']
-				)
-				. Html::endForm()
-				. '</li>'
-			)
-		],
-	]);
-	NavBar::end();
-	?>
+<div class="wrapper">
 
-	<div class="container">
-		<?= Breadcrumbs::widget([
-			'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-		]) ?>
-		<?= Alert::widget() ?>
-		this is module layout
-		<?= $content ?>
+	<?= $this->render('/partials/header', ['adminlteAssets' => $adminlteAssets]); ?>
+
+	<?= $this->render('/partials/nav', ['adminlteAssets' => $adminlteAssets]); ?>
+
+	<div class="content-wrapper">
+		<section class="content-header">
+			<h1>
+				<?= Html::encode(ArrayHelper::getValue($this->params, 'heading', $this->title)) ?>
+				<?php if (!empty($this->params['subheading'])) : ?>
+					<small><?= Html::encode($this->params['subheading']); ?></small>
+				<?php endif; ?>
+			</h1>
+			<?= Breadcrumbs::widget([
+				'homeLink' => [
+						'label' => '<i class="fa fa-dashboard"></i> Dashboard',
+						'url' => ['/admin/dashboard'],
+						'encode' => false,
+					],
+				'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+			]) ?>
+		</section>
+
+		<section class="content">
+			<?= Alert::widget() ?>
+			<?= $content ?>
+		</section>
 	</div>
+
+	<?= $this->render('/partials/footer'); ?>
 </div>
-
-
+<!-- ./wrapper -->
 
 <?php $this->endBody() ?>
 </body>

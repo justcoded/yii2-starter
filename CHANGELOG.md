@@ -11,11 +11,13 @@ Develop
 * Migration custom templates / custom methods
 * Fixtures moved to /database/fixtures
 * Added User with AR from advanced template
+* Admin module with dummy dashboard
+* Base / Admin themes structure
+* Admin 404 page
 
 TODO:
 ----------------------
-* admin module
-* themes
 * db rbac
+* admin users management
 * custom mailer, debug email
 * readme / docs

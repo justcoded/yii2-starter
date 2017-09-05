@@ -11,7 +11,8 @@
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
     "yiisoft/yii2-faker": "~2.0.0",
-    "vlucas/phpdotenv": "~2.2"
+    "vlucas/phpdotenv": "~2.2",
+    "dmstr/yii2-adminlte-asset": "2.4.3"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
