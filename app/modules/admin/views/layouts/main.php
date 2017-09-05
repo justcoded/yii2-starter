@@ -9,9 +9,9 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
+use app\assets\AssetBundle;
 
-AppAsset::register($this);
+AssetBundle::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -64,17 +64,12 @@ AppAsset::register($this);
 			'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 		]) ?>
 		<?= Alert::widget() ?>
+		this is module layout
 		<?= $content ?>
 	</div>
 </div>
 
-<footer class="footer">
-	<div class="container">
-		<p class="pull-left">&copy; My Company <?= date('Y') ?></p>
 
-		<p class="pull-right"><?= Yii::powered() ?></p>
-	</div>
-</footer>
 
 <?php $this->endBody() ?>
 </body>

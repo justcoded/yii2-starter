@@ -3,6 +3,7 @@
 namespace app\web;
 
 use app\base\ApplicationParams;
+use yii\helpers\ArrayHelper;
 
 /**
  * Custom App class to allow custom components IDE
@@ -30,6 +31,24 @@ class Application extends \yii\web\Application
 	 */
 	public function preInit(&$config)
 	{
+		// apply some defaults
+		$config = ArrayHelper::merge([
+			'components' => [
+				// enable default theme support.
+				'assetManager' => [
+					'forceCopy' => YII_DEBUG,
+				],
+				'view' => [
+					'theme' => [
+						'basePath' => '@app/theme',
+						'pathMap'  => [
+							'@app/views' => '@app/theme',
+						],
+					]
+				],
+			],
+		], $config);
+
 		parent::preInit($config);
 
 		if (isset($config['params'])) {
@@ -53,7 +72,7 @@ class Application extends \yii\web\Application
 	/**
 	 * Update container definitions to rewrite some important parts.
 	 */
-	public function configureContainer()
+	protected function configureContainer()
 	{
 	}
 }

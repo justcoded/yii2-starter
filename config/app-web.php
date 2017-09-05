@@ -4,7 +4,6 @@
 
 $params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
-$routes  = require __DIR__ . '/routes.php';
 
 dotenv()->required('APP_KEY')->notEmpty();
 
@@ -27,9 +26,6 @@ $config = [
 			// TODO: move generator to console command
 			'cookieValidationKey' => env('APP_KEY'),
 		],
-		'cache'        => [
-			'class' => 'yii\caching\FileCache',
-		],
 		'db'           => $db,
 		'user'         => [
 			'identityClass'   => 'app\models\User',
@@ -39,7 +35,7 @@ $config = [
 		'urlManager' => [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
-			'rules' => $routes,
+			'rules' => require(__DIR__ . '/routes.php'),
 		],
 		'formatter' => [
 			'class' => 'app\components\i18n\Formatter',
