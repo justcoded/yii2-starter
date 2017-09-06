@@ -17,7 +17,6 @@ trait HasStatus
 	public static function getStatusesList()
 	{
 		return [
-			ActiveRecord::STATUS_ACTIVE => 'Active',
 		];
 	}
 

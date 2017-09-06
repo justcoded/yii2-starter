@@ -83,3 +83,15 @@ if (! function_exists('env')) {
 		return $value;
 	}
 }
+
+if (! function_exists('user')) {
+	/**
+	 * Get application user component
+	 *
+	 * @return \yii\web\User
+	 */
+	function user()
+	{
+		return \Yii::$app->getUser();
+	}
+}

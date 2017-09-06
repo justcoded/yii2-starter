@@ -15,9 +15,10 @@ Develop
 * Base / Admin themes structure
 * Admin 404 page
 * Admin users management
+* DB RBAC component
 
 TODO:
 ----------------------
-* db rbac
+* db rbac - routes scanner
 * custom mailer, debug email
 * readme / docs

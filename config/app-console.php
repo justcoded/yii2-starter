@@ -22,8 +22,10 @@ $config = [
 	'controllerMap' => [
 		'migrate' => [
 			'class' => 'app\console\controllers\MigrateController',
-			'migrationTable' => '_migrations',
-			'migrationPath' => '@migrations',
+			'migrationPath' => [
+				'@migrations',
+				'@yii/rbac/migrations',
+			],
 		],
 		'fixture' => [
 			'class' => 'yii\faker\FixtureController',
@@ -33,6 +35,9 @@ $config = [
 		],
 	],
 	'components'          => [
+		'authManager' => [
+			'class' => 'app\components\rbac\DbManager',
+		],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
 		],
@@ -47,13 +52,6 @@ $config = [
 		'db'    => $db,
 	],
 	'params'              => $params,
-	/*
-	'controllerMap' => [
-		'fixture' => [ // Fixture generation command line.
-			'class' => 'yii\faker\FixtureController',
-		],
-	],
-	*/
 ];
 
 if (YII_ENV_DEV) {

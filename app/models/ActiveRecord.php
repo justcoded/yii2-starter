@@ -11,10 +11,8 @@ use yii\web\NotFoundHttpException;
  *
  * set timestamp behavior by default for all inherited models.
  */
-class ActiveRecord extends \yii\db\ActiveRecord
+abstract class ActiveRecord extends \yii\db\ActiveRecord
 {
-	const STATUS_ACTIVE = 10;
-
 	/**
 	 * @inheritdoc
 	 */

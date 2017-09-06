@@ -27,7 +27,13 @@ class User extends ActiveRecord implements IdentityInterface
 {
 	use HasStatus;
 
+	const STATUS_ACTIVE = 10;
 	const STATUS_BLOCKED = 0;
+
+	const ROLE_SYS_ADMIN = 'System Administrator';
+	const ROLE_ADMIN = 'Administrator';
+	const ROLE_AUTHENTICATED = 'Authenticated';
+	const ROLE_GUEST     = 'Guest';
 
 	/**
 	 * @inheritdoc
@@ -73,6 +79,23 @@ class User extends ActiveRecord implements IdentityInterface
 			static::STATUS_ACTIVE => 'Active',
 			static::STATUS_BLOCKED => 'Blocked',
 		];
+	}
+
+	/**
+	 * Assign a role to user
+	 *
+	 * @param string $role
+	 *
+	 * @return bool
+	 */
+	public function assignRole($role)
+	{
+		if (! Yii::$app->authManager->checkAccess($this->id, $role)) {
+			$authRole = Yii::$app->authManager->getRole($role);
+			Yii::$app->authManager->assign($authRole, $this->id);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -210,4 +233,5 @@ class User extends ActiveRecord implements IdentityInterface
 	{
 		$this->password_reset_token = null;
 	}
+
 }

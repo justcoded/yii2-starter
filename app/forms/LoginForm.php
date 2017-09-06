@@ -4,6 +4,7 @@ namespace app\forms;
 
 use app\models\User;
 use Yii;
+use yii\base\Model;
 
 /**
  * LoginForm is the model behind the login form.
@@ -11,7 +12,7 @@ use Yii;
  * @property User|null $user This property is read-only.
  *
  */
-class LoginForm extends Form
+class LoginForm extends Model
 {
 	public $username;
 	public $password;
@@ -44,10 +45,10 @@ class LoginForm extends Form
 	 */
 	public function validatePassword($attribute, $params)
 	{
-		if ( ! $this->hasErrors()) {
+		if (! $this->hasErrors()) {
 			$user = $this->getUser();
 
-			if ( ! $user || ! $user->validatePassword($this->password)) {
+			if (! $user || ! $user->validatePassword($this->password)) {
 				$this->addError($attribute, 'Incorrect username or password.');
 			}
 		}
@@ -65,6 +66,16 @@ class LoginForm extends Form
 		}
 
 		return false;
+	}
+
+	/**
+	 * Assign default role 'Authenticated' to any logged in user
+	 *
+	 * @return bool
+	 */
+	public function assignAuthenticatedRole()
+	{
+		return $this->getUser()->assignRole(User::ROLE_AUTHENTICATED);
 	}
 
 	/**

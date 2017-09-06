@@ -6,7 +6,6 @@ use app\modules\admin\forms\UserForm;
 use Yii;
 use app\models\User;
 use app\modules\admin\models\UserSearch;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
