@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components\rbac;
+namespace app\filters;
 
 use Yii;
 use yii\base\Action;
@@ -40,7 +40,7 @@ class RouteAccessControl extends ActionFilter
 		) {
 			$allow = true;
 		} else {
-			$allow = user()->can($action_rule);
+			$allow = Yii::$app->user->can($action_rule);
 		}
 
 		if (!$allow) {

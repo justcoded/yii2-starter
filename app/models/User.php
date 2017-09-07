@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use app\traits\models\HasStatus;
+use app\traits\models\WithStatus;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
@@ -25,7 +25,7 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-	use HasStatus;
+	use WithStatus;
 
 	const STATUS_ACTIVE = 10;
 	const STATUS_BLOCKED = 0;

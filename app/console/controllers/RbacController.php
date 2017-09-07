@@ -3,7 +3,6 @@
 namespace app\console\controllers;
 
 use app\models\User;
-use FilesystemIterator;
 use Yii;
 use yii\helpers\Inflector;
 use yii\rbac\Permission;

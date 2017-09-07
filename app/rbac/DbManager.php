@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components\rbac;
+namespace app\rbac;
 
 use yii\db\Query;
 

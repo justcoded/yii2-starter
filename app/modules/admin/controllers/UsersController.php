@@ -2,8 +2,9 @@
 
 namespace app\modules\admin\controllers;
 
-use app\modules\admin\forms\UserForm;
 use Yii;
+use app\modules\admin\forms\UserForm;
+use app\traits\controllers\FindModelOrFail;
 use app\models\User;
 use app\modules\admin\models\UserSearch;
 use yii\filters\VerbFilter;
@@ -13,6 +14,17 @@ use yii\filters\VerbFilter;
  */
 class UsersController extends Controller
 {
+	use FindModelOrFail;
+
+	/**
+	 * @inheritdoc
+	 */
+	public function init()
+	{
+		parent::init();
+		$this->modelClass = UserForm::className();
+	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -75,7 +87,7 @@ class UsersController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model = UserForm::findOneOrFail($id);
+		$model = $this->findModel($id);
 
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['update', 'id' => $model->id]);
@@ -96,7 +108,7 @@ class UsersController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		User::findOneOrFail($id)->delete();
+		$this->findModel($id)->delete();
 
 		return $this->redirect(['index']);
 	}

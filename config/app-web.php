@@ -21,14 +21,6 @@ $config = [
 	'modules' => [
 		'admin' => 'app\modules\admin\Module',
 	],
-	// rbac controller access filter
-	'as routeAccess' => [
-		'class' => 'app\components\rbac\RouteAccessControl',
-		'allowActions' => [
-			'site/*',
-			'auth/*',
-		],
-	],
 	'components' => [
 		'request'      => [
 			// TODO: move generator to console command
@@ -39,10 +31,6 @@ $config = [
 			'identityClass'   => 'app\models\User',
 			'loginUrl' => ['auth/login'],
 			'enableAutoLogin' => true,
-		],
-		'authManager' => [
-			'class' => 'app\components\rbac\DbManager',
-			'defaultRoles' => ['Guest'],
 		],
 		'urlManager' => [
 			'enablePrettyUrl' => true,

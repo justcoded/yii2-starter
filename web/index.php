@@ -11,6 +11,9 @@ defined('YII_ENV') or define('YII_ENV', env('APP_ENV', 'production'));
 
 require(__DIR__ . '/../app/web/Yii.php');
 
-$config = require(__DIR__ . '/../config/app-web.php');
+$config = \yii\helpers\ArrayHelper::merge(
+	require(__DIR__ . '/../config/app-web.php'),
+	require(__DIR__ . '/../config/rbac.php')
+);
 
 (new \app\web\Application($config))->run();

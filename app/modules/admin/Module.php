@@ -31,12 +31,7 @@ class Module extends \yii\base\Module
 			Yii::configure(Yii::$app->get($component), $options);
 		}
 
-		// app rbac behavior conflict with controller behavior to check global admin access
-		// to launch it later than admin access check we use module behaviors instead
-		Yii::$app->detachBehavior('routeAccess');
-
 		// configure module
 		Yii::configure($this, require(__DIR__ . '/config/mod.php'));
-
 	}
 }

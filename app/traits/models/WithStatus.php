@@ -3,6 +3,7 @@
 namespace app\traits\models;
 
 use app\models\ActiveRecord;
+use app\models\User;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -12,7 +13,7 @@ use yii\helpers\ArrayHelper;
  *
  * @package app\traits\models
  */
-trait HasStatus
+trait WithStatus
 {
 	public static function getStatusesList()
 	{
