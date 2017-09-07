@@ -3,7 +3,7 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later* 
 
-Develop
+v0.1
 ---------------------
 * Basic template file structure improved
 * Dotenv support
@@ -16,9 +16,9 @@ Develop
 * Admin 404 page
 * Admin users management
 * DB RBAC component
+* DB RBAC routes scanner
+* Updated intro README file
 
 TODO:
 ----------------------
-* db rbac - routes scanner
-* custom mailer, debug email
-* readme / docs
+* RBAC Admin GUI

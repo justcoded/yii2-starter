@@ -1,5 +1,3 @@
-// TODO: update this doc
-
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
@@ -9,31 +7,50 @@
 </p>
 
 Yii 2 JustCoded Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+rapidly creating projects with admin interface and RBAC.
 
-The template contains the basic features including user login/logout and a contact page.
+The template contains the basic features including contact page, user login/logout, admin panel with 
+users management, route-based RBAC access control, fixture examples.
 It includes all commonly used configurations that would allow you to focus on adding new
 features to your application.
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-basic/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-basic/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-basic.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-basic)
 
 DIRECTORY STRUCTURE
 -------------------
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
+      app/                contains your application classes and files
+        |-- base             base classes (overwrite yii\base or few more) 
+        |-- components       application "components" classes 
+        |-- console          controllers and application object for console commands
+        |-- filters          application filters (similar to yii\filters) 
+        |-- forms            various form models 
+        |-- mail             view files for e-mails 
+        |-- models           ActiveRecord model classes 
+        |-- modules          connected modules, admin panel module by default
+        |-- rbac             RBAC Manager / components 
+        |-- theme            Web resources and assets definition 
+        |-- traits           global traits, grouped by components 
+        |-- views            view files for the Web application
+        |-- web              Web controllers and application object 
+        |-- widgets          application widgets to use inside views 
       config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
+      database/           contains migration and fixtures
       tests/              contains various tests for the basic application
       vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+      web/                contains the web entry script
 
+The difference from [Yii2 basic template](https://github.com/yiisoft/yii2-app-basic):
+
+* Improved IDE support for custom components (`Yii::$app->getComponent(...)`)
+* Application params `Yii::$app->params` presented as object (to allow IDE autocompletion)
+* Main code is grouped under `/app` directory
+* Config files are moved outside app and use .env extension (ability to get values from server ENV variables or .env file)
+* Console and Web presented as separate folders to be able to keep some very-specific classes inside. Each has Application class, which is loaded instead of Yii standard Application class on request.
+* Controllers moved under `/console` and `/web` folders (only for root app, not in modules)
+* Form models has it's own folder to separate from ActiveRecords
+* Theme is used to populate assets in the same way (for root app and modules)
+* Admin module with CRUD example (Users management)
+* Advanced RBAC based on 4 default roles and route-based access control
 
 
 REQUIREMENTS
@@ -53,61 +70,69 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 You can then install this project template using the following command:
 
 ~~~
-php composer.phar create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic basic
+php composer.phar create-project --prefer-dist --stability=dev justcoded/yii2-starter my-project
 ~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
 
 CONFIGURATION
 -------------
 
-### Database
+### ENV support
 
-Edit the file `config/db.php` with real data, for example:
+Config files are the same for all environments. You don't need to create some "local" config files.
+Instead you can accept different parameters from server environment with `env()` helper function. 
+
+Server environment variables can be set through web server vhost configuration, .htaccess file, 
+or .env file in project root (the simplest option).
+
+To start using the project template copy .env-example as .env in the project root and setup it.
+
+### Web
+Copy .htaccess-example as .htaccess to enable pretty URLs support and cache/expire tokens required by 
+Google PageSpeed Insights test.
+
+Furthermore you should check such options inside .env:
 
 ```php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
-];
+APP_ENV=dev
+APP_DEBUG=true
+APP_KEY=wUZvVVKJyHFGDB9qK_Lop4QE1vwb4bYU
+```
+
+*`APP_KEY` is used as cookie verification key. Unfortunately there are no post install composer script to generate it automatically*
+
+### Database
+
+You should update your .env file config:
+
+```php
+DB_HOST=127.0.0.1
+DB_NAME=yii2_starter
+DB_USER=root
+DB_PASS=12345
 ```
 
 **NOTES:**
 - Yii won't create the database for you, this has to be done manually before you can access it.
-- Check and edit the other files in the `config/` directory to customize your application as required.
-- Refer to the README in the `tests` directory for information specific to basic application tests.
 
+LAUNCH
+-------
 
+You will need to create requried tables through migrations and init RBAC settings.
+Launch the commands below from terminal:
+
+```bash
+php yii migrate
+php yii fixture/load User
+php yii rbac/init
+php yii rbac/scan
+```
+
+Now you should be able to access the application through the following URL, assuming `my-project` is the directory
+directly under the Web root.
+
+~~~
+http://localhost/my-project/web/
+~~~
 
 TESTING
 -------
