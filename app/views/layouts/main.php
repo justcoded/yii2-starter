@@ -27,7 +27,7 @@ AssetBundle::register($this);
 
 <div class="wrap">
 
-	<?= $this->render('/partials/header'); ?>
+	<?= $this->render('//partials/header'); ?>
 
 	<div class="container">
 		<?= Breadcrumbs::widget([
@@ -38,7 +38,7 @@ AssetBundle::register($this);
 	</div>
 </div>
 
-<?= $this->render('/partials/footer'); ?>
+<?= $this->render('//partials/footer'); ?>
 
 <?php $this->endBody() ?>
 </body>
