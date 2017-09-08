@@ -3,6 +3,12 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later* 
 
+v0.2
+---------------------
+* Removed ApplicationParams class
+* Created basic Settings component - TBU with AR models in future
+* Moved Migration class
+
 v0.1
 ---------------------
 * Basic template file structure improved
