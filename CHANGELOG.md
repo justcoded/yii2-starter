@@ -22,3 +22,4 @@ v0.1
 TODO:
 ----------------------
 * RBAC Admin GUI
+* forms: sign up / forgot

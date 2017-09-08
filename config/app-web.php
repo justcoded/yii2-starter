@@ -38,8 +38,21 @@ $config = [
 			'rules' => require(__DIR__ . '/routes.php'),
 		],
 		'formatter' => [
-			'class' => 'app\components\i18n\Formatter',
+			'class' => 'app\i18n\Formatter',
 		],
+		/*
+		'i18n' => [
+			'translations' => [
+				'app*' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					'basePath' => '@app/i18n',
+					'fileMap' => [
+						'app' => 'app.php',
+					],
+				],
+			],
+		],
+		*/
 		'errorHandler' => [
 			'errorAction' => 'site/error',
 		],

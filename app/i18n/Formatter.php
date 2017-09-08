@@ -1,6 +1,6 @@
 <?php
 
-namespace app\components\i18n;
+namespace app\i18n;
 
 use DateInterval;
 use DateTime;

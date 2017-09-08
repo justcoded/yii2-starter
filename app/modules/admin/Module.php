@@ -23,15 +23,13 @@ class Module extends \yii\base\Module
 	{
 		parent::init();
 
-		// reconfigure app
-		$app_config = require(__DIR__ . '/config/app.php');
-		Yii::configure(Yii::$container, $app_config['container']);
-
-		foreach ($app_config['components'] as $component => $options) {
-			Yii::configure(Yii::$app->get($component), $options);
-		}
-
 		// configure module
-		Yii::configure($this, require(__DIR__ . '/config/mod.php'));
+		Yii::configure($this, require(__DIR__ . '/config/main.php'));
+
+		// reconfigure service container
+		Yii::configure(Yii::$container, require(__DIR__ . '/config/container.php'));
+
+		// change error action to match admin styles
+		Yii::$app->errorHandler->errorAction = 'admin/dashboard/error';
 	}
 }
