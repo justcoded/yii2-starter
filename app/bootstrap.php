@@ -95,3 +95,16 @@ if (! function_exists('user')) {
 		return \Yii::$app->getUser();
 	}
 }
+
+
+if (! function_exists('settings')) {
+	/**
+	 * Get application settings object
+	 *
+	 * @return \app\components\Settings
+	 */
+	function settings()
+	{
+		return \Yii::$app->get('settings');
+	}
+}

@@ -27,7 +27,7 @@ if (!empty($namespace)) {
 }
 ?>
 
-use app\base\Migration;
+use app\console\Migration;
 
 /**
  * Handles adding <?= $columns ?> to table `<?= $table ?>`.

@@ -13,7 +13,7 @@ if (!empty($namespace)) {
 }
 ?>
 
-use app\base\Migration;
+use app\console\Migration;
 
 /**
  * Class <?= $className . "\n" ?>

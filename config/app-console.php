@@ -11,7 +11,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['log'],
+	'bootstrap'  => ['settings', 'log'],
 	'controllerNamespace' => 'app\console\controllers',
 	'aliases'    => [
 		'@config'=> dirname(__DIR__) . '/config',
@@ -40,6 +40,9 @@ $config = [
 		],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
+		],
+		'settings' => [
+			'class' => 'app\components\Settings',
 		],
 		'log'   => [
 			'targets' => [

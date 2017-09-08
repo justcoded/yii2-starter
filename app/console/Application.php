@@ -2,12 +2,12 @@
 
 namespace app\console;
 
-use app\base\ApplicationParams;
 
 /**
  * Custom App class to allow custom components IDE
  *
- * @property \app\components\i18n\Formatter $formatter The main formatter for app
+ * @property \app\i18n\Formatter $formatter The main formatter for app
+ * @property \app\components\Settings $settings Configuration params
  */
 class Application extends \yii\console\Application
 {
@@ -20,20 +20,4 @@ class Application extends \yii\console\Application
 	 */
 	public $controllerNamespace = 'app\\console\\controllers';
 
-	/**
-	 * @var ApplicationParams
-	 */
-	public $params;
-
-	public function preInit(&$config)
-	{
-		parent::preInit($config);
-
-		if (isset($config['params'])) {
-			$config['params'] = \Yii::createObject(array_merge(
-				['class' => ApplicationParams::class],
-				$config['params']
-			));
-		}
-	}
 }

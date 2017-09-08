@@ -16,7 +16,7 @@ if (!empty($namespace)) {
 }
 ?>
 
-use app\base\Migration;
+use app\console\Migration;
 
 /**
  * Handles the creation of table `<?= $table ?>`.

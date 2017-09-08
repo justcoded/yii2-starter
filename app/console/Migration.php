@@ -1,5 +1,5 @@
 <?php
-namespace app\base;
+namespace app\console;
 
 class Migration extends \yii\db\Migration
 {

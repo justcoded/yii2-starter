@@ -12,7 +12,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['log'],
+	'bootstrap'  => ['settings', 'log'],
 	'aliases'    => [
 		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
@@ -40,6 +40,12 @@ $config = [
 		'formatter' => [
 			'class' => 'app\i18n\Formatter',
 		],
+		'cache' => [
+			'class' => 'yii\caching\FileCache',
+		],
+		'settings' => [
+			'class' => 'app\components\Settings',
+		],
 		/*
 		'i18n' => [
 			'translations' => [
@@ -53,6 +59,18 @@ $config = [
 			],
 		],
 		*/
+		// theme support
+		'assetManager' => [
+			'forceCopy' => YII_DEBUG,
+		],
+		'view' => [
+			'theme' => [
+				'basePath' => '@app/theme',
+				'pathMap'  => [
+					'@app/views' => '@app/theme',
+				],
+			]
+		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',
 		],
@@ -73,7 +91,7 @@ $config = [
 			],
 		],
 	],
-	'params'     => $params,
+	'params' => $params,
 ];
 
 if (YII_ENV_DEV) {

@@ -15,7 +15,7 @@ if (!empty($namespace)) {
 }
 ?>
 
-use app\base\Migration;
+use app\console\Migration;
 
 /**
  * Handles the dropping of table `<?= $table ?>`.
