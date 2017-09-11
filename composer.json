@@ -32,7 +32,9 @@
   ],
   "autoload": {
     "psr-4": {
-      "app\\fixtures\\": "database/fixtures"
+      "app\\fixtures\\": "database/fixtures",
+      "justcoded\\yii2\\rbac\\": "app/extensions/rbac",
+      "justcoded\\yii2\\settings\\": "app/extensions/settings"
     }
   },
   "scripts": {

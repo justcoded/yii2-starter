@@ -32,7 +32,7 @@ return [
 	],
 	// Route based permission filter
 	'as routeAccess' => [
-		'class' => 'app\filters\RouteAccessControl',
+		'class' => 'justcoded\yii2\rbac\filters\RouteAccessControl',
 		'allowActions' => [
 			'site/*',
 			'auth/*',
@@ -42,7 +42,7 @@ return [
 	// authManager settings
 	'components' => [
 		'authManager' => [
-			'class' => 'app\rbac\DbManager',
+			'class' => 'justcoded\yii2\rbac\components\DbManager',
 			'defaultRoles' => ['Guest'],
 		],
 	],

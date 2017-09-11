@@ -28,22 +28,35 @@ return [
 		],
 		'assetManager' => [
 			'basePath' => __DIR__ . '/../web/assets',
+			'forceCopy' => YII_DEBUG,
+		],
+		'view' => [
+			'theme' => [
+				'basePath' => '@app/theme',
+				'pathMap'  => [
+					'@app/views' => '@app/theme',
+				],
+			]
 		],
 		'urlManager'   => [
 			'showScriptName' => true,
 		],
 		'user'         => [
 			'identityClass' => 'app\models\User',
+			'loginUrl' => ['auth/login'],
 		],
 		'request'      => [
 			'cookieValidationKey'  => 'test',
 			'enableCsrfValidation' => false,
-			// but if you absolutely need it set cookie domain to localhost
-			/*
-			'csrfCookie' => [
-				'domain' => 'localhost',
-			],
-			*/
+		],
+		'formatter' => [
+			'class' => 'app\i18n\Formatter',
+		],
+		'cache' => [
+			'class' => 'yii\caching\FileCache',
+		],
+		'errorHandler' => [
+			'errorAction' => 'site/error',
 		],
 	],
 	'params'     => $params,

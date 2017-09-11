@@ -3,6 +3,11 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later* 
 
+v0.3
+---------------------
+* RBAC moved as extension (to be moved to separate package later)
+* Removed settings component (will be added later when UI/Architecture wireframed/approved)
+
 v0.2
 ---------------------
 * Removed ApplicationParams class

@@ -12,7 +12,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['settings', 'log'],
+	'bootstrap'  => ['log'],
 	'aliases'    => [
 		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
@@ -42,9 +42,6 @@ $config = [
 		],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
-		],
-		'settings' => [
-			'class' => 'app\components\Settings',
 		],
 		/*
 		'i18n' => [

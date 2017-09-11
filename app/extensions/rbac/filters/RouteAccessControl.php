@@ -1,6 +1,6 @@
 <?php
 
-namespace app\filters;
+namespace justcoded\yii2\rbac\filters;
 
 use Yii;
 use yii\base\Action;

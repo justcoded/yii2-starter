@@ -11,7 +11,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['settings', 'log'],
+	'bootstrap'  => ['log'],
 	'controllerNamespace' => 'app\console\controllers',
 	'aliases'    => [
 		'@config'=> dirname(__DIR__) . '/config',
@@ -33,16 +33,16 @@ $config = [
 			'templatePath' => '@fixtures/templates',
 			'fixtureDataPath' => '@fixtures/data',
 		],
+		'rbac' => [
+			'class' => 'justcoded\yii2\rbac\commands\RbacController',
+		],
 	],
 	'components'          => [
 		'authManager' => [
-			'class' => 'app\components\rbac\DbManager',
+			'class' => 'justcoded\yii2\rbac\components\DbManager',
 		],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
-		],
-		'settings' => [
-			'class' => 'app\components\Settings',
 		],
 		'log'   => [
 			'targets' => [

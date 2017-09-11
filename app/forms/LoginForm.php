@@ -3,6 +3,7 @@
 namespace app\forms;
 
 use app\models\User;
+use justcoded\yii2\rbac\models\Item as RbacItem;
 use Yii;
 use yii\base\Model;
 
@@ -75,7 +76,7 @@ class LoginForm extends Model
 	 */
 	public function assignAuthenticatedRole()
 	{
-		return $this->getUser()->assignRole(User::ROLE_AUTHENTICATED);
+		return $this->getUser()->assignRole(RbacItem::ROLE_AUTHENTICATED);
 	}
 
 	/**

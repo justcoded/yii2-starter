@@ -10,7 +10,6 @@ class LoginFormCest
 	public function openLoginPage(\FunctionalTester $I)
 	{
 		$I->see('Login', 'h1');
-
 	}
 
 	// demonstrates `amLoggedInAs` method
