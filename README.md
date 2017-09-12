@@ -124,6 +124,7 @@ Launch the commands below from terminal:
 php yii migrate
 php yii fixture/load User
 php yii rbac/init
+php yii rbac/assign-master 1
 php yii rbac/scan
 ```
 
