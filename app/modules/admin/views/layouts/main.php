@@ -1,7 +1,7 @@
 <?php
 use dmstr\widgets\Alert;
 use yii\widgets\Breadcrumbs;
-use app\modules\admin\theme\AssetBundle;
+use app\modules\admin\assets\AssetBundle;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 

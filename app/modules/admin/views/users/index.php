@@ -3,7 +3,7 @@
 use app\models\User;
 use app\modules\admin\widgets\LinkedColumn;
 use yii\helpers\Html;
-use app\modules\admin\theme\ThemeHelper;
+use app\modules\admin\assets\ThemeHelper;
 use app\modules\admin\widgets\BoxGridView;
 
 /* @var $this yii\web\View */

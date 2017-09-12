@@ -7,9 +7,11 @@
 use app\widgets\FlashAlert;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
-use app\theme\AssetBundle;
+use app\assets\AssetBundle;
 
 AssetBundle::register($this);
+
+//$this->
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

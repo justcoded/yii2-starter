@@ -3,7 +3,7 @@ use dmstr\widgets\Alert;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use app\modules\admin\theme\ThemeHelper;
+use app\modules\admin\assets\ThemeHelper;
 
 /* @var $this \yii\web\View */
 

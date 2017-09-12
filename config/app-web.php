@@ -56,17 +56,8 @@ $config = [
 			],
 		],
 		*/
-		// theme support
 		'assetManager' => [
 			'forceCopy' => YII_DEBUG,
-		],
-		'view' => [
-			'theme' => [
-				'basePath' => '@app/theme',
-				'pathMap'  => [
-					'@app/views' => '@app/theme',
-				],
-			]
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',

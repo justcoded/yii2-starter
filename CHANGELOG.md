@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later* 
 
+v0.4
+---------------------
+* Renamed back theme folder into assets, added example of using images from asset manager
+
 v0.3
 ---------------------
 * RBAC moved as extension (to be moved to separate package later)

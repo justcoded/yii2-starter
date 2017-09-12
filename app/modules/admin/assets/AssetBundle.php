@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\admin\theme;
+namespace app\modules\admin\assets;
 
 class AssetBundle extends \yii\web\AssetBundle
 {
-	public $sourcePath = '@app/modules/admin/theme';
+	public $sourcePath = '@app/modules/admin/assets';
 
 	public $css = [
 		'css/extra.css',
@@ -13,7 +13,7 @@ class AssetBundle extends \yii\web\AssetBundle
 	];
 	public $depends = [
 		'dmstr\web\AdminLteAsset',
-		//'app\modules\admin\theme\AdminltePluginsAssetBundle',
+		//'app\modules\admin\assets\AdminltePluginsAssetBundle',
 		'yii\web\YiiAsset',
 		'yii\bootstrap\BootstrapAsset',
 	];

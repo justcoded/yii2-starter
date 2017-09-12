@@ -2,11 +2,19 @@
 
 /* @var $this yii\web\View */
 
+use app\assets\AssetBundle;
+
+$assets = AssetBundle::register($this);
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
 	<div class="jumbotron">
+		<p class="text-center">
+			<img src="<?= $assets->baseUrl; ?>/images/yii-logo.png" height="48px">
+			<img src="<?= $assets->baseUrl; ?>/images/jc-logo.png" height="48px">
+		</p>
 		<h1>Congratulations!</h1>
 
 		<p class="lead">You have successfully created your Yii-powered application.</p>

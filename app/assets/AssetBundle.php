@@ -1,10 +1,10 @@
 <?php
 
-namespace app\theme;
+namespace app\assets;
 
 class AssetBundle extends \yii\web\AssetBundle
 {
-	public $sourcePath = '@app/theme';
+	public $sourcePath = '@app/assets';
 
 	public $css = [
 		'css/site.css',
