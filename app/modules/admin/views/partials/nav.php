@@ -13,6 +13,11 @@
 					 	'url' => ['/admin/users'],
 					 	'active' => 'users' === Yii::$app->controller->id,
 					],
+					['label' => 'Permissions',
+					 'icon' => 'users',
+					 'url' => ['/admin/permissions'],
+					 'active' => 'permissions' === Yii::$app->controller->id,
+					],
 					[
 						'label' => 'Drop example',
 						'icon'  => 'share',
