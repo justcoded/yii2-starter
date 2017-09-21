@@ -78,6 +78,12 @@ $config = [
 				],
 			],
 		],
+		'settings' => [
+			'class'     => 'app\extensions\settings\components\settings\DbSettings',
+			'modelsMap' => [
+				'app' => 'app\extensions\settings\forms\AppSettingsForm',
+			],
+		],
 	],
 	'params' => $params,
 ];
