@@ -1,4 +1,4 @@
-CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
+/home/user/PhpstormProjectsCHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 =====================
 
 *should be replaced with real project changelog later* 
