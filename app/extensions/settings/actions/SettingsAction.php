@@ -9,22 +9,28 @@ use yii\base\Model;
 class SettingsAction extends Action
 {
 	/**
+	 * Model, which properties should be stored as settings
+	 *
 	 * @var Model
 	 */
 	public $modelClass;
 	
 	/**
+	 * Where to look for view. By default look in /views/controller_id/action_id
+	 *
 	 * @var string
 	 */
 	public $viewPath;
 	
 	/**
+	 * Message to display on success result
+	 *
 	 * @var string
 	 */
 	public $message = 'The settings has been saved successfully';
 	
 	/**
-	 * View file example: app/extensions/settings/views/app.php
+	 * View file example: justcoded/yii2/settings/views/app.php
 	 *
 	 * @inheritdoc
 	 */
@@ -38,6 +44,8 @@ class SettingsAction extends Action
 	}
 	
 	/**
+	 * Method to get model with loaded properties
+	 *
 	 * @param $modelClass
 	 *
 	 * @return Model
