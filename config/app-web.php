@@ -17,9 +17,13 @@ $config = [
 		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
+		'@rbacGui' => '@app/extensions/rbac-gui'
 	],
 	'modules' => [
 		'admin' => 'app\modules\admin\Module',
+		'controllerMap' => [
+			'rbac' => 'justcoded\yii2\rbac\Module',
+		]
 	],
 	'components' => [
 		'request'      => [

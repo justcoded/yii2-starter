@@ -4,24 +4,15 @@ namespace app\models;
 
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
-use yii\rbac\Role;
-use app\models\AuthItems;
-
 
 /**
- * AuthItems model
+ * AuthItemChild model
  *
- * @property string  $name
- * @property integer $type
- * @property string  $description
- * @property string  $rule_name
- * @property string  $data
- * @property integer $created_at
- * @property integer $updated_at
+ * @property string  $parent
+ * @property string  $child
  */
 class AuthItemChild extends ActiveRecord
 {
-
 	public $created_at;
 	public $updated_at;
 
@@ -55,4 +46,21 @@ class AuthItemChild extends ActiveRecord
 		return $parent_behaviors;
 	}
 
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getParentItem()
+	{
+		return $this->hasOne(AuthItems::className(), ['name' => 'parent']);
+	}
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getChildItem()
+	{
+		return $this->hasOne(AuthItems::className(), ['name' => 'child']);
+	}
 }
+

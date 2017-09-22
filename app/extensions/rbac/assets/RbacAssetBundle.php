@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\admin\assets;
+namespace justcoded\yii2\rbac\assets;
 
-class AssetBundle extends \yii\web\AssetBundle
+class RbacAssetBundle extends \yii\web\AssetBundle
 {
-	public $sourcePath = '@app/modules/admin/assets';
+	public $sourcePath = '@app/extensions/rbac/assets';
 
 	public $css = [
-		'css/extra.css',
-		'css/rbac.css'
+		'css/rbac.css',
 	];
+
 	public $js = [
 		'js/rbac.js'
 	];

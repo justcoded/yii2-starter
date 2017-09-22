@@ -2,31 +2,24 @@
 
 namespace app\modules\admin\controllers;
 
-use app\console\Application;
-use app\models\AuthItemChild;
 use app\models\AuthItems;
 use app\modules\admin\forms\PermissionForm;
 use app\modules\admin\forms\RoleForm;
 use app\modules\admin\models\AuthItemSearch;
 use Yii;
-use app\modules\admin\forms\UserForm;
 use app\traits\controllers\FindModelOrFail;
-use app\models\User;
-use app\modules\admin\models\UserSearch;
 use yii\filters\VerbFilter;
 use vova07\console\ConsoleRunner;
 use yii\web\Response;
-use yii\rbac\Role;
+use yii\widgets\ActiveForm;
 
 /**
- * UsersController implements the CRUD actions for User model.
+ * PermissionsController implements the CRUD actions for AuthItems model.
  */
 class PermissionsController extends Controller
 {
 	use FindModelOrFail;
 
-
-	public $enableCsrfValidation = false;
 	/**
 	 * @inheritdoc
 	 */
@@ -36,17 +29,15 @@ class PermissionsController extends Controller
 			'verbs' => [
 				'class'   => VerbFilter::className(),
 				'actions' => [
-					'delete' => ['POST'],
+					'delete-role' => ['POST'],
+					'delete-permission' => ['POST'],
 				],
 			],
 		];
 	}
 
-
 	/**
-	 * Lists all User models.
-	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function actionIndex()
 	{
@@ -68,22 +59,8 @@ class PermissionsController extends Controller
 	 */
 	public function actionAddRole()
 	{
-
 		$model = new RoleForm();
-		$model->scenario = 'add-role';
-
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-			foreach ($model->permissions as $permission){
-				$new_permission = new AuthItemChild([
-					'parent' => $model->name,
-					'child' => $permission
-				]);
-				$new_permission->save();
-			}
-
-			return $this->redirect(['index']);
-		}
+		$model->scenario = 'add';
 
 		return $this->render('create-role', [
 			'model' => $model,
@@ -91,54 +68,162 @@ class PermissionsController extends Controller
 
 	}
 
+	/**
+	 * @param $name
+	 * @return string
+	 */
+	public function actionUpdateRole($name)
+	{
+		$model = RoleForm::findOne($name);
+
+		$model->scenario = 'update';
+		return $this->render('update-role', [
+			'model' => $model
+		]);
+	}
+
+	/**
+	 * @return Response
+	 */
+	public function actionStoreRoles()
+	{
+		$form = Yii::$app->request->post('RoleForm');
+
+		if(!$model = RoleForm::findOne($form['name'])) {
+
+			$model = new RoleForm();
+		}
+
+		if ($model->load(Yii::$app->request->post()) && $model->validate()){
+
+			if ($model->store()){
+				Yii::$app->session->setFlash('success', 'Role saved success.');
+			}
+		}
+
+		return $this->redirect(['index']);
+	}
+
+	/**
+	 * @param $name
+	 * @return Response
+	 */
+	public function actionDeleteRole($name)
+	{
+		if(!$post_data = Yii::$app->request->post('RoleForm')){
+			return $this->redirect(['index']);
+		}
+
+		$role = Yii::$app->authManager->getRole($post_data['name']);
+
+		if (Yii::$app->authManager->remove($role)){
+			Yii::$app->session->setFlash('success', 'Role removed success.');
+		}else{
+			Yii::$app->session->setFlash('error', 'Role not removed.');
+		}
+
+		return $this->redirect(['index']);
+	}
+
+	/**
+	 * @return string
+	 */
 	public function actionAddPermission()
 	{
 		$model = new PermissionForm();
 
-		if ($model->load(Yii::$app->request->post())){
-			if (!$model->save()){
-				return pa($model->errors);
-			}
-
-			$name = $model->name;
-
-			if (!empty($model->parent_roles)) {
-				$array_parent_roles = explode(',', $model->parent_roles);
-				foreach ($array_parent_roles as $role) {
-					$new_child = new AuthItemChild([
-						'parent' => $role,
-						'child'  => $name
-					]);
-					$new_child->save();
-				}
-			}
-			if (!empty($model->parent_permissions)) {
-				$array_parent_permissions = explode(',', $model->parent_permissions);
-				foreach ($array_parent_permissions as $permission) {
-					$new_child = new AuthItemChild([
-						'parent' => $permission,
-						'child'  => $name
-					]);
-					$new_child->save();
-				}
-			}
-			if (!empty($model->children_permissions)) {
-				$array_children_permissions = explode(',', $model->children_permissions);
-				foreach ($array_children_permissions as $permission) {
-					$new_child = new AuthItemChild([
-						'parent' => $name,
-						'child'  => $permission,
-					]);
-					$new_child->save();
-				}
-			}
-
-			return $this->redirect(['index']);
-		}
-
 		return $this->render('create-permission', [
 			'model' => $model
 		]);
+	}
+
+	/**
+	 * @param $name
+	 * @return string
+	 */
+	public function actionUpdatePermission($name)
+	{
+		$model = PermissionForm::findOne($name);
+
+		return $this->render('update-permission', [
+			'model' => $model
+		]);
+	}
+
+	/**
+	 * @param $name
+	 * @return Response
+	 */
+	public function actionDeletePermission($name)
+	{
+		if(!$post_data = Yii::$app->request->post('PermissionForm')){
+			return $this->redirect(['index']);
+		}
+
+		$role = Yii::$app->authManager->getPermission($post_data['name']);
+
+		if (Yii::$app->authManager->remove($role)){
+			Yii::$app->session->setFlash('success', 'Permission removed success.');
+		}else{
+			Yii::$app->session->setFlash('error', 'Permission not removed.');
+		}
+
+		return $this->redirect(['index']);
+	}
+
+	/**
+	 * @return Response
+	 */
+	public function actionStorePermissions()
+	{
+		$form = Yii::$app->request->post('PermissionForm');
+
+		if(!$model = PermissionForm::findOne($form['name'])) {
+
+			$model = new PermissionForm();
+		}
+
+		if ($model->load(Yii::$app->request->post())){
+
+			if (!$model->validate()){
+				$errors = $model->errors;
+				Yii::$app->session->setFlash('success', $errors);
+				return $this->redirect('add-permission');
+			}
+
+			if ($model->store()){
+				Yii::$app->session->setFlash('success', 'Permissions saved success.');
+			}
+
+		}
+
+		return $this->redirect(['index']);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function actionValidatePermission() {
+
+		$model = new PermissionForm();
+
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function actionValidateRole() {
+
+		$model = new RoleForm();
+
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
+		}
 	}
 
 	/**
@@ -149,31 +234,8 @@ class PermissionsController extends Controller
 		$cr = new ConsoleRunner(['file' => '@yii/yii']);
 		$cr->run('rbac/scan');
 		Yii::$app->session->setFlash('success', 'Routes scanned success.');
+
 		return $this->redirect(['index']);
-	}
-
-	/**
-	 * @return bool|string
-	 */
-	public function actionAjaxPermissions()
-	{
-		if (!Yii::$app->request->isAjax){
-			return false;
-		}
-		Yii::$app->response->format = Response::FORMAT_HTML;
-
-		if($request = Yii::$app->request->post('role')){
-			$permissions = Yii::$app->authManager->getPermissionsByRole($request);
-
-		}else{
-			$permissions =  Yii::$app->authManager->getPermissions();
-		}
-
-		$data = '';
-		foreach ($permissions as $permission){
-			$data .= '<div class="permissions" data-name="' . $permission->name . '">'.$permission->name . '</div>';
-		}
-		return $data;
 	}
 
 }

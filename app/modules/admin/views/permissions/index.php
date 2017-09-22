@@ -1,9 +1,6 @@
 <?php
 
-use app\models\User;
-use app\modules\admin\widgets\LinkedColumnPermissions;
 use yii\helpers\Html;
-use app\modules\admin\assets\ThemeHelper;
 use app\modules\admin\widgets\BoxGridViewPermissions;
 
 /* @var $this yii\web\View */
@@ -26,35 +23,37 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=  Html::a('Add Role', ['add-role'], ['class' => 'btn btn-sm btn-success']); ?>
                     </div>
                 </div>
+                <div class="box-body">
+                    <?= BoxGridViewPermissions::widget([
+                        'dataProvider' => $dataProviderRoles,
+                        'filterModel'  => $searchModelRoles,
+                        'columns'      => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            [
+                                'header' => 'Role',
+                                'attribute' => 'name',
+                                'format' => 'raw',
+                                'value' => function ($data){
+                                    return Html::a($data->name, ['update-role', 'name' => $data->name])
+                                        . '<br>' . $data->description;
+                                },
+                            ],
+                            [
+                                'header' => 'Permission',
+                                'value' => function ($data){
+                                    return $data->countPermissionsByRole($data->name);
+                                },
+                            ],
+                            [
+                                'header' => 'Inherit',
+                                'value' => function ($data){
+                                    return $data->getInherit($data->name);
+                                },
+                            ]
+                        ],
+                    ]); ?>
+                </div>
             </div>
-	        <?= BoxGridViewPermissions::widget([
-		        'dataProvider' => $dataProviderRoles,
-		        'filterModel'  => $searchModelRoles,
-		        'columns'      => [
-			        ['class' => 'yii\grid\SerialColumn'],
-			        [
-				        'class' => LinkedColumnPermissions::class,
-				        'header' => 'Role',
-				        'attribute' => 'name',
-				        'format' => 'raw',
-				        'value' => function ($data){
-					        return $data->name . '</a><br>' . $data->description;
-				        },
-			        ],
-			        [
-				        'header' => 'Permission',
-				        'value' => function ($data){
-	                        return $data->countPermissionsByRole($data->name);
-                        },
-			        ],
-			        [
-				        'header' => 'Inherit',
-                        'value' => function ($data){
-	                        return $data->getParent($data->name);
-                        },
-			        ]
-		        ],
-	        ]); ?>
         </div>
         <div class="col-md-6">
             <div class="grid-view box">
@@ -67,34 +66,33 @@ $this->params['breadcrumbs'][] = $this->title;
 			            <?=  Html::a('Add Permissions', ['add-permission'], ['class' => 'btn btn-sm btn-default']); ?>
                     </div>
                 </div>
+                <div class="box-body">
+                    <?= BoxGridViewPermissions::widget([
+                        'dataProvider' => $dataProviderPermissions,
+                        'filterModel'  => $searchModelRoles,
+                        'columns'      => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                            [
+                                'header' => 'Permissions',
+                                'attribute' => 'permission',
+                                'format' => 'html',
+                                'value' => function ($data) {
+                                    return Html::a($data->name, ['update-permission', 'name' => $data->name]);
+                                }
+                            ],
+                            'description',
+                            [
+                                'header' => 'Role',
+                                'format' => 'html',
+                                'value' => function ($data) {
+	                                return isset($data::getRoleByPermission()[$data->name]) ?
+                                        $data::getRoleByPermission()[$data->name] : '';
+                                }
+                            ]
+                        ],
+                    ]); ?>
+                </div>
             </div>
-	        <?= BoxGridViewPermissions::widget([
-		        'dataProvider' => $dataProviderPermissions,
-		        'filterModel'  => $searchModelRoles,
-		        'columns'      => [
-			        ['class' => 'yii\grid\SerialColumn'],
-			        [
-				        'class' => LinkedColumnPermissions::class,
-				        'header' => 'Permissions',
-				        'attribute' => 'permission',
-				        'value' => function ($data) {
-	                        return $data->name;
-                        }
-			        ],
-                    'description',
-//			        [
-//				        'header' => 'Descriptions',
-//				        'attribute' => '',
-//				        'value' => 'description'
-//			        ],
-			        [
-				        'header' => 'Role'
-			        ]
-		        ],
-	        ]); ?>
-
         </div>
     </div>
-
-
 </div>
