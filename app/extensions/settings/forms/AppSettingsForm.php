@@ -1,8 +1,6 @@
 <?php
 
-namespace app\extensions\settings\forms;
-
-use app\extensions\settings\forms\SettingsForm;
+namespace justcoded\yii2\settings\forms;
 
 class AppSettingsForm extends SettingsForm
 {

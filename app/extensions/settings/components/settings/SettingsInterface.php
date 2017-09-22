@@ -1,6 +1,6 @@
 <?php
 
-namespace app\extensions\settings\components\settings;
+namespace justcoded\yii2\settings\components\settings;
 
 /**
  * Interface SettingsInterface

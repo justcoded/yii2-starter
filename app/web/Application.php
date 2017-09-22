@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * Custom App class to allow custom components IDE
  *
  * @property \app\i18n\Formatter $formatter The main formatter for app
- * @property \app\extensions\settings\components\settings\Settings $settings Configuration params
+ * @property \justcoded\yii2\settings\components\settings\Settings $settings Configuration params
  */
 class Application extends \yii\web\Application
 {

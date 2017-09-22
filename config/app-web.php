@@ -79,9 +79,9 @@ $config = [
 			],
 		],
 		'settings' => [
-			'class'     => 'app\extensions\settings\components\settings\DbSettings',
+			'class'     => 'justcoded\yii2\settings\components\settings\DbSettings',
 			'modelsMap' => [
-				'app' => 'app\extensions\settings\forms\AppSettingsForm',
+				'app' => 'justcoded\yii2\settings\forms\AppSettingsForm',
 			],
 		],
 	],

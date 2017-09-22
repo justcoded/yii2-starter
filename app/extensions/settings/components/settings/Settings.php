@@ -1,10 +1,9 @@
 <?php
 
-namespace app\extensions\settings\components\settings;
+namespace justcoded\yii2\settings\components\settings;
 
 use yii\base\BootstrapInterface;
 use yii\base\Component;
-use yii\db\Exception;
 
 abstract class Settings extends Component implements SettingsInterface, BootstrapInterface
 {
@@ -70,7 +69,8 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	/**
 	 * @param string $name
 	 *
-	 * @return mixed
+	 * @return Model
+	 * @throws \yii\base\Exception
 	 */
 	public function __get($name)
 	{
@@ -95,7 +95,7 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 		if (!$value && isset($this->defaults[$section][$key])) {
 			return $this->defaults[$section][$key];
 		}
-		if ($value === false || $this->serializer === false) {
+		if ($value === null || $this->serializer === false) {
 			return $value;
 		} elseif ($this->serializer === null) {
 			return unserialize($value);

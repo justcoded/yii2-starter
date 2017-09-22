@@ -1,8 +1,7 @@
 <?php
 
-namespace app\extensions\settings\actions;
+namespace justcoded\yii2\settings\actions;
 
-use app\helpers\Session;
 use yii\base\Action;
 use Yii;
 use yii\base\Model;
@@ -33,7 +32,7 @@ class SettingsAction extends Action
 	{
 		$model = $this->setModel($this->modelClass);
 		if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-			Session::addFlash($this->message, 'success');
+			Yii::$app->session->addFlash('success', $this->message);
 		}
 		return $this->controller->render($this->viewPath ?: $this->controller->action->id, ['model' => $model]);
 	}

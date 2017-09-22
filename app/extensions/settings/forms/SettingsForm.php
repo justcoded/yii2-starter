@@ -1,9 +1,8 @@
 <?php
 
-namespace app\extensions\settings\forms;
+namespace justcoded\yii2\settings\forms;
 
-use app\extensions\settings\components\settings\SettingsInterface;
-use Yii;
+use justcoded\yii2\settings\components\settings\SettingsInterface;
 use yii\base\Model;
 use yii\di\Instance;
 

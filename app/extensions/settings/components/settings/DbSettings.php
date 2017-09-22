@@ -1,11 +1,9 @@
 <?php
 
-namespace app\extensions\settings\components\settings;
+namespace justcoded\yii2\settings\components\settings;
 
-use yii\base\Component;
-use yii\base\Model;
+use justcoded\yii2\settings\components\settings\Settings;
 use yii\db\Query;
-use yii\db\Exception;
 
 class DbSettings extends Settings
 {
