@@ -22,7 +22,7 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	 *
 	 * @var array
 	 */
-	public $modelsMap;
+	public $modelsMap = [];
 	
 	/**
 	 * Array of Model objects, which allows to get/set settings params as properties
