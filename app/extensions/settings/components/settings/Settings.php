@@ -92,10 +92,10 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	public function get($section, $key)
 	{
 		$value = $this->getValue($section, $key);
-		if (!$value && isset($this->defaults[$section][$key])) {
+		if (false === $value && isset($this->defaults[$section][$key])) {
 			return $this->defaults[$section][$key];
 		}
-		if ($value === null || $this->serializer === false) {
+		if (false === $value || $this->serializer === false) {
 			return $value;
 		} elseif ($this->serializer === null) {
 			return unserialize($value);

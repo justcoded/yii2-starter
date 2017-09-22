@@ -68,7 +68,7 @@ class DbSettings extends Settings
 			->from($this->tableName)
 			->where(['section_name' => $section, 'key' => $key])
 			->one();
-		return isset($value['value']) ? $value['value'] : null;
+		return isset($value['value']) ? $value['value'] : false;
 	}
 	
 	/**
