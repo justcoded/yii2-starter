@@ -1,6 +1,6 @@
 <?php
 
-namespace justcoded\yii2\settings\components\settings;
+namespace justcoded\yii2\settings\components;
 
 use yii\base\BootstrapInterface;
 use yii\base\Component;
