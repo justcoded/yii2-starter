@@ -3,6 +3,7 @@
 \Yii::setAlias('@app', dirname(__DIR__) . '/app');
 
 $db     = require __DIR__ . '/db.php';
+$params = require __DIR__ . '/params.php';
 
 dotenv()->required('APP_KEY')->notEmpty();
 
@@ -78,17 +79,11 @@ $config = [
 			],
 		],
 		'settings' => [
-			'class'     => 'justcoded\yii2\settings\components\DbSettings',
+			'class'     => 'app\components\Settings',
+			'defaults' => $params,
 			'modelsMap' => [
 				'app' => 'justcoded\yii2\settings\forms\AppSettingsForm',
 			],
-			'defaults' => [
-				'params' => [
-					'systemEmail' => ['admin@example.com' => 'Support'],
-					'adminEmail' => ['admin@example.com' => 'John Doe'],
-					'passwordResetTokenExpire' => 3600,
-				]
-			]
 		],
 	],
 ];
