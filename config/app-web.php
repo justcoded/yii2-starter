@@ -2,7 +2,6 @@
 
 \Yii::setAlias('@app', dirname(__DIR__) . '/app');
 
-$params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
 
 dotenv()->required('APP_KEY')->notEmpty();
@@ -12,7 +11,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['log'],
+	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
 		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
@@ -78,8 +77,20 @@ $config = [
 				],
 			],
 		],
+		'settings' => [
+			'class'     => 'justcoded\yii2\settings\components\DbSettings',
+			'modelsMap' => [
+				'app' => 'justcoded\yii2\settings\forms\AppSettingsForm',
+			],
+			'defaults' => [
+				'params' => [
+					'systemEmail' => ['admin@example.com' => 'Support'],
+					'adminEmail' => ['admin@example.com' => 'John Doe'],
+					'passwordResetTokenExpire' => 3600,
+				]
+			]
+		],
 	],
-	'params' => $params,
 ];
 
 if (YII_ENV_DEV) {

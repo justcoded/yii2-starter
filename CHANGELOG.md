@@ -1,7 +1,12 @@
 CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 =====================
 
-*should be replaced with real project changelog later* 
+*should be replaced with real project changelog later*
+
+v0.5
+---------------------
+* Added settings extension with settings component
+* Added settings controller in admin module
 
 v0.4
 ---------------------
