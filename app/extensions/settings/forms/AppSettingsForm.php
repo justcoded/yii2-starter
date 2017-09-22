@@ -4,6 +4,10 @@ namespace justcoded\yii2\settings\forms;
 
 /**
  * Class AppSettingsForm
+ *
+ * @property array adminFriendlyEmail
+ * @property array systemFriendlyEmail
+ *
  * @package justcoded\yii2\settings\forms
  */
 class AppSettingsForm extends SettingsForm
@@ -27,14 +31,14 @@ class AppSettingsForm extends SettingsForm
 	 *
 	 * @var string
 	 */
-	public $senderEmail;
+	public $systemEmail;
 	
 	/**
 	 * Name, which will be set in 'from' mail column
 	 *
 	 * @var string
 	 */
-	public $senderName;
+	public $systemName;
 	
 	/**
 	 * In minuts
@@ -56,9 +60,9 @@ class AppSettingsForm extends SettingsForm
 	public function rules()
 	{
 		return [
-			[['adminEmail', 'adminName', 'senderName', 'senderEmail'], 'string'],
-			[['adminEmail', 'senderEmail'], 'email'],
-			[['passwordResetToken', 'rememberMeExpiration', 'senderEmail', 'adminEmail'], 'required'],
+			[['adminEmail', 'adminName', 'systemEmail', 'systemName'], 'string'],
+			[['adminEmail', 'systemEmail'], 'email'],
+			[['passwordResetToken', 'rememberMeExpiration', 'systemEmail', 'adminEmail'], 'required'],
 			[['passwordResetToken', 'rememberMeExpiration'], 'integer'],
 		];
 	}
@@ -71,8 +75,8 @@ class AppSettingsForm extends SettingsForm
 		return [
 			'adminEmail' => 'Admin email',
 			'adminName' => 'Admin name',
-			'senderEmail' => 'Sender email',
-			'senderName' => 'Sender name',
+			'systemEmail' => 'System email',
+			'systemName' => 'System email name',
 			'passwordResetToken' => 'Password reset token',
 			'rememberMeExpiration' => 'Remember me expiration',
 		];
@@ -99,8 +103,8 @@ class AppSettingsForm extends SettingsForm
 	/**
 	 * @return array
 	 */
-	public function getSenderFriendlyEmail()
+	public function getSystemFriendlyEmail()
 	{
-		return [$this->senderEmail => $this->senderName];
+		return [$this->systemEmail => $this->systemName];
 	}
 }

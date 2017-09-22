@@ -51,8 +51,8 @@ class ContactForm extends Model
 	{
 		if ($this->validate()) {
 			Yii::$app->mailer->compose()
-				->setTo(Yii::$app->params['adminEmail'])
-				->setFrom([$this->email => $this->name])
+				->setTo(settings()->app->adminFriendlyEmail)
+				->setFrom([settings()->app->systemEmail => $this->name])
 				->setSubject($this->subject)
 				->setTextBody($this->body)
 				->send();

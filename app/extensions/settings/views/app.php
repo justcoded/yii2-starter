@@ -23,9 +23,9 @@ use yii\helpers\Html;
 						
 						<?= $form->field($model, 'adminEmail')->textInput() ?>
 						
-						<?= $form->field($model, 'senderName')->textInput() ?>
+						<?= $form->field($model, 'systemName')->textInput() ?>
 						
-						<?= $form->field($model, 'senderEmail')->textInput() ?>
+						<?= $form->field($model, 'systemEmail')->textInput() ?>
 						
 						<?= $form->field($model, 'passwordResetToken')->input('number') ?>
 						
