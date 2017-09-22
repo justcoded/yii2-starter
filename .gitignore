@@ -8,6 +8,7 @@ nbproject
 # windows thumbnail cache, Mac DS_Store
 Thumbs.db
 .DS_Store
+Desktop.ini
 
 # composer vendor dir
 /vendor
@@ -25,3 +26,6 @@ tests/_support/_generated
 
 # env files
 .env
+
+# extension dev files
+/ext
