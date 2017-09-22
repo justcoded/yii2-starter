@@ -20,7 +20,7 @@ return [
 				},
 				'denyCallback' => function ($null, $action) {
 					\Yii::$app->errorHandler->errorAction = 'site/error';
-					throw new NotFoundHttpException('The requested page does not exist.');
+					throw new NotFoundHttpException('Page not found.');
 				}
 			],
 			// this one is required to make all other site works.
