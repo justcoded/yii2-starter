@@ -4,15 +4,30 @@ namespace justcoded\yii2\settings\components;
 
 use yii\base\BootstrapInterface;
 use yii\base\Component;
+use yii\base\Model;
 
+/**
+ * Class Settings
+ * @package justcoded\yii2\settings\components
+ */
 abstract class Settings extends Component implements SettingsInterface, BootstrapInterface
 {
 	/**
+	 * Models, that can be used to get/set settings values as object properties
+	 * Config example
+	 *
+	 * 'modelsMap' => [
+	 *  	'settings_model_name' => 'path\to\modelClass',
+	 *	],
+	 *
 	 * @var array
 	 */
 	public $modelsMap;
 	
 	/**
+	 * Array of Model objects, which allows to get/set settings params as properties
+	 * according to config settings_model_name
+	 *
 	 * @var Model[]
 	 */
 	public $models;
@@ -67,6 +82,8 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	}
 	
 	/**
+	 * Checks, if there is a model with name $name. Returns model with loaded data
+	 *
 	 * @param string $name
 	 *
 	 * @return Model
@@ -84,6 +101,8 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	}
 	
 	/**
+	 * Returns serialized/unserialized data according to component settings
+	 *
 	 * @param $section
 	 * @param $key
 	 *
@@ -105,6 +124,8 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	}
 	
 	/**
+	 * Serialize data according components settings and set it
+	 *
 	 * @param $section
 	 * @param $key
 	 * @param $value
@@ -116,13 +137,13 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 		if ($this->serializer === null) {
 			$value = serialize($value);
 		} elseif ($this->serializer !== false) {
-			$value = call_user_func($this->serializer[0], [$value, $dependency]);
+			$value = call_user_func($this->serializer[0], $value);
 		}
 		return $this->setValue($section, $key, $value);
 	}
 	
 	/**
-	 * Check if there is a value for pk $section-$key
+	 * Check if there is a value for $section-$key pair
 	 *
 	 * @param $section
 	 * @param $key
@@ -131,10 +152,12 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	 */
 	protected function exists($section, $key)
 	{
-		return null !== $this->getValue($section, $key);
+		return false !== $this->getValue($section, $key);
 	}
 	
 	/**
+	 * To be overwritten in child class according to storing way
+	 *
 	 * @param $section
 	 * @param $key
 	 *
@@ -143,6 +166,8 @@ abstract class Settings extends Component implements SettingsInterface, Bootstra
 	abstract protected function getValue($section, $key);
 	
 	/**
+	 * To be overwritten in child class according to storing way
+	 *
 	 * @param $section
 	 * @param $key
 	 * @param $value

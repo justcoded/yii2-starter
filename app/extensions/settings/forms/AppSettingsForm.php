@@ -2,18 +2,52 @@
 
 namespace justcoded\yii2\settings\forms;
 
+/**
+ * Class AppSettingsForm
+ * @package justcoded\yii2\settings\forms
+ */
 class AppSettingsForm extends SettingsForm
 {
+	/**
+	 * Email where to send letters to admin
+	 *
+	 * @var string
+	 */
 	public $adminEmail;
 	
+	/**
+	 * Admin name
+	 *
+	 * @var string
+	 */
 	public $adminName;
 	
+	/**
+	 * Email, letters to users will come from
+	 *
+	 * @var string
+	 */
 	public $senderEmail;
 	
+	/**
+	 * Name, which will be set in 'from' mail column
+	 *
+	 * @var string
+	 */
 	public $senderName;
 	
+	/**
+	 * In minuts
+	 *
+	 * @var integer
+	 */
 	public $passwordResetToken;
 	
+	/**
+	 * In days
+	 *
+	 * @var integer
+	 */
 	public $rememberMeExpiration;
 	
 	/**
@@ -45,7 +79,7 @@ class AppSettingsForm extends SettingsForm
 	}
 	
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function sectionName()
 	{
@@ -53,6 +87,8 @@ class AppSettingsForm extends SettingsForm
 	}
 	
 	/**
+	 * Get full admin data to set in mailer from method
+	 *
 	 * @return array
 	 */
 	public function getAdminFriendlyEmail()

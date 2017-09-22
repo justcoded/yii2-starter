@@ -4,7 +4,7 @@ namespace justcoded\yii2\settings\components;
 
 /**
  * Interface SettingsInterface
- * @package app\extensions\settings\components\settings
+ * @package app\extensions\settings\components
  */
 interface SettingsInterface
 {

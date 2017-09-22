@@ -4,14 +4,25 @@ namespace justcoded\yii2\settings\components;
 
 use yii\db\Query;
 
+/**
+ * Class DbSettings
+ * Allows to store settings data in a db
+ *
+ * @package justcoded\yii2\settings\components
+ */
 class DbSettings extends Settings
 {
 	/**
+	 * Table name, where settings are stored.
+	 * Name is defined according to the extension migration
+	 *
 	 * @var string
 	 */
 	public $tableName = '{{%settings}}';
 	
 	/**
+	 * Insert new settings data to a db
+	 *
 	 * @param $key
 	 * @param $value
 	 *
@@ -34,6 +45,8 @@ class DbSettings extends Settings
 	}
 	
 	/**
+	 * Update existed in a db settings data
+	 *
 	 * @param $key
 	 * @param $value
 	 *
@@ -58,7 +71,12 @@ class DbSettings extends Settings
 	}
 	
 	/**
-	 * @inheritdoc
+	 * Get value from a db. if not exists, return false
+	 *
+	 * @param $section
+	 * @param $key
+	 *
+	 * @return bool
 	 */
 	protected function getValue($section, $key)
 	{
@@ -71,6 +89,8 @@ class DbSettings extends Settings
 	}
 	
 	/**
+	 * Insert value to a db if it's not exist. Otherwise - update existed
+	 *
 	 * @param $section
 	 * @param $key
 	 * @param $value

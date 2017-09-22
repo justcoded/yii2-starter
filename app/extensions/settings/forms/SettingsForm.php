@@ -2,7 +2,7 @@
 
 namespace justcoded\yii2\settings\forms;
 
-use justcoded\yii2\settings\components\settings\SettingsInterface;
+use justcoded\yii2\settings\components\SettingsInterface;
 use yii\base\Model;
 use yii\di\Instance;
 
@@ -15,9 +15,26 @@ use yii\di\Instance;
  */
 abstract class SettingsForm extends Model
 {
-	public $loaded = false;
+	/**
+	 * This property is used to check if the properties values are loaded
+	 *
+	 * @var bool
+	 */
+	protected $loaded = false;
 	
 	/**
+	 * Getter for $loaded property
+	 *
+	 * @return bool
+	 */
+	public function getLoaded()
+	{
+		return $this->loaded;
+	}
+	
+	/**
+	 * Method to load settings properties from storage to model
+	 *
 	 * @return $this
 	 */
 	public function loadData()
@@ -30,6 +47,8 @@ abstract class SettingsForm extends Model
 	}
 	
 	/**
+	 * Method to save settings to configured storage
+	 *
 	 * @return bool
 	 */
 	public function save()
@@ -42,6 +61,8 @@ abstract class SettingsForm extends Model
 	}
 	
 	/**
+	 * Method to get sectionName, according to which settings value will be stored
+	 *
 	 * @return string
 	 */
 	abstract public function sectionName();
