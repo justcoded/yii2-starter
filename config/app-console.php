@@ -11,7 +11,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['log'],
+	'bootstrap'  => ['log', 'settings'],
 	'controllerNamespace' => 'app\console\controllers',
 	'aliases'    => [
 		'@config'=> dirname(__DIR__) . '/config',
@@ -54,6 +54,9 @@ $config = [
 			],
 		],
 		'db'    => $db,
+		'settings' => [
+			'class'     => 'justcoded\yii2\settings\components\DbSettings',
+		],
 	],
 	'params'              => $params,
 ];
