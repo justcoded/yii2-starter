@@ -24,7 +24,7 @@ $config = [
 			'migrationPath' => [
 				'@migrations',
 				'@yii/rbac/migrations',
-				'@app/extensions/settings/migrations'
+				'@vendor/justcoded/yii2-settings/migrations'
 			],
 		],
 		'fixture' => [
