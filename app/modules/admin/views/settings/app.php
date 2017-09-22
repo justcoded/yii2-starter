@@ -22,28 +22,17 @@ $this->params['subheading']    = 'App';
 	<?= Html::errorSummary($model); ?>
 		
 		<div class="box-body">
-			<div class="row">
-				<div class="col-md-6">
-					<?= $form->field($model, 'adminName')->textInput() ?>
-				</div>
-				<div class="col-md-6">
-					<?= $form->field($model, 'adminEmail')->textInput() ?>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-6">
-					<?= $form->field($model, 'senderName')->textInput() ?>
-				</div>
-				<div class="col-md-6">
-					<?= $form->field($model, 'senderEmail')->textInput() ?>
-				</div>
-			</div>
-			
+			<h4 class="col-md-offset-1">Admin Email</h4>
+			<?= $form->field($model, 'adminName')->textInput()->label('Name') ?>
+			<?= $form->field($model, 'adminEmail')->textInput()->label('Email') ?>
+
+			<h4 class="col-md-offset-1">System Email</h4>
+			<?= $form->field($model, 'systemName')->textInput()->label('Name') ?>
+			<?= $form->field($model, 'systemEmail')->textInput()->label('Email') ?>
+
+			<h4 class="col-md-offset-1">Authentication</h4>
 			<?= $form->field($model, 'passwordResetToken')->input('number') ?>
-			
 			<?= $form->field($model, 'rememberMeExpiration')->input('number') ?>
-		
 		</div>
 		<div class="box-footer text-right">
 			<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
