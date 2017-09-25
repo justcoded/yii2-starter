@@ -126,7 +126,7 @@ class RbacController extends Controller
 	 *
 	 * @return int
 	 */
-	public function actionScan($directory = '@app', array $ignorePath = ['app/console'])
+	public function actionScan($directory = '@app', $prefix = null, array $ignorePath = ['app/console', 'app/extensions'])
 	{
 		$path = Yii::getAlias($directory);
 		$controllers = $this->scanDirectory($path, $ignorePath);
@@ -143,8 +143,8 @@ class RbacController extends Controller
 		$inserted = 0;
 		foreach ($actionRoutes as $route) {
 			if (! $auth->getPermission($route)) {
-				$wildcard = $this->getRouteWildcardPermission($route, 'Route ');
-				$this->addPermission($route, 'Route ' . $route, null, [$wildcard]);
+				$wildcard = $this->getRouteWildcardPermission($prefix . $route, 'Route ');
+				$this->addPermission($prefix . $route, 'Route ' . $prefix . $route, null, [$wildcard]);
 				$inserted++;
 			}
 		}

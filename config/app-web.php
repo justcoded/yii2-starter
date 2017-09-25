@@ -17,13 +17,9 @@ $config = [
 		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
-		'@rbacGui' => '@app/extensions/rbac-gui'
 	],
 	'modules' => [
 		'admin' => 'app\modules\admin\Module',
-		'controllerMap' => [
-			'rbac' => 'justcoded\yii2\rbac\Module',
-		]
 	],
 	'components' => [
 		'request'      => [
@@ -86,7 +82,7 @@ $config = [
 	'params' => $params,
 ];
 
-//if (YII_ENV_DEV) {
+if (YII_ENV_DEV) {
 	// configuration adjustments for 'dev' environment
 	$config['bootstrap'][]      = 'debug';
 	$config['modules']['debug'] = [
@@ -101,6 +97,6 @@ $config = [
 		// uncomment the following to add your IP if you are not connecting from localhost.
 		'allowedIPs' => ['*'],
 	];
-//}
+}
 
 return $config;

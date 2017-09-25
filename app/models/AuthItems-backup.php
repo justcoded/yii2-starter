@@ -17,7 +17,7 @@ use Yii;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class AuthItems extends ActiveRecord
+class backup extends ActiveRecord
 {
 	public $permission;
 
@@ -51,7 +51,7 @@ class AuthItems extends ActiveRecord
 
 	public function getChildItem()
 	{
-		return $this->hasOne(AuthItemChild::className(), ['parent' => 'name']);
+		return $this->hasOne(backup::className(), ['parent' => 'name']);
 	}
 
 	/**

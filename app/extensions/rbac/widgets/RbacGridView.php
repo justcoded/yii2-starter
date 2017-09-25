@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\admin\widgets;
+namespace justcoded\yii2\rbac\widgets;
 
 use yii\grid\GridView;
 
-class BoxGridViewPermissions extends GridView
+class RbacGridView extends GridView
 {
 	/**
 	 * @inheritdoc

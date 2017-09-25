@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace justcoded\yii2\rbac\models;
 
-use app\models\AuthItems;
+use justcoded\yii2\rbac\models\AuthItems;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\rbac\Role;

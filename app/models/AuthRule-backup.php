@@ -10,7 +10,7 @@ namespace app\models;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class AuthRule extends ActiveRecord
+class backup extends ActiveRecord
 {
 
 	/**

@@ -7,10 +7,8 @@ use yii\helpers\Url;
 
 <?php $form = ActiveForm::begin([
         'id' => 'form-permission',
-        'action' => ['store-permissions'],
         'layout' => 'horizontal',
         'enableAjaxValidation' => true,
-        'validationUrl' => Url::toRoute('permissions/validate-permission')
 ]); ?>
 <?php if(!empty($model->errors)){ pa($model->errors);} ?>
 <div class="row">

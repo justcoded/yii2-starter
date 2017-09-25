@@ -1,11 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\admin\widgets\BoxGridViewPermissions;
+use justcoded\yii2\rbac\widgets\RbacGridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\admin\models\UserSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $searchModelRoles justcoded\yii2\rbac\models\AuthItemSearch */
+/* @var $dataProviderPermissions yii\data\ActiveDataProvider */
+/* @var $dataProviderRoles yii\data\ActiveDataProvider */
 
 $this->title                   = 'Permissions';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <div class="box-body">
-                    <?= BoxGridViewPermissions::widget([
+                    <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderRoles,
                         'filterModel'  => $searchModelRoles,
                         'columns'      => [
@@ -67,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 </div>
                 <div class="box-body">
-                    <?= BoxGridViewPermissions::widget([
+                    <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderPermissions,
                         'filterModel'  => $searchModelRoles,
                         'columns'      => [

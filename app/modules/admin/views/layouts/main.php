@@ -27,12 +27,12 @@ $this->beginPage() ?>
 
 <div class="wrapper">
 
-	<?= $this->render('/partials/header', ['adminlteAssets' => $adminlteAssets]); ?>
+	<?= $this->render('../partials/header', ['adminlteAssets' => $adminlteAssets]); ?>
 
-	<?= $this->render('/partials/nav', ['adminlteAssets' => $adminlteAssets]); ?>
+	<?= $this->render('../partials/nav', ['adminlteAssets' => $adminlteAssets]); ?>
 
 	<div class="content-wrapper">
-		<?= $this->render('/partials/content-header'); ?>
+		<?= $this->render('../partials/content-header'); ?>
 
 		<section class="content">
 			<?= Alert::widget() ?>
@@ -40,7 +40,7 @@ $this->beginPage() ?>
 		</section>
 	</div>
 
-	<?= $this->render('/partials/footer'); ?>
+	<?= $this->render('../partials/footer'); ?>
 </div>
 <!-- ./wrapper -->
 

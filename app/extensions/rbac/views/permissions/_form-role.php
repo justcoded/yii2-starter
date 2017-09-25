@@ -9,10 +9,8 @@ use yii\helpers\Url;
 <div class="role-form box">
 
 	<?php $form = ActiveForm::begin([
-	        'action' => ['store-roles'],
 			'layout' => 'horizontal',
 	        'enableAjaxValidation' => true,
-	        'validationUrl' => Url::toRoute('permissions/validate-role')
 	]); ?>
 
 	<div class="box-body">

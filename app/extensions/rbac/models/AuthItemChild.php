@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace justcoded\yii2\rbac\models;
 
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;

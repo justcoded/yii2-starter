@@ -1,17 +1,18 @@
 <?php
 
-namespace app\modules\admin\forms;
+namespace justcoded\yii2\rbac\forms;
 
-use app\models\AuthItems;
-use yii\base\Model;
+use justcoded\yii2\rbac\models\AuthItems;
 use yii\rbac\Role;
-use app\models\AuthItemChild;
-use app\models\AuthRule;
+use justcoded\yii2\rbac\models\AuthItemChild;
+use justcoded\yii2\rbac\models\AuthRule;
 use ErrorException;
 
 
 class PermissionForm extends AuthItems
 {
+	const SCENARIO_ADD = 'add';
+
 	public $parent_roles;
 	public $parent_permissions;
 	public $children_permissions;
@@ -27,7 +28,7 @@ class PermissionForm extends AuthItems
 	public function rules()
 	{
 		return array_merge(parent::rules(), [
-			['name', 'uniqueName'],
+			['name', 'uniqueName', 'on' => static::SCENARIO_ADD],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
 		]);
 	}

@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\admin\forms;
+namespace justcoded\yii2\rbac\forms;
 
-use app\models\AuthItemChild;
-use app\models\AuthItems;
+use justcoded\yii2\rbac\models\AuthItemChild;
+use justcoded\yii2\rbac\models\AuthItems;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Role;
 use Yii;
@@ -12,25 +12,14 @@ use yii\base\ErrorException;
 
 class RoleForm extends AuthItems
 {
-	/**
-	 * @var string
-	 */
+	const SCENARIO_ADD = 'add';
+
 	public $allow_permissions;
-
-	/**
-	 * @var string
-	 */
 	public $deny_permissions;
-
 	public $inherit_permissions;
-
 	public $role;
-
 	public $permissions;
-
 	public $permissions_search;
-
-	public $scenario = 'add';
 
 
 	/**
@@ -40,7 +29,7 @@ class RoleForm extends AuthItems
 	public function rules()
 	{
 		return array_merge(parent::rules(), [
-			['name', 'uniqueName', 'on' => 'add'],
+			['name', 'uniqueName', 'on' => static::SCENARIO_ADD],
 			[['allow_permissions', 'deny_permissions', 'permissions', 'inherit_permissions'], 'safe'],
 		]);
 	}

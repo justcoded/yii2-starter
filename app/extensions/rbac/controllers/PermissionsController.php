@@ -1,17 +1,17 @@
 <?php
 
-namespace app\modules\admin\controllers;
+namespace justcoded\yii2\rbac\controllers;
 
-use app\models\AuthItems;
-use app\modules\admin\forms\PermissionForm;
-use app\modules\admin\forms\RoleForm;
-use app\modules\admin\models\AuthItemSearch;
+use justcoded\yii2\rbac\forms\PermissionForm;
+use justcoded\yii2\rbac\forms\RoleForm;
+use justcoded\yii2\rbac\models\AuthItemSearch;
 use Yii;
 use app\traits\controllers\FindModelOrFail;
 use yii\filters\VerbFilter;
 use vova07\console\ConsoleRunner;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\web\Controller;
 
 /**
  * PermissionsController implements the CRUD actions for AuthItems model.
@@ -60,7 +60,19 @@ class PermissionsController extends Controller
 	public function actionAddRole()
 	{
 		$model = new RoleForm();
-		$model->scenario = 'add';
+		$model->scenario = $model::SCENARIO_ADD;
+
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
+		}
+
+		if ($model->load(Yii::$app->request->post()) && $model->store()){
+			Yii::$app->session->setFlash('success', 'Role saved success.');
+			return $this->redirect(['index']);
+		}
+
 
 		return $this->render('create-role', [
 			'model' => $model,
@@ -76,33 +88,23 @@ class PermissionsController extends Controller
 	{
 		$model = RoleForm::findOne($name);
 
-		$model->scenario = 'update';
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+
+			return ActiveForm::validate($model);
+		}
+
+		if ($model->load(Yii::$app->request->post()) && $model->store()){
+			Yii::$app->session->setFlash('success', 'Role saved success.');
+
+			return $this->redirect(['index']);
+		}
+
 		return $this->render('update-role', [
 			'model' => $model
 		]);
 	}
 
-	/**
-	 * @return Response
-	 */
-	public function actionStoreRoles()
-	{
-		$form = Yii::$app->request->post('RoleForm');
-
-		if(!$model = RoleForm::findOne($form['name'])) {
-
-			$model = new RoleForm();
-		}
-
-		if ($model->load(Yii::$app->request->post()) && $model->validate()){
-
-			if ($model->store()){
-				Yii::$app->session->setFlash('success', 'Role saved success.');
-			}
-		}
-
-		return $this->redirect(['index']);
-	}
 
 	/**
 	 * @param $name
@@ -131,6 +133,19 @@ class PermissionsController extends Controller
 	public function actionAddPermission()
 	{
 		$model = new PermissionForm();
+		$model->scenario = $model::SCENARIO_ADD;
+
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+
+			return ActiveForm::validate($model);
+		}
+
+		if ($model->load(Yii::$app->request->post()) && $model->store()){
+			Yii::$app->session->setFlash('success', 'Permissions saved success.');
+
+			return $this->redirect(['index']);
+		}
 
 		return $this->render('create-permission', [
 			'model' => $model
@@ -144,6 +159,18 @@ class PermissionsController extends Controller
 	public function actionUpdatePermission($name)
 	{
 		$model = PermissionForm::findOne($name);
+
+		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+
+			return ActiveForm::validate($model);
+		}
+
+		if ($model->load(Yii::$app->request->post()) && $model->store()){
+			Yii::$app->session->setFlash('success', 'Permissions saved success.');
+
+			return $this->redirect(['index']);
+		}
 
 		return $this->render('update-permission', [
 			'model' => $model
@@ -172,68 +199,14 @@ class PermissionsController extends Controller
 	}
 
 	/**
-	 * @return Response
-	 */
-	public function actionStorePermissions()
-	{
-		$form = Yii::$app->request->post('PermissionForm');
-
-		if(!$model = PermissionForm::findOne($form['name'])) {
-
-			$model = new PermissionForm();
-		}
-
-		if ($model->load(Yii::$app->request->post())){
-
-			if (!$model->validate()){
-				$errors = $model->errors;
-				Yii::$app->session->setFlash('success', $errors);
-				return $this->redirect('add-permission');
-			}
-
-			if ($model->store()){
-				Yii::$app->session->setFlash('success', 'Permissions saved success.');
-			}
-
-		}
-
-		return $this->redirect(['index']);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function actionValidatePermission() {
-
-		$model = new PermissionForm();
-
-		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
-		}
-	}
-
-	/**
-	 * @return array
-	 */
-	public function actionValidateRole() {
-
-		$model = new RoleForm();
-
-		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
-		}
-	}
-
-	/**
 	 * @return \yii\web\Response
 	 */
 	public function actionScanRoutes()
 	{
-		$cr = new ConsoleRunner(['file' => '@yii/yii']);
-		$cr->run('rbac/scan');
-		Yii::$app->session->setFlash('success', 'Routes scanned success.');
+		$cr = new ConsoleRunner(['file' => '@app/../yii']);
+		if($cr->run('rbac/scan')) {
+			Yii::$app->session->setFlash('success', 'Routes scanned success.');
+		}
 
 		return $this->redirect(['index']);
 	}
