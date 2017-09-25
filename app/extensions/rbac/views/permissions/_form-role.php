@@ -20,7 +20,7 @@ use yii\helpers\Url;
 
 		<?= $form->field($model, 'inherit_permissions')->inline()
             ->checkboxList($model->listInheritPermissions, [
-                    'value' => $model->inheritPermissions,
+                    'value' => explode(',',$model->inheritPermissions),
                 ]) ?>
         <p class="text-center">* Permissions will be updated only after Save</p>
 

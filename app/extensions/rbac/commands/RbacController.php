@@ -66,7 +66,7 @@ class RbacController extends Controller
 			'prefix'
 		]);
 	}
-	
+
 	/**
 	 * Assign master role with full system access to a user.
 	 *
