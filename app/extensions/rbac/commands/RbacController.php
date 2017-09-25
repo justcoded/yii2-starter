@@ -15,6 +15,8 @@ use yii\rbac\Rule;
 
 class RbacController extends Controller
 {
+	public $prefix;
+
 	protected $itemsCache;
 
 	/**
@@ -54,6 +56,17 @@ class RbacController extends Controller
 		return ExitCode::OK;
 	}
 
+	/**
+	 * @param string $actionID
+	 * @return array
+	 */
+	public function options($actionID)
+	{
+		return array_merge(parent::options($actionID), [
+			'prefix'
+		]);
+	}
+	
 	/**
 	 * Assign master role with full system access to a user.
 	 *
@@ -126,7 +139,7 @@ class RbacController extends Controller
 	 *
 	 * @return int
 	 */
-	public function actionScan($directory = '@app', $prefix = null, array $ignorePath = ['app/console', 'app/extensions'])
+	public function actionScan($directory = '@app',  array $ignorePath = ['app/console', 'app/extensions'])
 	{
 		$path = Yii::getAlias($directory);
 		$controllers = $this->scanDirectory($path, $ignorePath);
@@ -143,8 +156,8 @@ class RbacController extends Controller
 		$inserted = 0;
 		foreach ($actionRoutes as $route) {
 			if (! $auth->getPermission($route)) {
-				$wildcard = $this->getRouteWildcardPermission($prefix . $route, 'Route ');
-				$this->addPermission($prefix . $route, 'Route ' . $prefix . $route, null, [$wildcard]);
+				$wildcard = $this->getRouteWildcardPermission($this->prefix . $route, 'Route ');
+				$this->addPermission($this->prefix . $route, 'Route ' . $this->prefix . $route, null, [$wildcard]);
 				$inserted++;
 			}
 		}
