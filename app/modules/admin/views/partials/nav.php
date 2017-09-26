@@ -15,7 +15,7 @@
 					],
 					['label' => 'Permissions',
 					 'icon' => 'lock',
-					 'url' => ['/admin/permissions/index'],
+					 'url' => ['/admin/rbac/index'],
 					 'active' => 'permissions' === Yii::$app->controller->id,
 					],
 					[

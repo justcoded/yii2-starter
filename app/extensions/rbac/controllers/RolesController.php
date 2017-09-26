@@ -16,7 +16,7 @@ use yii\web\Controller;
 /**
  * PermissionsController implements the CRUD actions for AuthItems model.
  */
-class PermissionsController extends Controller
+class RolesController extends Controller
 {
 	use FindModelOrFail;
 
@@ -36,28 +36,29 @@ class PermissionsController extends Controller
 	}
 
 	/**
-	 * @return string
+	 * @return string|Response
 	 */
 	public function actionCreate()
 	{
-		$model = new PermissionForm();
+		$model = new RoleForm();
 		$model->scenario = $model::SCENARIO_CREATE;
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
 
+			Yii::$app->response->format = Response::FORMAT_JSON;
 			return ActiveForm::validate($model);
 		}
 
 		if ($model->load(Yii::$app->request->post()) && $model->store()){
-			Yii::$app->session->setFlash('success', 'Permissions saved success.');
-
+			Yii::$app->session->setFlash('success', 'Role saved success.');
 			return $this->redirect(['index/index']);
 		}
 
+
 		return $this->render('create', [
-			'model' => $model
+			'model' => $model,
 		]);
+
 	}
 
 	/**
@@ -66,7 +67,7 @@ class PermissionsController extends Controller
 	 */
 	public function actionUpdate($name)
 	{
-		$model = PermissionForm::findOne($name);
+		$model = RoleForm::findOne($name);
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
 			Yii::$app->response->format = Response::FORMAT_JSON;
@@ -75,7 +76,7 @@ class PermissionsController extends Controller
 		}
 
 		if ($model->load(Yii::$app->request->post()) && $model->store()){
-			Yii::$app->session->setFlash('success', 'Permissions saved success.');
+			Yii::$app->session->setFlash('success', 'Role saved success.');
 
 			return $this->redirect(['index/index']);
 		}
@@ -91,16 +92,16 @@ class PermissionsController extends Controller
 	 */
 	public function actionDelete($name)
 	{
-		if(!$post_data = Yii::$app->request->post('PermissionForm')){
+		if(!$post_data = Yii::$app->request->post('RoleForm')){
 			return $this->redirect(['index/index']);
 		}
 
-		$role = Yii::$app->authManager->getPermission($post_data['name']);
+		$role = Yii::$app->authManager->getRole($post_data['name']);
 
 		if (Yii::$app->authManager->remove($role)){
-			Yii::$app->session->setFlash('success', 'Permission removed success.');
+			Yii::$app->session->setFlash('success', 'Role removed success.');
 		}else{
-			Yii::$app->session->setFlash('error', 'Permission not removed.');
+			Yii::$app->session->setFlash('error', 'Role not removed.');
 		}
 
 		return $this->redirect(['index/index']);

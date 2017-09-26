@@ -11,7 +11,7 @@ use ErrorException;
 
 class PermissionForm extends AuthItems
 {
-	const SCENARIO_ADD = 'add';
+	const SCENARIO_CREATE = 'create';
 
 	public $parent_roles;
 	public $parent_permissions;
@@ -28,7 +28,8 @@ class PermissionForm extends AuthItems
 	public function rules()
 	{
 		return array_merge(parent::rules(), [
-			['name', 'uniqueName', 'on' => static::SCENARIO_ADD],
+			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
+			['rule_name', 'match', 'pattern' => '/^[a-z][\w\-\/]*$/i'],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
 		]);
 	}
@@ -47,6 +48,7 @@ class PermissionForm extends AuthItems
 
 		return true;
 	}
+
 
 	/**
 	 * @return bool

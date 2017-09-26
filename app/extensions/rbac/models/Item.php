@@ -4,6 +4,9 @@ namespace justcoded\yii2\rbac\models;
 
 class Item
 {
+	const TYPE_ROLE = 1;
+	const TYPE_PERMISSION = 2;
+
 	const ROLE_GUEST = 'Guest';
 	const ROLE_AUTHENTICATED = 'Authenticated';
 	const ROLE_ADMIN = 'Administrator';

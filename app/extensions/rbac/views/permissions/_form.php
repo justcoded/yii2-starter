@@ -17,7 +17,7 @@ use yii\helpers\Url;
             <div class="box-header">
                 <h4>Permission Details</h4>
             </div>
-            <div class="box-body height-450">
+            <div class="box-body height-400">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
                 <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>

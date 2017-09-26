@@ -45,7 +45,6 @@
 #parent_permissions_list,
 #children_permissions_list {
     margin-top: 20px;
-    /*border: 1px solid #ccc;*/
 }
 .select2-container--krajee .select2-selection {
     border-radius: 0 !important;
@@ -56,6 +55,6 @@
 .no-border-radius{
     border-radius: 0 !important;
 }
-.height-450{
-    min-height: 450px;
+.height-400{
+    min-height: 400px;
 }

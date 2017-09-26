@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <h4>Roles</h4>
                     </div>
                     <div class="col-xs-offset-6 col-md-offset-2">
-                        <?=  Html::a('Add Role', ['add-role'], ['class' => 'btn btn-sm btn-success']); ?>
+                        <?=  Html::a('Add Role', ['roles/create'], ['class' => 'btn btn-sm btn-success']); ?>
                     </div>
                 </div>
                 <div class="panel-body box-body">
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'name',
                                 'format' => 'raw',
                                 'value' => function ($data){
-                                    return Html::a($data->name, ['update-role', 'name' => $data->name])
+                                    return Html::a($data->name, ['roles/update', 'name' => $data->name])
                                         . '<br>' . $data->description;
                                 },
                             ],
@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     <div class="col-sm-offset-6 col-md-offset-3">
 	                    <?=  Html::a('Scan Routes', ['scan-routes'], ['class' => 'btn btn-sm btn-success']); ?>
-			            <?=  Html::a('Add Permission', ['add-permission'], ['class' => 'btn btn-sm btn-default']); ?>
+			            <?=  Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-sm btn-default']); ?>
                     </div>
                 </div>
                 <div class="panel-body box-body">
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'permission',
                                 'format' => 'html',
                                 'value' => function ($data) {
-                                    return Html::a($data->name, ['update-permission', 'name' => $data->name]);
+                                    return Html::a($data->name, ['permissions/update', 'name' => $data->name]);
                                 }
                             ],
                             'description',

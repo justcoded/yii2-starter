@@ -4,15 +4,16 @@ namespace justcoded\yii2\rbac\forms;
 
 use justcoded\yii2\rbac\models\AuthItemChild;
 use justcoded\yii2\rbac\models\AuthItems;
+use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Role;
 use Yii;
 use yii\base\ErrorException;
 
 
-class RoleForm extends AuthItems
+class RoleForm extends Model
 {
-	const SCENARIO_ADD = 'add';
+	const SCENARIO_CREATE = 'create';
 
 	public $allow_permissions;
 	public $deny_permissions;
@@ -28,10 +29,13 @@ class RoleForm extends AuthItems
 	 */
 	public function rules()
 	{
-		return array_merge(parent::rules(), [
-			['name', 'uniqueName', 'on' => static::SCENARIO_ADD],
-			[['allow_permissions', 'deny_permissions', 'permissions', 'inherit_permissions'], 'safe'],
-		]);
+		return  [
+			[['type', 'name'], 'required'],
+			[['name', 'description', 'rule_name', 'data'], 'string'],
+			[['type', 'created_at', 'updated_at'], 'integer'],
+			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
+			[['allow_permissions', 'deny_permissions', 'permissions', 'inherit_permissions'], 'safe']
+		];
 	}
 
 	/**
@@ -40,7 +44,7 @@ class RoleForm extends AuthItems
 	 */
 	public function uniqueName($attribute)
 	{
-		if (static::findOne(['name' => $this->attributes['name']])) {
+		if (Yii::$app->authManager->getRole($this->attributes['name'])) {
 			$this->addError($attribute, 'Name must be unique');
 
 			return false;

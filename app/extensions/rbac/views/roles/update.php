@@ -1,15 +1,15 @@
 <?php
 
-$this->title                   = 'Update Permission';
+$this->title                   = 'Update role';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['heading']       = 'Permissions';
-$this->params['subheading']    = 'Update Permission';
+$this->params['subheading']    = 'Update Role';
 ?>
 
-<div class="permissions-update">
+<div class="update">
 
-	<?= $this->render('_form-permission', [
+	<?= $this->render('_form', [
 		'model' => $model,
 	]) ?>
 
