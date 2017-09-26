@@ -10,7 +10,7 @@ use yii\helpers\Url;
         'layout' => 'horizontal',
         'enableAjaxValidation' => true,
 ]); ?>
-<?php if(!empty($model->errors)){ pa($model->errors);} ?>
+
 <div class="row">
     <div class="col-md-7">
         <div class="box">
@@ -22,16 +22,18 @@ use yii\helpers\Url;
 
                 <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'rule_name')->textInput() ?>
-               <div class="col-sm-offset-3 col-sm-p">
-                   <p>
-                       full class name with namespace <br>
-                       more details
-                       <a href="<?= Url::to('http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#using-rules') ?>" target="_blank">
-                           http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#using-rules
-                       </a>
-                   </p>
-               </div>
+                <?= $form->field($model, 'rule_name', [
+                'template' => "{label}<div class=\"col-sm-6\">{input}</div>\n
+                                <div class=\"col-sm-offset-3 col-sm-6\">{error}</div>\n
+                                <div class=\"col-sm-offset-3 col-sm-9\">{hint}</div>",
+                ])->textInput()->hint(
+                        'full class name with namespace <br> more details 
+                        <a target="_blank" href="' . Url::to('http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#using-rules').'">
+                        http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#using-rules
+                        </a>',
+                        ['class' => ' ']
+                ) ?>
+
 	            <?= $form->field($model, 'parent_roles')
 		            ->hiddenInput(['maxlength' => true, 'value' => $model->parentRoles])
 		            ->label(false)
