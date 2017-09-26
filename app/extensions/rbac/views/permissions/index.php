@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="permission-index">
     <div class="row">
         <div class="col-md-6">
-            <div class="grid-view box">
-                <div class="box-header">
+            <div class="panel box">
+                <div class="panel-header box-header">
                     <div class="col-xs-6 col-md-2">
                         <h4>Roles</h4>
                     </div>
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?=  Html::a('Add Role', ['add-role'], ['class' => 'btn btn-sm btn-success']); ?>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="panel-body box-body">
                     <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderRoles,
                         'filterModel'  => $searchModelRoles,
@@ -57,17 +57,17 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
         <div class="col-md-6">
-            <div class="grid-view box">
-                <div class="box-header">
+            <div class="panel box">
+                <div class="panel-header box-header">
                     <div class="col-xs-12 col-sm-6 col-md-3">
                         <h4>Permissions</h4>
                     </div>
                     <div class="col-sm-offset-6 col-md-offset-3">
 	                    <?=  Html::a('Scan Routes', ['scan-routes'], ['class' => 'btn btn-sm btn-success']); ?>
-			            <?=  Html::a('Add Permissions', ['add-permission'], ['class' => 'btn btn-sm btn-default']); ?>
+			            <?=  Html::a('Add Permission', ['add-permission'], ['class' => 'btn btn-sm btn-default']); ?>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="panel-body box-body">
                     <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderPermissions,
                         'filterModel'  => $searchModelRoles,

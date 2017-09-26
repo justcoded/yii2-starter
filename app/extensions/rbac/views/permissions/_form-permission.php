@@ -32,7 +32,18 @@ use yii\helpers\Url;
                        </a>
                    </p>
                </div>
-
+	            <?= $form->field($model, 'parent_roles')
+		            ->hiddenInput(['maxlength' => true, 'value' => $model->parentRoles])
+		            ->label(false)
+	            ?>
+	            <?= $form->field($model, 'parent_permissions')
+		            ->hiddenInput(['maxlength' => true, 'value' => $model->parentPermissions])
+		            ->label(false)
+	            ?>
+	            <?= $form->field($model, 'children_permissions')
+		            ->hiddenInput(['maxlength' => true, 'value' => $model->childrenPermissions])
+		            ->label(false)
+	            ?>
             </div>
             <div class="box-footer text-right">
 		        <?= Html::submitButton('Save' , ['class' => 'btn btn-success']) ?>
@@ -41,11 +52,6 @@ use yii\helpers\Url;
         </div>
     </div>
     <div class="col-md-5">
-
-	    <?= $form->field($model, 'parent_roles')
-		    ->hiddenInput(['maxlength' => true, 'value' => $model->parentRoles])
-		    ->label(false)
-	    ?>
         <div class="box">
             <div class="box-header">
                 <h4>Roles</h4>
@@ -72,22 +78,23 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div id="parent_roles_list">
-                    <?php if ($model->parentRoles): ?>
-                        <?php foreach (explode(',', $model->parentRoles) as $role): ?>
-                            <div class="alert" data-name="<?=$role ?>">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                               <?= $role ?>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <table class="table table-striped">
+                        <tbody>
+                            <?php if ($model->parentRoles): ?>
+                                <?php foreach (explode(',', $model->parentRoles) as $role): ?>
+                                    <tr>
+                                        <td class="alert" data-name="<?=$role ?>">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                           <?= $role ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-	    <?= $form->field($model, 'parent_permissions')
-		    ->hiddenInput(['maxlength' => true, 'value' => $model->parentPermissions])
-		    ->label(false)
-	    ?>
         <div class="box">
             <div class="box-header">
                 <h4>Parents</h4>
@@ -114,22 +121,23 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div id="parent_permissions_list">
-	                <?php if ($model->parentPermissions): ?>
-		                <?php foreach (explode(',', $model->parentPermissions) as $permission): ?>
-                            <div class="alert" data-name="<?= $permission ?>">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				                <?= $permission ?>
-                            </div>
-		                <?php endforeach; ?>
-	                <?php endif; ?>
+                    <table class="table table-striped">
+                        <tbody>
+                            <?php if ($model->parentPermissions): ?>
+                                <?php foreach (explode(',', $model->parentPermissions) as $permission): ?>
+                                    <tr>
+                                        <td class="alert" data-name="<?= $permission ?>">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                            <?= $permission ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-	    <?= $form->field($model, 'children_permissions')
-		    ->hiddenInput(['maxlength' => true, 'value' => $model->childrenPermissions])
-		    ->label(false)
-	    ?>
         <div class="box">
             <div class="box-header">
                 <h4>Children</h4>
@@ -156,14 +164,20 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div id="children_permissions_list">
-	                <?php if ($model->childrenPermissions): ?>
-		                <?php foreach (explode(',', $model->childrenPermissions) as $permission): ?>
-                            <div class="alert" data-name="<?= $permission ?>">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				                <?= $permission ?>
-                            </div>
-		                <?php endforeach; ?>
-	                <?php endif; ?>
+                    <table class="table table-striped">
+                        <tbody>
+                            <?php if ($model->childrenPermissions): ?>
+                                <?php foreach (explode(',', $model->childrenPermissions) as $permission): ?>
+                                    <tr>
+                                        <td class="alert" data-name="<?= $permission ?>">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                            <?= $permission ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

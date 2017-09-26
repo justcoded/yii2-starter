@@ -15,32 +15,33 @@ jQuery(document).on('click', '', function() {
   jQuery('#roleform-deny_permissions').val(dataListDeny);
 });
 jQuery(document).on('click', '#permissions_search', function() {
-  var title = jQuery('#select2-roleform-permissions_search-container').attr('title')
+  var title = jQuery('#select2-roleform-permissions_search-container').attr('title');
   jQuery('#allow-permissions').append(divWrapperRole(title));
 });
 function divWrapperRole(title) {
   return '<div class="permissions" data-name="' + title + '">' + title + '</div>';
 };
 jQuery(document).on('click', '#parent_roles_search', function() {
-  var title = jQuery('#select2-permissionform-parent_roles_search-container').attr('title')
-  jQuery('#parent_roles_list').append(divWrapper(title));
+  var title = jQuery('#select2-permissionform-parent_roles_search-container').attr('title');
+  console.log(title);
+  jQuery('#parent_roles_list .table').append(divWrapper(title));
 });
 jQuery(document).on('click', '#parent_permissions_search', function() {
-  var title = jQuery('#select2-permissionform-parent_permissions_search-container').attr('title')
-  jQuery('#parent_permissions_list').append(divWrapper(title));
+  var title = jQuery('#select2-permissionform-parent_permissions_search-container').attr('title');
+  jQuery('#parent_permissions_list .table').append(divWrapper(title));
 });
 jQuery(document).on('click', '#children_permissions_search', function() {
-  var title = jQuery('#select2-permissionform-children_permissions_search-container').attr('title')
-  jQuery('#children_permissions_list').append(divWrapper(title));
+  var title = jQuery('#select2-permissionform-children_permissions_search-container').attr('title');
+  jQuery('#children_permissions_list .table').append(divWrapper(title));
 });
 jQuery(document).on('click', '', function() {
-  var dataListRoles = jQuery("#parent_roles_list > .alert").map(function() {
+  var dataListRoles = jQuery("#parent_roles_list table .alert").map(function() {
     return $(this).data("name");
   }).get();
-  var dataListPermissions = jQuery("#parent_permissions_list > .alert").map(function() {
+  var dataListPermissions = jQuery("#parent_permissions_list table .alert").map(function() {
     return $(this).data("name");
   }).get();
-  var dataListChildrePermissions = jQuery("#children_permissions_list > .alert").map(function() {
+  var dataListChildrePermissions = jQuery("#children_permissions_list table .alert").map(function() {
     return $(this).data("name");
   }).get();
   jQuery('#permissionform-parent_roles').val(dataListRoles);
@@ -48,7 +49,7 @@ jQuery(document).on('click', '', function() {
   jQuery('#permissionform-children_permissions').val(dataListChildrePermissions);
 });
 function divWrapper(title) {
-  return '<div class="alert" data-name="'+ title + '">'+
+  return '<tr><td class="alert" data-name="'+ title + '">'+
     '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-    title + '</div>';
+    title + '</td></tr>';
 };
