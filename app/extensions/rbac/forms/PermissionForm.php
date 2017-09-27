@@ -3,15 +3,26 @@
 namespace justcoded\yii2\rbac\forms;
 
 use justcoded\yii2\rbac\models\AuthItems;
+use yii\base\Model;
 use yii\rbac\Role;
 use justcoded\yii2\rbac\models\AuthItemChild;
 use justcoded\yii2\rbac\models\AuthRule;
 use ErrorException;
+use Yii;
+use yii\helpers\ArrayHelper;
 
 
-class PermissionForm extends AuthItems
+class PermissionForm extends Model
 {
 	const SCENARIO_CREATE = 'create';
+
+	public $name;
+	public $type;
+	public $description;
+	public $rule_name;
+	public $data;
+	public $created_at;
+	public $updated_at;
 
 	public $parent_roles;
 	public $parent_permissions;
@@ -27,11 +38,14 @@ class PermissionForm extends AuthItems
 	 */
 	public function rules()
 	{
-		return array_merge(parent::rules(), [
+		return [
+			[['type', 'name'], 'required'],
+			[['name', 'description', 'rule_name', 'data'], 'string'],
+			[['type', 'created_at', 'updated_at'], 'integer'],
 			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
 			['rule_name', 'match', 'pattern' => '/^[a-z][\w\-\/]*$/i'],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
-		]);
+		];
 	}
 
 	/**
@@ -40,7 +54,7 @@ class PermissionForm extends AuthItems
 	 */
 	public function uniqueName($attribute)
 	{
-		if (static::findOne(['name' => $this->attributes['name']])) {
+		if (Yii::$app->authManager->getPermission($this->attributes['name'])) {
 			$this->addError($attribute, 'Name must be unique');
 
 			return false;
@@ -154,6 +168,20 @@ class PermissionForm extends AuthItems
 		}
 
 		return substr($string_permissions, 0, -1);
+	}
+
+	/**
+	 * @return array|bool
+	 */
+	public function getRolesList()
+	{
+		$data = Yii::$app->authManager->getRoles();
+
+		if (!is_array($data)){
+			return false;
+		}
+
+		return ArrayHelper::map($data, 'name', 'name');
 	}
 
 	/**

@@ -62,20 +62,24 @@ class PermissionsController extends Controller
 
 	/**
 	 * @param $name
-	 * @return string
+	 * @return array|string|Response
 	 */
 	public function actionUpdate($name)
 	{
-		$model = PermissionForm::findOne($name);
+		$model = new RoleForm();
+		$model->name = $name;
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
 			Yii::$app->response->format = Response::FORMAT_JSON;
-
 			return ActiveForm::validate($model);
 		}
 
-		if ($model->load(Yii::$app->request->post()) && $model->store()){
-			Yii::$app->session->setFlash('success', 'Permissions saved success.');
+		if ($model->load(Yii::$app->request->post())){
+			$role = new Role();
+
+			if($role->store($model)) {
+				Yii::$app->session->setFlash('success', 'Role saved success.');
+			}
 
 			return $this->redirect(['index/index']);
 		}

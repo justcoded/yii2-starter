@@ -10,48 +10,24 @@ class Role extends Item
 	/**
 	 * @return mixed
 	 */
-	public function getChildItem()
-	{
-		return $this->hasOne(AuthItemChild::className(), ['parent' => 'name']);
-	}
+//	public function getChildItem()
+//	{
+//		return $this->hasOne(AuthItemChild::className(), ['parent' => 'name']);
+//	}
 
 	/**
 	 * @return $this
 	 */
-	public static function getRoles()
-	{
-		return static::find()->where(['type' => Role::TYPE_ROLE]);
-	}
+//	public static function getRoles()
+//	{
+//		return static::find()->where(['type' => Role::TYPE_ROLE]);
+//	}
 
 
-	/**
-	 * @return array|bool
-	 */
-	public function getPermissionsList()
-	{
-		$data = Yii::$app->authManager->getPermissions();
-
-		if (!is_array($data)){
-			return false;
-		}
-
-		return ArrayHelper::map($data, 'name', 'name');
-	}
 
 
-	/**
-	 * @return array|bool
-	 */
-	public function getRolesList()
-	{
-		$data = Yii::$app->authManager->getRoles();
 
-		if (!is_array($data)){
-			return false;
-		}
 
-		return ArrayHelper::map($data, 'name', 'name');
-	}
 
 
 	/**
@@ -108,5 +84,54 @@ class Role extends Item
 
 		}
 		return $array;
+	}
+
+	/**
+	 * @param $data
+	 * @return bool
+	 */
+	public function store($data)
+	{
+		$name = $data->name;
+
+		if(!$new_role = Yii::$app->authManager->getRole($name)){
+			$new_role = Yii::$app->authManager->createRole($name);
+
+			if(!Yii::$app->authManager->add($new_role)){
+				return false;
+			}
+			$new_role = Yii::$app->authManager->getRole($name);
+		}else{
+			$new_role->description = $data->description;
+			Yii::$app->authManager->update($name, $new_role);
+		}
+
+		Yii::$app->authManager->removeChildren($new_role);
+		if ($data->inherit_permissions){
+			foreach ($data->inherit_permissions as $role){
+				$child_role = Yii::$app->authManager->getRole($role);
+				Yii::$app->authManager->addChild($new_role, $child_role);
+			}
+		}
+
+		if ($data->permissions) {
+			foreach ($data->permissions as $permission) {
+				$child_permission = Yii::$app->authManager->getPermission($permission);
+				Yii::$app->authManager->addChild($new_role, $child_permission);
+
+			}
+		}
+
+//		if ($data->deny_permissions){
+//			$deny_permissions = explode(',', $data->deny_permissions);
+//			foreach ($deny_permissions as $permission) {
+//				if($permission_for_remove = AuthItemChild::find()->where(['parent' => $name, 'child' => $permission])->one()) {
+//					$permission_for_remove->delete();
+//				}
+//			}
+//		}
+
+
+		return true;
 	}
 }

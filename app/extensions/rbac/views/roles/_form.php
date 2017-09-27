@@ -16,11 +16,14 @@ use yii\helpers\Url;
 	<div class="box-body">
 		<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-		<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+		<?= $form->field($model, 'description')->textInput([
+		        'value' => $model->getDescription(),
+		        'maxlength' => true
+        ]) ?>
 
 		<?= $form->field($model, 'inherit_permissions')->inline()
             ->checkboxList($model->listInheritPermissions, [
-                    'value' => explode(',',$model->inheritPermissions),
+                    'value' => $model->inheritPermissions,
                 ]) ?>
         <p class="text-center">* Permissions will be updated only after Save</p>
 
@@ -82,8 +85,8 @@ use yii\helpers\Url;
 
 	</div>
 	<div class="box-footer text-right">
-		<?= Html::submitButton($model->isNewRecord? 'Save' : 'Update', ['class' => 'btn btn-success']) ?>
-        <?= Html::a('delete', ['delete-role', 'name' => $model->name], ['class' => 'delete', 'data-method' => 'post']) ?>
+		<?= Html::submitButton('Save' , ['class' => 'btn btn-success']) ?>
+        <?= Html::a('delete', ['delete', 'name' => $model->name], ['class' => 'delete', 'data-method' => 'post']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>

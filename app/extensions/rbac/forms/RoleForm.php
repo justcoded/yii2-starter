@@ -2,18 +2,23 @@
 
 namespace justcoded\yii2\rbac\forms;
 
-use justcoded\yii2\rbac\models\AuthItemChild;
-use justcoded\yii2\rbac\models\AuthItems;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Role;
 use Yii;
-use yii\base\ErrorException;
 
 
 class RoleForm extends Model
 {
 	const SCENARIO_CREATE = 'create';
+
+	public $name;
+	public $type;
+	public $description;
+	public $rule_name;
+	public $data;
+	public $created_at;
+	public $updated_at;
 
 	public $allow_permissions;
 	public $deny_permissions;
@@ -64,24 +69,98 @@ class RoleForm extends Model
 	}
 
 	/**
-	 * @return bool|null|string
+	 * @param $name
+	 */
+	public function setRole($name)
+	{
+		$this->role = Yii::$app->authManager->getRole($name);
+	}
+
+	/**
+	 * @return null|Role
+	 */
+	public function getRole()
+	{
+		return Yii::$app->authManager->getRole($this->name);
+	}
+
+	/**
+	 * @param $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->getRole()->name;
+	}
+
+	/**
+	 *
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->getRole() ? $this->getRole()->description : '';
+	}
+
+	/**
+	 *
+	 */
+	public function setType()
+	{
+		$this->type = $this->getRole()->type;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getType()
+	{
+		return $this->getRole()->type;
+	}
+
+	/**
+	 *
+	 */
+	public function setRule_name()
+	{
+		$this->rule_name = $this->getRole()->rule_name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRule_name()
+	{
+		return $this->getRole()->rule_name;
+	}
+
+	/**
+	 * @return array|bool
 	 */
 	public function getInheritPermissions()
 	{
-		$allow_permissions = $this->findWithChildItem();
-
-		if(empty($allow_permissions) || !is_array($allow_permissions)){
-			return null;
+		if(empty($this->name)){
+			return false;
 		}
 
-		$permissions = '';
-		foreach ($allow_permissions as $permission){
-			if ($permission['childItem']['type'] == Role::TYPE_ROLE) {
-				$permissions .= $permission['child'] . ',';
-			}
-		}
+		$child = Yii::$app->authManager->getChildRoles($this->name);
+		ArrayHelper::remove($child, $this->name);
 
-		return substr($permissions, 0, -1);
+		return ArrayHelper::map($child, 'name', 'name');
 	}
 
 	/**
@@ -98,6 +177,8 @@ class RoleForm extends Model
 	 */
 	public function getAllowPermissions()
 	{
+		return false;
+
 		$allow_permissions = $this->findWithChildItem();
 
 		if(empty($allow_permissions) || !is_array($allow_permissions)){
@@ -106,9 +187,10 @@ class RoleForm extends Model
 
 		$permissions = '';
 		foreach ($allow_permissions as $permission){
-			if ($permission['childItem']['type'] == Role::TYPE_PERMISSION) {
-				$permissions .= $permission['child'] . ',';
-			}
+			foreach ($permission->data as $child)
+				if ($child->type == Role::TYPE_PERMISSION) {
+					$permissions .= $permission->name . ',';
+				}
 		}
 
 		return substr($permissions, 0, -1);
@@ -135,76 +217,45 @@ class RoleForm extends Model
 	}
 
 	/**
-	 * @return array|\yii\db\ActiveRecord[]
+	 * @return array|bool
 	 */
-	public function findWithChildItem()
+	public function getRolesList()
 	{
-		return AuthItemChild::find()
-			->with('childItem')
-			->where(['parent' => $this->name])
-			->asArray()
-			->all();
+		$data = Yii::$app->authManager->getRoles();
+
+		if (!is_array($data)){
+			return false;
+		}
+
+		return ArrayHelper::map($data, 'name', 'name');
+	}
+
+
+	/**
+	 * @return array|bool
+	 */
+	public function getPermissionsList()
+	{
+		$data = Yii::$app->authManager->getPermissions();
+
+		if (!is_array($data)){
+			return false;
+		}
+
+		return ArrayHelper::map($data, 'name', 'name');
 	}
 
 	/**
-	 * @return bool
+	 * @return Role[]
 	 */
-	public function store()
+	public function findWithChildItem()
 	{
-		$old_inherit_permissions = explode(',', $this->inheritPermissions);
+		$data = Yii::$app->authManager->getRoles();
 
-		if(!$this->save()){
-			 throw new ErrorException($this->errors);
+		foreach ($data as $role => $value){
+			$data[$role]->data = Yii::$app->authManager->getChildren($value->name);
 		}
 
-		$name = $this->name;
-		$new_role = Yii::$app->authManager->getRole($name);
-
-		if ($this->inherit_permissions){
-			foreach ($this->inherit_permissions as $role){
-				if (!AuthItemChild::findOne(['child' => $role, 'parent' => $name])) {
-					$child_role = Yii::$app->authManager->getRole($role);
-					Yii::$app->authManager->addChild($new_role, $child_role);
-				}
-
-				foreach ($old_inherit_permissions as $key => $value){
-					if ($value == $role) {
-						unset($old_inherit_permissions[$key]);
-					}
-				}
-			}
-		}
-
-		if (!empty($old_inherit_permissions)) {
-			foreach ($old_inherit_permissions as $permission) {
-				if($permission_for_remove = AuthItemChild::find()->where(['parent' => $name, 'child' => $permission])->one()) {
-					$permission_for_remove->delete();
-				}
-			}
-		}
-
-		if ($this->permissions) {
-			foreach ($this->permissions as $permission) {
-				if (!AuthItemChild::findOne(['parent' => $name, 'child' => $permission])) {
-					$new_permission = new AuthItemChild([
-						'parent' => $name,
-						'child'  => $permission
-					]);
-					$new_permission->save();
-				}
-			}
-		}
-
-		if ($this->deny_permissions){
-			$deny_permissions = explode(',', $this->deny_permissions);
-			foreach ($deny_permissions as $permission) {
-				if($permission_for_remove = AuthItemChild::find()->where(['parent' => $name, 'child' => $permission])->one()) {
-					$permission_for_remove->delete();
-				}
-			}
-		}
-
-		return true;
+		return $data;
 	}
-
 }
