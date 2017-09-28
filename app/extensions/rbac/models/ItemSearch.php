@@ -74,7 +74,11 @@ class ItemSearch extends Item
 
 		if (!empty($params['ItemSearch']) || !empty($params['permission'])){
 			if (isset($params['ItemSearch'])) {
-				$array = Yii::$app->authManager->getPermissionsByRole($params['ItemSearch']['roles']);
+				if ($params['ItemSearch']['roles'] == 'All'){
+					$array = Yii::$app->authManager->getPermissions();
+				}else {
+					$array = Yii::$app->authManager->getPermissionsByRole($params['ItemSearch']['roles']);
+				}
 			}elseif(isset($params['permission'])){
 				$array = Yii::$app->authManager->getPermissions();
 				foreach ($array as $name => $permission){

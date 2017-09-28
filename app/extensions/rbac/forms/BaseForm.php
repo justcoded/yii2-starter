@@ -120,7 +120,7 @@ class BaseForm extends Model
 	/**
 	 * @return array|bool
 	 */
-	public function getRolesList()
+	public static function getRolesList()
 	{
 		$data = Yii::$app->authManager->getRoles();
 
@@ -144,5 +144,14 @@ class BaseForm extends Model
 		}
 
 		return ArrayHelper::map($data, 'name', 'name');
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getDropDownWithRoles()
+	{
+		$roles = static::getRolesList();
+		return ArrayHelper::merge(['All' => 'All'], $roles);
 	}
 }
