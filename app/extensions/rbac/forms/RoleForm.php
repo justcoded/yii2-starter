@@ -2,23 +2,13 @@
 
 namespace justcoded\yii2\rbac\forms;
 
-use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Role;
 use Yii;
 
 
-class RoleForm extends Model
+class RoleForm extends BaseForm
 {
-	const SCENARIO_CREATE = 'create';
-
-	public $name;
-	public $type;
-	public $description;
-	public $rule_name;
-	public $data;
-	public $created_at;
-	public $updated_at;
 
 	public $allow_permissions;
 	public $deny_permissions;
@@ -34,13 +24,10 @@ class RoleForm extends Model
 	 */
 	public function rules()
 	{
-		return  [
-			[['type', 'name'], 'required'],
-			[['name', 'description', 'rule_name', 'data'], 'string'],
-			[['type', 'created_at', 'updated_at'], 'integer'],
+		return  ArrayHelper::merge(parent::rules(),[
 			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
 			[['allow_permissions', 'deny_permissions', 'permissions', 'inherit_permissions'], 'safe']
-		];
+		]);
 	}
 
 	/**
@@ -68,85 +55,6 @@ class RoleForm extends Model
 		return parent::beforeValidate();
 	}
 
-	/**
-	 * @param $name
-	 */
-	public function setRole($name)
-	{
-		$this->role = Yii::$app->authManager->getRole($name);
-	}
-
-	/**
-	 * @return null|Role
-	 */
-	public function getRole()
-	{
-		return Yii::$app->authManager->getRole($this->name);
-	}
-
-	/**
-	 * @param $name
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->getRole()->name;
-	}
-
-	/**
-	 *
-	 */
-	public function setDescription($description)
-	{
-		$this->description = $description;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDescription()
-	{
-		return $this->getRole() ? $this->getRole()->description : '';
-	}
-
-	/**
-	 *
-	 */
-	public function setType()
-	{
-		$this->type = $this->getRole()->type;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getType()
-	{
-		return $this->getRole()->type;
-	}
-
-	/**
-	 *
-	 */
-	public function setRule_name()
-	{
-		$this->rule_name = $this->getRole()->rule_name;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getRule_name()
-	{
-		return $this->getRole()->rule_name;
-	}
 
 	/**
 	 * @return array|bool
@@ -172,6 +80,8 @@ class RoleForm extends Model
 		return $this->inherit_permissions = $value;
 	}
 
+
+	#TODO refactor
 	/**
 	 * @return bool|null|string
 	 */
@@ -179,7 +89,7 @@ class RoleForm extends Model
 	{
 		return false;
 
-		$allow_permissions = $this->findWithChildItem();
+		$allow_permissions = $this->findRolesWithChildItem();
 
 		if(empty($allow_permissions) || !is_array($allow_permissions)){
 			return null;
@@ -214,48 +124,5 @@ class RoleForm extends Model
 		ArrayHelper::remove($roles, $this->name);
 
 		return $roles;
-	}
-
-	/**
-	 * @return array|bool
-	 */
-	public function getRolesList()
-	{
-		$data = Yii::$app->authManager->getRoles();
-
-		if (!is_array($data)){
-			return false;
-		}
-
-		return ArrayHelper::map($data, 'name', 'name');
-	}
-
-
-	/**
-	 * @return array|bool
-	 */
-	public function getPermissionsList()
-	{
-		$data = Yii::$app->authManager->getPermissions();
-
-		if (!is_array($data)){
-			return false;
-		}
-
-		return ArrayHelper::map($data, 'name', 'name');
-	}
-
-	/**
-	 * @return Role[]
-	 */
-	public function findWithChildItem()
-	{
-		$data = Yii::$app->authManager->getRoles();
-
-		foreach ($data as $role => $value){
-			$data[$role]->data = Yii::$app->authManager->getChildren($value->name);
-		}
-
-		return $data;
 	}
 }

@@ -3,15 +3,13 @@
 namespace justcoded\yii2\rbac\controllers;
 
 use justcoded\yii2\rbac\forms\PermissionForm;
-use justcoded\yii2\rbac\forms\RoleForm;
-use justcoded\yii2\rbac\models\AuthItemSearch;
 use Yii;
 use app\traits\controllers\FindModelOrFail;
 use yii\filters\VerbFilter;
-use vova07\console\ConsoleRunner;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\web\Controller;
+use justcoded\yii2\rbac\models\Permission;
 
 /**
  * PermissionsController implements the CRUD actions for AuthItems model.
@@ -36,7 +34,7 @@ class PermissionsController extends Controller
 	}
 
 	/**
-	 * @return string
+	 * @return array|string|Response
 	 */
 	public function actionCreate()
 	{
@@ -49,8 +47,12 @@ class PermissionsController extends Controller
 			return ActiveForm::validate($model);
 		}
 
-		if ($model->load(Yii::$app->request->post()) && $model->store()){
-			Yii::$app->session->setFlash('success', 'Permissions saved success.');
+		if ($model->load(Yii::$app->request->post())){
+			$permission = new Permission();
+
+			if($permission->store($model)) {
+				Yii::$app->session->setFlash('success', 'Permission saved success.');
+			}
 
 			return $this->redirect(['index/index']);
 		}
@@ -66,7 +68,7 @@ class PermissionsController extends Controller
 	 */
 	public function actionUpdate($name)
 	{
-		$model = new RoleForm();
+		$model = new PermissionForm();
 		$model->name = $name;
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
@@ -75,10 +77,10 @@ class PermissionsController extends Controller
 		}
 
 		if ($model->load(Yii::$app->request->post())){
-			$role = new Role();
+			$role = new Permission();
 
 			if($role->store($model)) {
-				Yii::$app->session->setFlash('success', 'Role saved success.');
+				Yii::$app->session->setFlash('success', 'Permission saved success.');
 			}
 
 			return $this->redirect(['index/index']);

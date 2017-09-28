@@ -20,7 +20,7 @@ use yii\helpers\Url;
             <div class="box-body height-400">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'description')->textInput(['value' => $model->getDescription()]) ?>
 
                 <?= $form->field($model, 'rule_name', [
                 'template' => "{label}<div class=\"col-sm-6\">{input}</div>\n

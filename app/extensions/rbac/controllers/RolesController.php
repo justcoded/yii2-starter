@@ -39,7 +39,6 @@ class RolesController extends Controller
 	public function actionCreate()
 	{
 		$model = new RoleForm();
-
 		$model->scenario = $model::SCENARIO_CREATE;
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {

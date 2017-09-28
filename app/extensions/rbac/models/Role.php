@@ -3,41 +3,10 @@
 namespace justcoded\yii2\rbac\models;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+
 
 class Role extends Item
 {
-	/**
-	 * @return mixed
-	 */
-//	public function getChildItem()
-//	{
-//		return $this->hasOne(AuthItemChild::className(), ['parent' => 'name']);
-//	}
-
-	/**
-	 * @return $this
-	 */
-//	public static function getRoles()
-//	{
-//		return static::find()->where(['type' => Role::TYPE_ROLE]);
-//	}
-
-
-
-
-
-
-
-
-	/**
-	 * @param $role_name
-	 * @return \yii\rbac\Permission[]
-	 */
-	public function getPermissionsByRole($role_name)
-	{
-		return Yii::$app->authManager->getPermissionsByRole($role_name);
-	}
 
 	/**
 	 * @param $role_name
@@ -45,8 +14,11 @@ class Role extends Item
 	 */
 	public function countPermissionsByRole($role_name)
 	{
-		$permissions = $this->getPermissionsByRole($role_name);
-		if (!is_array($permissions)) return null;
+		$permissions = Yii::$app->authManager->getPermissionsByRole($role_name);
+		if (!is_array($permissions)) {
+			return null;
+		}
+
 		return count($permissions);
 	}
 
@@ -96,17 +68,19 @@ class Role extends Item
 
 		if(!$new_role = Yii::$app->authManager->getRole($name)){
 			$new_role = Yii::$app->authManager->createRole($name);
+			$new_role->description = $data->description;
 
 			if(!Yii::$app->authManager->add($new_role)){
 				return false;
 			}
-			$new_role = Yii::$app->authManager->getRole($name);
 		}else{
 			$new_role->description = $data->description;
 			Yii::$app->authManager->update($name, $new_role);
 		}
 
+		$new_role = Yii::$app->authManager->getRole($name);
 		Yii::$app->authManager->removeChildren($new_role);
+
 		if ($data->inherit_permissions){
 			foreach ($data->inherit_permissions as $role){
 				$child_role = Yii::$app->authManager->getRole($role);
