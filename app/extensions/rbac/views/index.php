@@ -16,18 +16,19 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="permission-index">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel box">
-                <div class="panel-header box-header">
-                    <div class="col-xs-6 col-md-2">
-                        <h4>Roles</h4>
+    <div class="panel box">
+        <div class="panel-header box-header">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-xs-6 col-md-2">
+                            <h4>Roles</h4>
+                        </div>
+                        <div class="col-xs-offset-6 col-md-offset-2">
+                            <?=  Html::a('Add Role', ['roles/create'], ['class' => 'btn btn-sm btn-success']); ?>
+                        </div>
                     </div>
-                    <div class="col-xs-offset-6 col-md-offset-2">
-                        <?=  Html::a('Add Role', ['roles/create'], ['class' => 'btn btn-sm btn-success']); ?>
-                    </div>
-                </div>
-                <div class="panel-body box-body">
+
                     <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderRoles,
                         'filterModel'  => $searchModel,
@@ -58,55 +59,50 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ]); ?>
                 </div>
-            </div>
-        </div>
 
         <div class="col-md-6">
-            <div class="panel box">
-                <div class="panel-header box-header">
-                    <div class="col-xs-12 col-sm-6 col-md-3">
-                        <h4>Permissions</h4>
-                    </div>
-                    <div class="col-sm-offset-6 col-md-offset-3">
-	                    <?=  Html::a('Scan Routes', ['scan-routes'], ['class' => 'btn btn-sm btn-success']); ?>
-			            <?=  Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-sm btn-default']); ?>
-                    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <h4>Permissions</h4>
                 </div>
-                <div class="panel-body box-body">
-                    <?= RbacGridView::widget([
-                        'dataProvider' => $dataProviderPermissions,
-                        'filterModel'  => $searchModel,
-                        'columns'      => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            [
-                                'header' => 'Permissions',
-                                'attribute' => 'permission',
-                                'format' => 'html',
-                                'filter' => Html::textInput('permission','', ['class' => 'form-control']),
-                                'value' => function ($data) {
-                                    return Html::a($data->name, ['permissions/update', 'name' => $data->name]);
-                                }
-                            ],
-                            [
-                                'attribute' => 'description',
-                                'format' => 'html',
-                                'filter' => Html::activeDropDownList($searchModel,
-	                                'roles',
-	                                ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name'),
-	                                ['class' => 'form-control']),
-                            ],
-                            [
-                                'header' => 'Role',
-                                'format' => 'html',
-                                'value' => function ($data) {
-	                                return isset(Permission::getRoleByPermission()[$data->name]) ?
-                                        Permission::getRoleByPermission()[$data->name] : '';
-                                }
-                            ]
-                        ],
-                    ]); ?>
+                <div class="col-sm-offset-6 col-md-offset-3">
+                    <?=  Html::a('Scan Routes', ['scan-routes'], ['class' => 'btn btn-sm btn-success']); ?>
+                    <?=  Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-sm btn-default']); ?>
                 </div>
             </div>
+
+                <?= RbacGridView::widget([
+                    'dataProvider' => $dataProviderPermissions,
+                    'filterModel'  => $searchModel,
+                    'columns'      => [
+                        ['class' => 'yii\grid\SerialColumn'],
+                        [
+                            'header' => 'Permissions',
+                            'attribute' => 'permission',
+                            'format' => 'html',
+                            'filter' => Html::textInput('permission','', ['class' => 'form-control']),
+                            'value' => function ($data) {
+                                return Html::a($data->name, ['permissions/update', 'name' => $data->name]);
+                            }
+                        ],
+                        [
+                            'attribute' => 'description',
+                            'format' => 'html',
+                            'filter' => Html::activeDropDownList($searchModel,
+                                'roles',
+                                ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name'),
+                                ['class' => 'form-control']),
+                        ],
+                        [
+                            'header' => 'Role',
+                            'format' => 'html',
+                            'value' => function ($data) {
+                                return isset(Permission::getRoleByPermission()[$data->name]) ?
+                                    Permission::getRoleByPermission()[$data->name] : '';
+                            }
+                        ]
+                    ],
+                ]); ?>
         </div>
     </div>
 </div>
