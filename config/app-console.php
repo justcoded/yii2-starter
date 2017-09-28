@@ -2,16 +2,15 @@
 
 \Yii::setAlias('@app', dirname(__DIR__) . '/app');
 
-$params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
-$routes  = require __DIR__ . '/routes.php';
+$params = require __DIR__ . '/params.php';
 
 $config = [
 	'id'                  => 'main-console',
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'bootstrap'  => ['log'],
+	'bootstrap'  => ['log', 'settings'],
 	'controllerNamespace' => 'app\console\controllers',
 	'aliases'    => [
 		'@config'=> dirname(__DIR__) . '/config',
@@ -25,6 +24,7 @@ $config = [
 			'migrationPath' => [
 				'@migrations',
 				'@yii/rbac/migrations',
+				'@vendor/justcoded/yii2-settings/migrations'
 			],
 		],
 		'fixture' => [
@@ -53,8 +53,14 @@ $config = [
 			],
 		],
 		'db'    => $db,
+		'settings' => [
+			'class'     => 'app\components\Settings',
+			'defaults' => $params,
+			'modelsMap' => [
+				'app' => 'justcoded\yii2\settings\forms\AppSettingsForm',
+			],
+		],
 	],
-	'params'              => $params,
 ];
 
 if (YII_ENV_DEV) {

@@ -19,6 +19,14 @@
 					 'active' => 'permissions' === Yii::$app->controller->id,
 					],
 					[
+						'label' => 'Settings',
+						'icon'  =>  'gears',
+						'url'   => '#',
+						'items' => [
+							['label' => 'App', 'url' => ['/admin/settings/app']],
+						],
+					],
+					[
 						'label' => 'Drop example',
 						'icon'  => 'share',
 						'url'   => '#',

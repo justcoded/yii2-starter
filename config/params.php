@@ -1,11 +1,12 @@
 <?php
 
 return [
-	'systemEmail' => [
-		'admin@example.com' => 'Support',
-	],
-	'adminEmail' => [
-		'admin@example.com' => 'John Doe',
-	],
-	'passwordResetTokenExpire' => 3600,
+	'app' => [
+		'adminEmail' => 'admin@example.com',
+		'adminName'  => 'John Doe',
+		'systemEmail' => 'noreply@example.com',
+		'systemName'  => 'Support',
+		'passwordResetToken' => 3600,
+		'rememberMeExpiration' => 3600 * 24 * 30, // 30 days
+	]
 ];

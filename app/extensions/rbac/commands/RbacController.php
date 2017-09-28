@@ -242,13 +242,28 @@ class RbacController extends Controller
 			}
 
 			foreach ($methods as $method) {
-				if (! preg_match('/^action([A-Z]([a-zA-Z0-9]+))$/', $method->getName(), $actionMatch)) {
+				if (! preg_match('/^action([A-Z]([a-zA-Z0-9]+))$/', $method->getName(), $actionMatch)
+					&& !('actions' === $method->getName() && $reflection->getName() === $method->class)
+				) {
 					continue;
 				}
 				$controllerId = Inflector::slug(Inflector::camel2words($classMatch[2]));
-				$actionId = Inflector::slug(Inflector::camel2words($actionMatch[1]));
 
-				$actions[] = $moduleId . $controllerId . '/' . $actionId;
+				if ('actions' === $method->getName()) {
+					try {
+						$controllerObj = Yii::createObject($method->class, [$controllerId, Yii::$app]);
+						$customActions = $controllerObj->actions();
+						foreach ($customActions as $actionId => $params) {
+							$actions[] = $moduleId . $controllerId . '/' . $actionId;
+						}
+					} catch (\Exception $e) {
+						$this->error("\t\tcan't scan custom actions from {$method->class}::actions(). You will need to add them manually.");
+					}
+
+				} else {
+					$actionId = Inflector::slug(Inflector::camel2words($actionMatch[1]));
+					$actions[] = $moduleId . $controllerId . '/' . $actionId;
+				}
 			}
 		}
 

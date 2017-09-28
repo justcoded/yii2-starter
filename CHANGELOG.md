@@ -1,7 +1,23 @@
 CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 =====================
 
-*should be replaced with real project changelog later* 
+*should be replaced with real project changelog later*
+
+v0.7
+---------------------
+* Moved settings to external package
+* Fixed settings migration path
+
+v0.6
+---------------------
+* Added app components settings class to support IDE for modelsMap
+* Overwrite all params usage to settings usage
+* Updated AppSettingsForm sender* properties to system* properties. 
+
+v0.5
+---------------------
+* Added settings extension with settings component
+* Added settings controller in admin module
 
 v0.4
 ---------------------
