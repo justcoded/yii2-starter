@@ -2,21 +2,13 @@
 
 namespace justcoded\yii2\rbac\controllers;
 
-use justcoded\yii2\rbac\forms\PermissionForm;
-use justcoded\yii2\rbac\forms\RoleForm;
-use justcoded\yii2\rbac\models\AuthItemSearch;
-use justcoded\yii2\rbac\models\Role;
+use justcoded\yii2\rbac\models\ItemSearch;
 use Yii;
 use app\traits\controllers\FindModelOrFail;
-use yii\filters\VerbFilter;
 use vova07\console\ConsoleRunner;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
 use yii\web\Controller;
 
-/**
- * PermissionsController implements the CRUD actions for AuthItems model.
- */
+
 class IndexController extends Controller
 {
 	use FindModelOrFail;
@@ -26,13 +18,13 @@ class IndexController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$searchModelRoles  = new AuthItemSearch();
-		$dataProviderRoles = $searchModelRoles->searchRoles(Yii::$app->request->queryParams);
+		$searchModel = new ItemSearch();
+		$dataProviderRoles = $searchModel->searchRoles(Yii::$app->request->queryParams);
 
-		$dataProviderPermissions = $searchModelRoles->searchPermissions(Yii::$app->request->queryParams);
+		$dataProviderPermissions = $searchModel->searchPermissions(Yii::$app->request->queryParams);
 
 		return $this->render('/index', [
-			'searchModelRoles'  => $searchModelRoles,
+			'searchModel' => $searchModel,
 			'dataProviderRoles' => $dataProviderRoles,
 			'dataProviderPermissions' => $dataProviderPermissions,
 		]);

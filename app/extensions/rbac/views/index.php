@@ -2,9 +2,12 @@
 
 use yii\helpers\Html;
 use justcoded\yii2\rbac\widgets\RbacGridView;
+use justcoded\yii2\rbac\models\Role;
+use justcoded\yii2\rbac\models\Permission;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
-/* @var $searchModelRoles justcoded\yii2\rbac\models\AuthItemSearch */
+/* @var $searchModel justcoded\yii2\rbac\models\ItemSearch */
 /* @var $dataProviderPermissions yii\data\ActiveDataProvider */
 /* @var $dataProviderRoles yii\data\ActiveDataProvider */
 
@@ -27,13 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="panel-body box-body">
                     <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderRoles,
-                        'filterModel'  => $searchModelRoles,
+                        'filterModel'  => $searchModel,
                         'columns'      => [
                             ['class' => 'yii\grid\SerialColumn'],
                             [
                                 'header' => 'Role',
                                 'attribute' => 'name',
                                 'format' => 'raw',
+                                'filter' => Html::textInput('role', '',['class' => 'form-control']),
                                 'value' => function ($data){
                                     return Html::a($data->name, ['roles/update', 'name' => $data->name])
                                         . '<br>' . $data->description;
@@ -42,13 +46,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'header' => 'Permission',
                                 'value' => function ($data){
-                                    return $data->countPermissionsByRole($data->name);
+                                    return Role::countPermissionsByRole($data->name);
                                 },
                             ],
                             [
                                 'header' => 'Inherit',
                                 'value' => function ($data){
-                                    return $data->getInherit($data->name);
+                                    return Role::getInherit($data->name);
                                 },
                             ]
                         ],
@@ -56,6 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="panel box">
                 <div class="panel-header box-header">
@@ -70,24 +75,32 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="panel-body box-body">
                     <?= RbacGridView::widget([
                         'dataProvider' => $dataProviderPermissions,
-                        'filterModel'  => $searchModelRoles,
+                        'filterModel'  => $searchModel,
                         'columns'      => [
                             ['class' => 'yii\grid\SerialColumn'],
                             [
                                 'header' => 'Permissions',
                                 'attribute' => 'permission',
                                 'format' => 'html',
+                                'filter' => Html::textInput('permission','', ['class' => 'form-control']),
                                 'value' => function ($data) {
                                     return Html::a($data->name, ['permissions/update', 'name' => $data->name]);
                                 }
                             ],
-                            'description',
+                            [
+                                'attribute' => 'description',
+                                'format' => 'html',
+                                'filter' => Html::activeDropDownList($searchModel,
+	                                'roles',
+	                                ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name'),
+	                                ['class' => 'form-control']),
+                            ],
                             [
                                 'header' => 'Role',
                                 'format' => 'html',
                                 'value' => function ($data) {
-	                                return isset($data::getRoleByPermission()[$data->name]) ?
-                                        $data::getRoleByPermission()[$data->name] : '';
+	                                return isset(Permission::getRoleByPermission()[$data->name]) ?
+                                        Permission::getRoleByPermission()[$data->name] : '';
                                 }
                             ]
                         ],

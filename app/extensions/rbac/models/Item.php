@@ -46,6 +46,8 @@ class Item
 		return ArrayHelper::map($data, 'name', 'name');
 	}
 
+
+
 	/**
 	 * @return \yii\rbac\Role[]
 	 */

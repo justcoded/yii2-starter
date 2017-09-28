@@ -12,7 +12,7 @@ class Role extends Item
 	 * @param $role_name
 	 * @return int|null
 	 */
-	public function countPermissionsByRole($role_name)
+	public static function countPermissionsByRole($role_name)
 	{
 		$permissions = Yii::$app->authManager->getPermissionsByRole($role_name);
 		if (!is_array($permissions)) {
@@ -26,7 +26,7 @@ class Role extends Item
 	 * @param $parent
 	 * @return mixed|string
 	 */
-	public function getInherit($parent)
+	public static function getInherit($parent)
 	{
 		if($children = Yii::$app->authManager->getChildren($parent)){
 			foreach ($children as $child){
