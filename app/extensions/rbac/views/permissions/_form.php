@@ -20,9 +20,9 @@ use yii\helpers\Url;
             <div class="box-body height-400">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'description')->textInput(['value' => $model->getDescription()]) ?>
+                <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'rule_name', [
+                <?= $form->field($model, 'ruleName', [
                 'template' => "{label}<div class=\"col-sm-6\">{input}</div>\n
                                 <div class=\"col-sm-offset-3 col-sm-6\">{error}</div>\n
                                 <div class=\"col-sm-offset-3 col-sm-9\">{hint}</div>",

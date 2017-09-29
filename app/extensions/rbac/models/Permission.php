@@ -8,27 +8,6 @@ class Permission extends Item
 {
 
 	/**
-	 * @return array
-	 */
-	public  static function getRoleByPermission()
-	{
-		$roles = Yii::$app->authManager->getRoles();
-
-		$array = [];
-		foreach ($roles as $role){
-			$permissions = Yii::$app->authManager->getPermissionsByRole($role->name);
-			foreach ($permissions as $permission) {
-				if(!isset($array[$permission->name])){
-					$array[$permission->name] = '';
-				}
-				$array[$permission->name] .= $role->name.'<br>';
-			}
-
-		}
-		return $array;
-	}
-
-	/**
 	 * @return bool
 	 */
 	public function store($data)

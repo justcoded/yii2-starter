@@ -9,56 +9,6 @@ class Role extends Item
 {
 
 	/**
-	 * @param $role_name
-	 * @return int|null
-	 */
-	public static function countPermissionsByRole($role_name)
-	{
-		$permissions = Yii::$app->authManager->getPermissionsByRole($role_name);
-		if (!is_array($permissions)) {
-			return null;
-		}
-
-		return count($permissions);
-	}
-
-	/**
-	 * @param $parent
-	 * @return mixed|string
-	 */
-	public static function getInherit($parent)
-	{
-		if($children = Yii::$app->authManager->getChildren($parent)){
-			foreach ($children as $child){
-				if($child->type == static::TYPE_ROLE){
-					return $child->name;
-				}
-			}
-		}
-	}
-
-	/**
-	 * @return array
-	 */
-	public  static function getRoleByPermission()
-	{
-		$roles = Yii::$app->authManager->getRoles();
-
-		$array = [];
-		foreach ($roles as $role){
-			$permissions = Yii::$app->authManager->getPermissionsByRole($role->name);
-			foreach ($permissions as $permission) {
-				if(!isset($array[$permission->name])){
-					$array[$permission->name] = '';
-				}
-				$array[$permission->name] .= $role->name.'<br>';
-			}
-
-		}
-		return $array;
-	}
-
-	/**
 	 * @param $data
 	 * @return bool
 	 */

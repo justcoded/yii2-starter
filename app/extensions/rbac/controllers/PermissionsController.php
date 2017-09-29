@@ -10,6 +10,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\web\Controller;
 use justcoded\yii2\rbac\models\Permission;
+use justcoded\yii2\rbac\models\ItemSearch;
 
 /**
  * PermissionsController implements the CRUD actions for AuthItems model.
@@ -34,6 +35,39 @@ class PermissionsController extends Controller
 	}
 
 	/**
+	 * @return string
+	 */
+	public function actionIndex()
+	{
+		$searchModel = new ItemSearch();
+		$dataProviderRoles = $searchModel->searchRoles(Yii::$app->request->queryParams);
+
+		$dataProviderPermissions = $searchModel->searchPermissions(Yii::$app->request->queryParams);
+
+		return $this->render('/index', [
+			'searchModel' => $searchModel,
+			'dataProviderRoles' => $dataProviderRoles,
+			'dataProviderPermissions' => $dataProviderPermissions,
+		]);
+	}
+
+	/**
+	 * @return \yii\web\Response
+	 */
+	public function actionScanRoutes()
+	{
+		$file = '@app/../yii';
+		$action = 'rbac/scan';
+
+		$cmd = PHP_BINDIR . '/php ' . Yii::getAlias($file) . ' ' . $action;
+		pclose(popen($cmd . ' > /dev/null &', 'r'));
+
+		Yii::$app->session->setFlash('success', 'Routes scanned success.');
+
+		return $this->redirect(['index']);
+	}
+
+	/**
 	 * @return array|string|Response
 	 */
 	public function actionCreate()
@@ -54,7 +88,7 @@ class PermissionsController extends Controller
 				Yii::$app->session->setFlash('success', 'Permission saved success.');
 			}
 
-			return $this->redirect(['index/index']);
+			return $this->redirect(['index']);
 		}
 
 		return $this->render('create', [
@@ -68,8 +102,8 @@ class PermissionsController extends Controller
 	 */
 	public function actionUpdate($name)
 	{
-		$model = new PermissionForm();
-		$model->name = $name;
+		$perm = Yii::$app->authManager->getPermission($name);
+		$model = new PermissionForm($perm);
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
 			Yii::$app->response->format = Response::FORMAT_JSON;
@@ -83,7 +117,7 @@ class PermissionsController extends Controller
 				Yii::$app->session->setFlash('success', 'Permission saved success.');
 			}
 
-			return $this->redirect(['index/index']);
+			return $this->redirect(['index']);
 		}
 
 		return $this->render('update', [
@@ -98,7 +132,7 @@ class PermissionsController extends Controller
 	public function actionDelete($name)
 	{
 		if(!$post_data = Yii::$app->request->post('PermissionForm')){
-			return $this->redirect(['index/index']);
+			return $this->redirect(['index']);
 		}
 
 		$role = Yii::$app->authManager->getPermission($post_data['name']);
@@ -109,7 +143,7 @@ class PermissionsController extends Controller
 			Yii::$app->session->setFlash('error', 'Permission not removed.');
 		}
 
-		return $this->redirect(['index/index']);
+		return $this->redirect(['index']);
 	}
 }
 

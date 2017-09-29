@@ -8,7 +8,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 
-class PermissionForm extends BaseForm
+class PermissionForm extends ItemForm
 {
 
 	public $parent_roles;
@@ -26,8 +26,7 @@ class PermissionForm extends BaseForm
 	public function rules()
 	{
 		return ArrayHelper::merge(parent::rules(), [
-			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
-			['rule_name', 'match', 'pattern' => '/^[a-z][\w\-\/]*$/i'],
+			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\/]*$/i'],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
 		]);
 	}
@@ -47,35 +46,15 @@ class PermissionForm extends BaseForm
 		return true;
 	}
 
-
 	/**
 	 * @return bool
 	 */
 	public function beforeValidate()
 	{
 		$this->type = Role::TYPE_PERMISSION;
-		if(empty($this->rule_name)){
-			$this->rule_name = null;
-		}
-
 		return parent::beforeValidate();
 	}
 
-	/**
-	 * @return null|\yii\rbac\Permission
-	 */
-	public function getPermission()
-	{
-		return Yii::$app->authManager->getPermission($this->name);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDescription()
-	{
-		return $this->getPermission() ? $this->getPermission()->description : '';
-	}
 
 	/**
 	 * @return bool|string
@@ -100,14 +79,6 @@ class PermissionForm extends BaseForm
 		return substr($string_roles, 0, -1);
 	}
 
-	/**
-	 * @param $value
-	 * @return mixed
-	 */
-	public function setParentRoles($value)
-	{
-		return $this->parent_roles = $value;
-	}
 
 	/**
 	 * @return bool|string
@@ -132,14 +103,6 @@ class PermissionForm extends BaseForm
 		return substr($string_permissions, 0, -1);
 	}
 
-	/**
-	 * @param $value
-	 * @return mixed
-	 */
-	public function setParentPermissions($value)
-	{
-		return $this->parent_permissions = $value;
-	}
 
 	/**
 	 * @return bool|string
@@ -153,15 +116,6 @@ class PermissionForm extends BaseForm
 		}
 
 		return implode(',', array_keys($permissions));
-	}
-
-	/**
-	 * @param $value
-	 * @return mixed
-	 */
-	public function setChildrenPermissions($value)
-	{
-		return $this->children_permissions = $value;
 	}
 
 }

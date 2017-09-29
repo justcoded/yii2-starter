@@ -6,6 +6,7 @@ use justcoded\yii2\rbac\models\Role;
 use justcoded\yii2\rbac\models\Permission;
 use justcoded\yii2\rbac\forms\PermissionForm;
 use justcoded\yii2\rbac\assets\RbacAssetBundle;
+use justcoded\yii2\rbac\models\ItemSearch;
 
 RbacAssetBundle::register($this);
 
@@ -53,13 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'header' => 'Permission',
                                 'value' => function ($data){
-                                    return Role::countPermissionsByRole($data->name);
+                                    return ItemSearch::countPermissionsByRole($data->name);
                                 },
                             ],
                             [
                                 'header' => 'Inherit',
                                 'value' => function ($data){
-                                    return Role::getInherit($data->name);
+                                    return ItemSearch::getInherit($data->name);
                                 },
                             ]
                         ],
@@ -84,7 +85,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'header' => 'Permissions',
                                 'attribute' => 'permission',
                                 'format' => 'html',
-                                'filter' => Html::textInput('permission','', ['class' => 'form-control']),
+                                'filter' => Html::textInput(
+                                        'permission',
+                                        Yii::$app->request->get('permission'),
+                                        ['class' => 'form-control']
+                                ),
                                 'value' => function ($data) {
                                     return Html::a($data->name, ['permissions/update', 'name' => $data->name]);
                                 }
@@ -92,20 +97,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'description',
                                 'format' => 'html',
-                                'filter' => Html::activeDropDownList($searchModel,
-                                    'roles',
+                                'filter' => Html::dropDownList('roles',
+                                    Yii::$app->request->get('roles'),
                                     PermissionForm::getDropDownWithRoles(),
-                                    [
-                                        'class' => 'form-control',
-                                        'value' => Yii::$app->request->get('ItemSearch%5Broles%5D')
-                                    ]),
+                                    ['class' => 'form-control']
+                                ),
                             ],
                             [
                                 'header' => 'Role',
                                 'format' => 'html',
                                 'value' => function ($data) {
-                                    return isset(Permission::getRoleByPermission()[$data->name]) ?
-                                        Permission::getRoleByPermission()[$data->name] : '';
+                                    return isset(ItemSearch::getRoleByPermission()[$data->name]) ?
+                                        ItemSearch::getRoleByPermission()[$data->name] : '';
                                 }
                             ]
                         ],

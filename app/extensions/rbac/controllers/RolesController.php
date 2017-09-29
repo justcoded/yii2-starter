@@ -53,9 +53,8 @@ class RolesController extends Controller
 				Yii::$app->session->setFlash('success', 'Role saved success.');
 			}
 
-			return $this->redirect(['index/index']);
+			return $this->redirect(['permissions/index']);
 		}
-
 
 		return $this->render('create', [
 			'model' => $model,
@@ -69,8 +68,8 @@ class RolesController extends Controller
 	 */
 	public function actionUpdate($name)
 	{
-		$model = new RoleForm();
-		$model->name = $name;
+		$role = Yii::$app->authManager->getRole($name);
+		$model = new RoleForm($role);
 
 		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
 			Yii::$app->response->format = Response::FORMAT_JSON;
@@ -84,7 +83,7 @@ class RolesController extends Controller
 				Yii::$app->session->setFlash('success', 'Role saved success.');
 			}
 
-			return $this->redirect(['index/index']);
+			return $this->redirect(['permissions/index']);
 		}
 
 		return $this->render('update', [
@@ -99,7 +98,7 @@ class RolesController extends Controller
 	public function actionDelete($name)
 	{
 		if(!$post_data = Yii::$app->request->post('RoleForm')){
-			return $this->redirect(['index/index']);
+			return $this->redirect(['permissions/index']);
 		}
 
 		$role = Yii::$app->authManager->getRole($post_data['name']);
@@ -110,7 +109,7 @@ class RolesController extends Controller
 			Yii::$app->session->setFlash('error', 'Role not removed.');
 		}
 
-		return $this->redirect(['index/index']);
+		return $this->redirect(['permissions/index']);
 	}
 }
 
