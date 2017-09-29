@@ -7,12 +7,11 @@ class AssetBundle extends \yii\web\AssetBundle
 	public $sourcePath = '@app/modules/admin/assets';
 
 	public $css = [
-		'css/extra.css',
-		'css/rbac.css'
+		'css/extra.css'
 	];
-	public $js = [
-		'js/rbac.js'
-	];
+
+	public $js = [];
+
 	public $depends = [
 		'dmstr\web\AdminLteAsset',
 		//'app\modules\admin\assets\AdminltePluginsAssetBundle',

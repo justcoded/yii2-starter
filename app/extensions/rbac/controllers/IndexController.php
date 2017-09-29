@@ -5,7 +5,6 @@ namespace justcoded\yii2\rbac\controllers;
 use justcoded\yii2\rbac\models\ItemSearch;
 use Yii;
 use app\traits\controllers\FindModelOrFail;
-use vova07\console\ConsoleRunner;
 use yii\web\Controller;
 
 
@@ -35,12 +34,33 @@ class IndexController extends Controller
 	 */
 	public function actionScanRoutes()
 	{
-		$cr = new ConsoleRunner(['file' => '@app/../yii']);
-		if($cr->run('rbac/scan')) {
-			Yii::$app->session->setFlash('success', 'Routes scanned success.');
+		$file = '@app/../yii';
+		$action = 'rbac/scan';
+
+		$cmd = PHP_BINDIR . '/php ' . Yii::getAlias($file) . ' ' . $action;
+		if ($this->isWindows() === true) {
+			pclose(popen('start /b ' . $cmd, 'r'));
+		} else {
+			pclose(popen($cmd . ' > /dev/null &', 'r'));
 		}
 
+		Yii::$app->session->setFlash('success', 'Routes scanned success.');
+
 		return $this->redirect(['index']);
+	}
+
+	/**
+	 * Check operating system
+	 *
+	 * @return boolean true if it's Windows OS
+	 */
+	protected function isWindows()
+	{
+		if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

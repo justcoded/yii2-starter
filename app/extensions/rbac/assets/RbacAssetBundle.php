@@ -14,9 +14,6 @@ class RbacAssetBundle extends \yii\web\AssetBundle
 		'js/rbac.js'
 	];
 	public $depends = [
-		'dmstr\web\AdminLteAsset',
-		//'app\modules\admin\assets\AdminltePluginsAssetBundle',
-		'yii\web\YiiAsset',
-		'yii\bootstrap\BootstrapAsset',
+		'app\modules\admin\assets\AssetBundle'
 	];
 }

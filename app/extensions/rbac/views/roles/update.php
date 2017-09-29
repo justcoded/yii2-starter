@@ -1,4 +1,7 @@
 <?php
+use justcoded\yii2\rbac\assets\RbacAssetBundle;
+
+RbacAssetBundle::register($this);
 
 $this->title                   = 'Update role';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['index']];

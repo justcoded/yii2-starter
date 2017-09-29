@@ -5,6 +5,9 @@ use justcoded\yii2\rbac\widgets\RbacGridView;
 use justcoded\yii2\rbac\models\Role;
 use justcoded\yii2\rbac\models\Permission;
 use justcoded\yii2\rbac\forms\PermissionForm;
+use justcoded\yii2\rbac\assets\RbacAssetBundle;
+
+RbacAssetBundle::register($this);
 
 /* @var $this yii\web\View */
 /* @var $searchModel justcoded\yii2\rbac\models\ItemSearch */
