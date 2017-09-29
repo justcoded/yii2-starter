@@ -24,7 +24,7 @@ use yii\bootstrap\ActiveForm;
         <p class="text-center">* Permissions will be updated only after Save</p>
 
         <?= $form->field($model, 'allow_permissions')
-            ->textInput(['value' => $model->allowPermissions])
+            ->hiddenInput(['value' => $model->allowPermissions])
             ->label(false); ?>
 
 		<?= $form->field($model, 'deny_permissions')
@@ -36,9 +36,9 @@ use yii\bootstrap\ActiveForm;
 	            <?= Html::label($model->getAttributeLabel('allow_permissions')) ?>
                 <div id="allow-permissions">
 
-<!--	                --><?php //if ($model->arrayAllowPermissions()): ?>
-<!--                        --><?//= $model->arrayAllowPermissions() ?>
-<!--	                --><?php //endif; ?>
+	                <?php if ($model->arrayAllowPermissions()): ?>
+                        <?= $model->arrayAllowPermissions() ?>
+	                <?php endif; ?>
                 </div>
             </div>
             <div class="col-md-1 icon-block no-padding">

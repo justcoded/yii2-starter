@@ -98,6 +98,7 @@ class RoleForm extends ItemForm
 	#TODO Creating tree
 	public function arrayAllowPermissions()
 	{
+		return true;
 		$permissions = Yii::$app->authManager->getPermissions();
 
 		if(!$permissions){
