@@ -43,10 +43,12 @@ use yii\bootstrap\ActiveForm;
                     </ul>
                 </div>
             </div>
+
             <div class="col-md-1 icon-block no-padding">
                 <i class="fa fa-angle-double-right fa-4x"></i><br>
                 <i class="fa fa-angle-double-left fa-4x"></i>
             </div>
+            
             <div class="col-md-4">
 	            <?= Html::label($model->getAttributeLabel('deny_permissions')) ?>
                 <input type="text" id="denySearch" class="form-control" placeholder="Search...">
@@ -54,6 +56,7 @@ use yii\bootstrap\ActiveForm;
                     <ul></ul>
                 </div>
             </div>
+
         </div>
 
 	</div>
@@ -64,35 +67,4 @@ use yii\bootstrap\ActiveForm;
 
 	<?php ActiveForm::end(); ?>
 </div>
-<?php
 
-$js = <<<JS
-// var inputAllow = document.getElementById('allowSearch');
-// inputAllow.onkeyup = function () {
-//     var filter = inputAllow.value.toUpperCase();
-//    
-//     var lis = document.querySelectorAll('#allow-permissions li');
-//     for (var i = 0; i < lis.length; i++) {
-//         var name = lis[i].innerHTML;
-//         if (name.toUpperCase().indexOf(filter) == 0) 
-//             lis[i].style.display = 'list-item';
-//         else
-//             lis[i].style.display = 'none';
-//     }
-// }
-// var inputDenny = document.getElementById('denySearch');
-// inputDenny.onkeyup = function () {
-//     var filter = inputDenny.value.toUpperCase();
-//    
-//     var lis = document.querySelectorAll('#deny-permissions li');
-//     for (var i = 0; i < lis.length; i++) {
-//         var name = lis[i].innerHTML;
-//         if (name.toUpperCase().indexOf(filter) == 0) 
-//             lis[i].style.display = 'list-item';
-//         else
-//             lis[i].style.display = 'none';
-//     }
-// }
-JS;
-$this->registerJs($js);
-?>
