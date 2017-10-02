@@ -1,8 +1,8 @@
-jQuery(document).on('click', '#allow-permissions > .permissions', function() {
-  jQuery('#deny-permissions').append(jQuery(this));
+jQuery(document).on('click', '#allow-permissions > ul > li.permissions', function() {
+  jQuery('#deny-permissions ul').append(jQuery(this));
 });
-jQuery(document).on('click', '#deny-permissions > .permissions', function() {
-  jQuery('#allow-permissions').append(jQuery(this));
+jQuery(document).on('click', '#deny-permissions > ul > li.permissions', function() {
+  jQuery('#allow-permissions ul').append(jQuery(this));
 });
 jQuery(document).on('click', '', function() {
   var dataList = jQuery("#allow-permissions > .permissions").map(function() {
@@ -14,13 +14,13 @@ jQuery(document).on('click', '', function() {
   jQuery('#roleform-allow_permissions').val(dataList);
   jQuery('#roleform-deny_permissions').val(dataListDeny);
 });
-jQuery(document).on('click', '#permissions_search', function() {
-  var title = jQuery('#select2-roleform-permissions_search-container').attr('title');
-  jQuery('#allow-permissions').append(divWrapperRole(title));
-});
-function divWrapperRole(title) {
-  return '<div class="permissions" data-name="' + title + '">' + title + '</div>';
-};
+// jQuery(document).on('click', '#permissions_search', function() {
+//   var title = jQuery('#select2-roleform-permissions_search-container').attr('title');
+//   jQuery('#allow-permissions').append(divWrapperRole(title));
+// });
+// function divWrapperRole(title) {
+//   return '<div class="permissions" data-name="' + title + '">' + title + '</div>';
+// };
 jQuery(document).on('click', '#parent_roles_search', function() {
   var title = jQuery('#select2-permissionform-parent_roles_search-container').attr('title');
   console.log(title);
@@ -52,4 +52,30 @@ function divWrapper(title) {
   return '<tr><td class="alert" data-name="'+ title + '">'+
     '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
     title + '</td></tr>';
+};
+var inputAllow = document.getElementById('allowSearch');
+inputAllow.onkeyup = function () {
+  var filter = inputAllow.value.toUpperCase();
+
+  var lis = document.querySelectorAll('#allow-permissions li');
+  for (var i = 0; i < lis.length; i++) {
+    var name = lis[i].innerHTML;
+    if (name.toUpperCase().indexOf(filter) == 0)
+      lis[i].style.display = 'list-item';
+    else
+      lis[i].style.display = 'none';
+  }
+};
+var inputDenny = document.getElementById('denySearch');
+inputDenny.onkeyup = function () {
+  var filter = inputDenny.value.toUpperCase();
+
+  var lis = document.querySelectorAll('#deny-permissions li');
+  for (var i = 0; i < lis.length; i++) {
+    var name = lis[i].innerHTML;
+    if (name.toUpperCase().indexOf(filter) == 0)
+      lis[i].style.display = 'list-item';
+    else
+      lis[i].style.display = 'none';
+  }
 };

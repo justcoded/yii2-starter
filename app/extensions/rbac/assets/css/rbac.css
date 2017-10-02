@@ -4,6 +4,10 @@
     padding: 15px;
     border: 1px solid #d2d6de;
     cursor: pointer;
+    float:left;
+    width:100%;
+    overflow-y: auto;
+    height: 100px;
 }
 #allow-permissions > .permissions{
     margin: 5px 0;

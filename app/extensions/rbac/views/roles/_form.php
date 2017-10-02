@@ -34,11 +34,13 @@ use yii\bootstrap\ActiveForm;
         <div class="row">
             <div class="col-md-offset-2 col-md-4">
 	            <?= Html::label($model->getAttributeLabel('allow_permissions')) ?>
+                <input type="text" id="allowSearch" class="form-control" placeholder="Search...">
                 <div id="allow-permissions">
-
-	                <?php if ($model->arrayAllowPermissions()): ?>
-                        <?= $model->arrayAllowPermissions() ?>
+                    <ul id="allowUL">
+	                <?php if ($model->treeAllowPermissions()): ?>
+                        <?= $model->treeAllowPermissions() ?>
 	                <?php endif; ?>
+                    </ul>
                 </div>
             </div>
             <div class="col-md-1 icon-block no-padding">
@@ -47,7 +49,10 @@ use yii\bootstrap\ActiveForm;
             </div>
             <div class="col-md-4">
 	            <?= Html::label($model->getAttributeLabel('deny_permissions')) ?>
-                <div id="deny-permissions"></div>
+                <input type="text" id="denySearch" class="form-control" placeholder="Search...">
+                <div id="deny-permissions">
+                    <ul></ul>
+                </div>
             </div>
         </div>
 
@@ -59,3 +64,35 @@ use yii\bootstrap\ActiveForm;
 
 	<?php ActiveForm::end(); ?>
 </div>
+<?php
+
+$js = <<<JS
+// var inputAllow = document.getElementById('allowSearch');
+// inputAllow.onkeyup = function () {
+//     var filter = inputAllow.value.toUpperCase();
+//    
+//     var lis = document.querySelectorAll('#allow-permissions li');
+//     for (var i = 0; i < lis.length; i++) {
+//         var name = lis[i].innerHTML;
+//         if (name.toUpperCase().indexOf(filter) == 0) 
+//             lis[i].style.display = 'list-item';
+//         else
+//             lis[i].style.display = 'none';
+//     }
+// }
+// var inputDenny = document.getElementById('denySearch');
+// inputDenny.onkeyup = function () {
+//     var filter = inputDenny.value.toUpperCase();
+//    
+//     var lis = document.querySelectorAll('#deny-permissions li');
+//     for (var i = 0; i < lis.length; i++) {
+//         var name = lis[i].innerHTML;
+//         if (name.toUpperCase().indexOf(filter) == 0) 
+//             lis[i].style.display = 'list-item';
+//         else
+//             lis[i].style.display = 'none';
+//     }
+// }
+JS;
+$this->registerJs($js);
+?>
