@@ -92,10 +92,9 @@ class RolesController extends Controller
 	}
 
 	/**
-	 * @param $name
 	 * @return Response
 	 */
-	public function actionDelete($name)
+	public function actionDelete()
 	{
 		if(!$post_data = Yii::$app->request->post('RoleForm')){
 			return $this->redirect(['permissions/index']);

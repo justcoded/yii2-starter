@@ -98,16 +98,33 @@ class RoleForm extends ItemForm
 	#TODO Creating tree
 	public function arrayAllowPermissions()
 	{
-		return true;
+
 		$permissions = Yii::$app->authManager->getPermissions();
 
 		if(!$permissions){
 			return false;
 		}
+		//ArrayHelper::remove($permissions, '*');
+		//pa($permissions['admin/dashboard/*']);
 
-		$i =1;
+		//$permissions = array_keys($permissions_a);
+
 		$html = '<ul>';
-			$html .= $this->createTree($permissions, $html, $i);
+
+		foreach ($permissions as $name => $permission) {
+			$html .= '<li>'. $name;
+			$child = Yii::$app->authManager->getChildren($name);
+			if (!empty($child)){
+				$child = array_keys($child);
+				$html .= '<ul>';
+				foreach ($child as $name_child) {
+					ArrayHelper::remove($permissions, $name_child);
+					$html .= "<li>$name_child</li>";
+				}
+				$html .= '</ul>';
+			}
+			$html .= '</li>';
+		}
 		$html .= '</ul>';
 
 //		$array = [];
@@ -128,23 +145,19 @@ class RoleForm extends ItemForm
 		return $html;
 	}
 
-	public function createTree($permissions, $html, $i)
+	public function createTree($name, $html)
 	{
-		foreach ($permissions as $name => $permission){
-			$html .= '<li>'. $name;
-			$child = Yii::$app->authManager->getChildren($name);
-			if (!empty($child)){
-				$i++;
-				pa($i);
-				$html .= '<ul>';
-					$html .= $this->createTree($child, $html, $i);
-				$html .= '</ul>';
+		$html .= '<li>'. $name;
+		$child = Yii::$app->authManager->getChildren($name);
+		if (!empty($child)){
+			$child = array_keys($child);
+			$html .= '<ul>';
+			foreach ($child as $name) {
+				$html .= $this->createTree($name, $html);
 			}
-			$html .= '</li>';
-			if ($i > 100) {
-				pa($html, 1);
-			}
+			$html .= '</ul>';
 		}
+		$html .= '</li>';
 
 		return $html;
 	}
