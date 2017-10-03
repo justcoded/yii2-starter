@@ -18,32 +18,4 @@ class Item
 	const PERMISSION_ADMINISTER = 'administer';
 	const PERMISSION_MASTER = '*';
 
-
-	/**
-	 * @return \yii\rbac\Role[]
-	 */
-	public static function findRolesWithChildItem()
-	{
-		$data = Yii::$app->authManager->getRoles();
-
-		foreach ($data as $role => $value){
-			$data[$role]->data = Yii::$app->authManager->getChildren($value->name);
-		}
-
-		return $data;
-	}
-
-	/**
-	 * @return \yii\rbac\Permission[]
-	 */
-	public static function findPermissionsWithChildItem()
-	{
-		$data = Yii::$app->authManager->getPermissions();
-
-		foreach ($data as $permission => $value){
-			$data[$permission]->data = Yii::$app->authManager->getChildren($value->name);
-		}
-
-		return $data;
-	}
 }

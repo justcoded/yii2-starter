@@ -61,7 +61,7 @@ class PermissionForm extends ItemForm
 	 */
 	public function getParentRolesString()
 	{
-		$roles = Item::findRolesWithChildItem();
+		$roles = $this->findRolesWithChildItem();
 
 		$string_roles = '';
 		foreach ($roles as $role_name => $role){
@@ -81,7 +81,7 @@ class PermissionForm extends ItemForm
 	 */
 	public function getParentPermissionsString()
 	{
-		$permissions = Item::findPermissionsWithChildItem();
+		$permissions = $this->findPermissionsWithChildItem();
 
 		$string_permissions = '';
 		foreach ($permissions as $name_permissions => $permission){
@@ -154,13 +154,10 @@ class PermissionForm extends ItemForm
 
 		$this->removeChildrenArray($old_parent_roles, $permission);
 
-		if (empty($this->parent_roles)){
-			return true;
+		if (!empty($this->parent_roles)){
+			$array_parent_roles = explode(',', $this->parent_roles);
+			$this->addChildrenArray($array_parent_roles, ['child' => $permission], false);
 		}
-
-		$array_parent_roles = explode(',', $this->parent_roles);
-
-		$this->addChildrenArray($array_parent_roles, ['child' => $permission], false);
 
 		return true;
 	}
@@ -176,13 +173,10 @@ class PermissionForm extends ItemForm
 
 		$this->removeChildrenArray($old_parent_permissions, $permission);
 
-		if (empty($this->parent_permissions)){
-			return true;
+		if (!empty($this->parent_permissions)){
+			$array_parent_permissions = explode(',', $this->parent_permissions);
+			$this->addChildrenArray($array_parent_permissions, ['child' => $permission]);
 		}
-
-		$array_parent_permissions = explode(',', $this->parent_permissions);
-
-		$this->addChildrenArray($array_parent_permissions, ['child' => $permission]);
 
 		return true;
 	}
@@ -195,15 +189,13 @@ class PermissionForm extends ItemForm
 		$parent_permission = Yii::$app->authManager->getPermission($this->name);
 		Yii::$app->authManager->removeChildren($parent_permission);
 
-		if (empty($this->children_permissions)){
-			return true;
-		}
+		if (!empty($this->children_permissions)){
+			$array_children_permissions = explode(',', $this->children_permissions);
 
-		$array_children_permissions = explode(',', $this->children_permissions);
-
-		foreach ($array_children_permissions as $permission) {
-			$child_permission = Yii::$app->authManager->getPermission($permission);
-			Yii::$app->authManager->addChild($parent_permission, $child_permission);
+			foreach ($array_children_permissions as $permission) {
+				$child_permission = Yii::$app->authManager->getPermission($permission);
+				Yii::$app->authManager->addChild($parent_permission, $child_permission);
+			}
 		}
 
 		return true;
@@ -214,7 +206,7 @@ class PermissionForm extends ItemForm
 	 */
 	public function getParentPermissions()
 	{
-		$permissions = Item::findPermissionsWithChildItem();
+		$permissions = $this->findPermissionsWithChildItem();
 
 		$parent_permissions = [];
 		foreach ($permissions as $name_permission => $permission){
@@ -233,7 +225,7 @@ class PermissionForm extends ItemForm
 	 */
 	public function getParentRoles()
 	{
-		$roles = Item::findRolesWithChildItem();
+		$roles = $this->findRolesWithChildItem();
 
 		$parent_roles = [];
 		foreach ($roles as $name_role => $role){
@@ -245,6 +237,34 @@ class PermissionForm extends ItemForm
 		}
 
 		return $parent_roles;
+	}
+
+	/**
+	 * @return \yii\rbac\Role[]
+	 */
+	public function findRolesWithChildItem()
+	{
+		$data = Yii::$app->authManager->getRoles();
+
+		foreach ($data as $role => $value){
+			$data[$role]->data = Yii::$app->authManager->getChildren($value->name);
+		}
+
+		return $data;
+	}
+
+	/**
+	 * @return \yii\rbac\Permission[]
+	 */
+	public function findPermissionsWithChildItem()
+	{
+		$data = Yii::$app->authManager->getPermissions();
+
+		foreach ($data as $permission => $value){
+			$data[$permission]->data = Yii::$app->authManager->getChildren($value->name);
+		}
+
+		return $data;
 	}
 
 }
