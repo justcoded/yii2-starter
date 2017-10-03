@@ -134,9 +134,7 @@ class PermissionForm extends ItemForm
 //		}
 
 		$this->storeParentRoles();
-
 		$this->storeParentPermissions();
-
 		$this->storeChildrenPermissions();
 
 		return true;
@@ -150,13 +148,10 @@ class PermissionForm extends ItemForm
 	{
 		$permission = Yii::$app->authManager->getPermission($this->name);
 
-		$old_parent_roles = $this->getParentRoles();
-
-		$this->removeChildrenArray($old_parent_roles, $permission);
+		$this->removeChildrenArray($this->parentRoles, $permission);
 
 		if (!empty($this->parent_roles)){
-			$array_parent_roles = explode(',', $this->parent_roles);
-			$this->addChildrenArray($array_parent_roles, ['child' => $permission], false);
+			return $this->addChildrenArray(explode(',', $this->parent_roles), ['child' => $permission], false);
 		}
 
 		return true;
@@ -169,13 +164,10 @@ class PermissionForm extends ItemForm
 	{
 		$permission = Yii::$app->authManager->getPermission($this->name);
 
-		$old_parent_permissions = $this->getParentPermissions();
-
-		$this->removeChildrenArray($old_parent_permissions, $permission);
+		$this->removeChildrenArray($this->parentPermissions, $permission);
 
 		if (!empty($this->parent_permissions)){
-			$array_parent_permissions = explode(',', $this->parent_permissions);
-			$this->addChildrenArray($array_parent_permissions, ['child' => $permission]);
+			return $this->addChildrenArray(explode(',', $this->parent_permissions), ['child' => $permission]);
 		}
 
 		return true;
@@ -186,16 +178,11 @@ class PermissionForm extends ItemForm
 	 */
 	public function storeChildrenPermissions()
 	{
-		$parent_permission = Yii::$app->authManager->getPermission($this->name);
-		Yii::$app->authManager->removeChildren($parent_permission);
+		$permission = Yii::$app->authManager->getPermission($this->name);
+		Yii::$app->authManager->removeChildren($permission);
 
 		if (!empty($this->children_permissions)){
-			$array_children_permissions = explode(',', $this->children_permissions);
-
-			foreach ($array_children_permissions as $permission) {
-				$child_permission = Yii::$app->authManager->getPermission($permission);
-				Yii::$app->authManager->addChild($parent_permission, $child_permission);
-			}
+			return $this->addChildrenArray(explode(',', $this->children_permissions), ['parent' => $permission]);
 		}
 
 		return true;

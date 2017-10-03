@@ -10,14 +10,12 @@ use Yii;
 
 class RoleForm extends ItemForm
 {
-
 	public $allow_permissions;
 	public $deny_permissions;
 	public $inherit_permissions;
 	public $role;
 	public $permissions;
 	public $permissions_search;
-
 
 	/**
 	 * @inheritdoc
@@ -77,7 +75,6 @@ class RoleForm extends ItemForm
 	 */
 	public function getAllowPermissions()
 	{
-
 		if ($this->name){
 			$permissions = Yii::$app->authManager->getPermissionsByRole($this->name);
 		}else{
@@ -85,7 +82,6 @@ class RoleForm extends ItemForm
 		}
 
 		$permissions_name = implode(',', array_keys($permissions));
-
 
 		return $permissions_name;
 	}
@@ -198,7 +194,6 @@ class RoleForm extends ItemForm
 //				}
 //			}
 //		}
-
 
 		return true;
 	}

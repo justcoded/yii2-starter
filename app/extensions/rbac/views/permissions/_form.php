@@ -48,7 +48,7 @@ use yii\helpers\Url;
             </div>
             <div class="box-footer text-right">
 		        <?= Html::submitButton('Save' , ['class' => 'btn btn-success']) ?>
-		        <?= Html::a('delete', ['delete-permission', 'name' => $model->name], ['class' => 'delete', 'data-method' => 'post']) ?>
+		        <?= Html::a('delete', ['delete', 'name' => $model->name], ['class' => 'delete', 'data-method' => 'post']) ?>
             </div>
         </div>
     </div>
