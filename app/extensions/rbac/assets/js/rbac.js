@@ -14,13 +14,6 @@ jQuery(document).on('click', '', function() {
   jQuery('#roleform-allow_permissions').val(dataList);
   jQuery('#roleform-deny_permissions').val(dataListDeny);
 });
-// jQuery(document).on('click', '#permissions_search', function() {
-//   var title = jQuery('#select2-roleform-permissions_search-container').attr('title');
-//   jQuery('#allow-permissions').append(divWrapperRole(title));
-// });
-// function divWrapperRole(title) {
-//   return '<div class="permissions" data-name="' + title + '">' + title + '</div>';
-// };
 jQuery(document).on('click', '#parent_roles_search', function() {
   var title = jQuery('#select2-permissionform-parent_roles_search-container').attr('title');
   console.log(title);

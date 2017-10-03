@@ -24,11 +24,11 @@ use yii\bootstrap\ActiveForm;
         <p class="text-center">* Permissions will be updated only after Save</p>
 
         <?= $form->field($model, 'allow_permissions')
-            ->hiddenInput(['value' => $model->allowPermissions])
+            ->textInput(['value' => $model->allowPermissions])
             ->label(false); ?>
 
 		<?= $form->field($model, 'deny_permissions')
-            ->hiddenInput()
+            ->textInput()
             ->label(false); ?>
 
         <div class="row">
@@ -48,7 +48,7 @@ use yii\bootstrap\ActiveForm;
                 <i class="fa fa-angle-double-right fa-4x"></i><br>
                 <i class="fa fa-angle-double-left fa-4x"></i>
             </div>
-            
+
             <div class="col-md-4">
 	            <?= Html::label($model->getAttributeLabel('deny_permissions')) ?>
                 <input type="text" id="denySearch" class="form-control" placeholder="Search...">

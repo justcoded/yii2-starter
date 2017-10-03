@@ -113,20 +113,6 @@ class ItemSearch extends Item
 	}
 
 	/**
-	 * @param $role_name
-	 * @return int|null
-	 */
-	public static function countPermissionsByRole($role_name)
-	{
-		$permissions = Yii::$app->authManager->getPermissionsByRole($role_name);
-		if (!is_array($permissions)) {
-			return null;
-		}
-
-		return count($permissions);
-	}
-
-	/**
 	 * @param $parent
 	 * @return mixed|string
 	 */

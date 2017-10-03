@@ -2,11 +2,10 @@
 
 use yii\helpers\Html;
 use justcoded\yii2\rbac\widgets\RbacGridView;
-use justcoded\yii2\rbac\models\Role;
-use justcoded\yii2\rbac\models\Permission;
-use justcoded\yii2\rbac\forms\PermissionForm;
 use justcoded\yii2\rbac\assets\RbacAssetBundle;
 use justcoded\yii2\rbac\models\ItemSearch;
+use yii\helpers\ArrayHelper;
+use justcoded\yii2\rbac\forms\RoleForm;
 
 RbacAssetBundle::register($this);
 
@@ -54,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'header' => 'Permission',
                                 'value' => function ($data){
-                                    return ItemSearch::countPermissionsByRole($data->name);
+                                    return count(Yii::$app->authManager->getPermissionsByRole($data->name));
                                 },
                             ],
                             [
@@ -99,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'html',
                                 'filter' => Html::dropDownList('roles',
                                     Yii::$app->request->get('roles'),
-                                    PermissionForm::getDropDownWithRoles(),
+	                                ArrayHelper::merge(['' => 'All'],RoleForm::getRolesList()),
                                     ['class' => 'form-control']
                                 ),
                             ],

@@ -37,8 +37,7 @@ class RoleForm extends ItemForm
 	 */
 	public function uniqueName($attribute)
 	{
-
-		if (Yii::$app->authManager->getRole($this->attributes['name'])) {
+		if (Yii::$app->authManager->getRole($this->getAttributes()['name'])) {
 			$this->addError($attribute, 'Name must be unique');
 
 			return false;
@@ -83,10 +82,6 @@ class RoleForm extends ItemForm
 			$permissions = Yii::$app->authManager->getPermissionsByRole($this->name);
 		}else{
 			$permissions = Yii::$app->authManager->getPermissions();
-		}
-
-		if (empty($permissions) || !is_array($permissions)){
-			return false;
 		}
 
 		$permissions_name = implode(',', array_keys($permissions));
@@ -156,13 +151,55 @@ class RoleForm extends ItemForm
 
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	public function getListInheritPermissions()
 	{
-		$roles = $this->rolesList;
-		ArrayHelper::remove($roles, $this->name);
+		$roles = Yii::$app->authManager->getRoles();
+		$array_roles = ArrayHelper::map($roles, 'name', 'name');
+		ArrayHelper::remove($array_roles, $this->name);
 
-		return $roles;
+		return $array_roles;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function store()
+	{
+		if(!$new_role = Yii::$app->authManager->getRole($this->name)){
+			$new_role = Yii::$app->authManager->createRole($this->name);
+			$new_role->description = $this->description;
+
+			if(!Yii::$app->authManager->add($new_role)){
+				return false;
+			}
+		}else{
+			$new_role->description = $this->description;
+			Yii::$app->authManager->update($this->name, $new_role);
+		}
+
+		$new_role = Yii::$app->authManager->getRole($this->name);
+		Yii::$app->authManager->removeChildren($new_role);
+
+		if ($this->inherit_permissions){
+			$this->addChildrenArray($this->inherit_permissions, ['parent' => $new_role], false);
+		}
+
+		if ($this->permissions) {
+			$this->addChildrenArray($this->permissions, ['parent' => $new_role]);
+		}
+
+//		if ($data->deny_permissions){
+//			$deny_permissions = explode(',', $data->deny_permissions);
+//			foreach ($deny_permissions as $permission) {
+//				if($permission_for_remove = AuthItemChild::find()->where(['parent' => $name, 'child' => $permission])->one()) {
+//					$permission_for_remove->delete();
+//				}
+//			}
+//		}
+
+
+		return true;
 	}
 }

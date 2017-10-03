@@ -33,17 +33,16 @@ use yii\helpers\Url;
                         </a>',
                         ['class' => ' ']
                 ) ?>
-
 	            <?= $form->field($model, 'parent_roles')
-		            ->hiddenInput(['maxlength' => true, 'value' => $model->parentRoles])
+		            ->hiddenInput(['value' => $model->parentRolesString])
 		            ->label(false)
 	            ?>
 	            <?= $form->field($model, 'parent_permissions')
-		            ->hiddenInput(['maxlength' => true, 'value' => $model->parentPermissions])
+		            ->hiddenInput(['value' => $model->parentPermissionsString])
 		            ->label(false)
 	            ?>
 	            <?= $form->field($model, 'children_permissions')
-		            ->hiddenInput(['maxlength' => true, 'value' => $model->childrenPermissions])
+		            ->hiddenInput(['value' => $model->childrenPermissionsString])
 		            ->label(false)
 	            ?>
             </div>
@@ -82,8 +81,8 @@ use yii\helpers\Url;
                 <div id="parent_roles_list">
                     <table class="table table-striped">
                         <tbody>
-                            <?php if ($model->parentRoles): ?>
-                                <?php foreach (explode(',', $model->parentRoles) as $role): ?>
+                            <?php if ($model->parentRolesString): ?>
+                                <?php foreach (explode(',', $model->parentRolesString) as $role): ?>
                                     <tr>
                                         <td class="alert" data-name="<?=$role ?>">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -125,8 +124,8 @@ use yii\helpers\Url;
                 <div id="parent_permissions_list">
                     <table class="table table-striped">
                         <tbody>
-                            <?php if ($model->parentPermissions): ?>
-                                <?php foreach (explode(',', $model->parentPermissions) as $permission): ?>
+                            <?php if ($model->parentPermissionsString): ?>
+                                <?php foreach (explode(',', $model->parentPermissionsString) as $permission): ?>
                                     <tr>
                                         <td class="alert" data-name="<?= $permission ?>">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -168,8 +167,8 @@ use yii\helpers\Url;
                 <div id="children_permissions_list">
                     <table class="table table-striped">
                         <tbody>
-                            <?php if ($model->childrenPermissions): ?>
-                                <?php foreach (explode(',', $model->childrenPermissions) as $permission): ?>
+                            <?php if ($model->childrenPermissionsString): ?>
+                                <?php foreach (explode(',', $model->childrenPermissionsString) as $permission): ?>
                                     <tr>
                                         <td class="alert" data-name="<?= $permission ?>">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

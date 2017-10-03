@@ -40,40 +40,66 @@ class ItemForm extends Model
 
 
 	/**
-	 * @return array|bool
+	 * @return array
 	 */
 	public static function getRolesList()
 	{
 		$data = Yii::$app->authManager->getRoles();
 
-		if (!is_array($data)){
-			return false;
-		}
-
 		return ArrayHelper::map($data, 'name', 'name');
 	}
 
 
 	/**
-	 * @return array|bool
+	 * @return array
 	 */
 	public function getPermissionsList()
 	{
 		$data = Yii::$app->authManager->getPermissions();
 
-		if (!is_array($data)){
-			return false;
-		}
-
 		return ArrayHelper::map($data, 'name', 'name');
 	}
 
+
 	/**
-	 * @return array
+	 * @param array $array_parent
+	 * @param array $params
+	 * @param bool $permission
+	 * @return bool
 	 */
-	public static function getDropDownWithRoles()
+	public function addChildrenArray(array $array_parent, array $params, $permission = true)
 	{
-		$roles = static::getRolesList();
-		return ArrayHelper::merge(['' => 'All'], $roles);
+		foreach ($array_parent as $name) {
+
+			if ($permission) {
+				$item = Yii::$app->authManager->getPermission($name);
+			}else{
+				$item = Yii::$app->authManager->getRole($name);
+			}
+
+			if (isset($params['child'])) {
+				Yii::$app->authManager->addChild($item, $params['child']);
+			}elseif (isset($params['parent'])){
+				Yii::$app->authManager->addChild($params['parent'], $item);
+			}else{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param array $array_parent
+	 * @param $child
+	 * @return bool
+	 */
+	public function removeChildrenArray(array $array_parent, $child)
+	{
+		foreach ($array_parent as $parent){
+			Yii::$app->authManager->removeChild($parent, $child);
+		}
+
+		return true;
 	}
 }

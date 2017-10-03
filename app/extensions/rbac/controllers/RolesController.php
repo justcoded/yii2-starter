@@ -3,7 +3,6 @@
 namespace justcoded\yii2\rbac\controllers;
 
 use justcoded\yii2\rbac\forms\RoleForm;
-use justcoded\yii2\rbac\models\Role;
 use Yii;
 use app\traits\controllers\FindModelOrFail;
 use yii\filters\VerbFilter;
@@ -12,7 +11,7 @@ use yii\widgets\ActiveForm;
 use yii\web\Controller;
 
 /**
- * PermissionsController implements the CRUD actions for AuthItems model.
+ * RolesController implements the CRUD actions for AuthItems model.
  */
 class RolesController extends Controller
 {
@@ -46,10 +45,8 @@ class RolesController extends Controller
 			return ActiveForm::validate($model);
 		}
 
-		if ($model->load(Yii::$app->request->post())){
-			$role = new Role();
-
-			if($role->store($model)) {
+		if($model->load(Yii::$app->request->post())){
+			if ($model->store()) {
 				Yii::$app->session->setFlash('success', 'Role saved success.');
 			}
 
@@ -76,10 +73,8 @@ class RolesController extends Controller
 			return ActiveForm::validate($model);
 		}
 
-		if ($model->load(Yii::$app->request->post())){
-			$role = new Role();
-
-			if($role->store($model)) {
+		if($model->load(Yii::$app->request->post())){
+			if ($model->store()) {
 				Yii::$app->session->setFlash('success', 'Role saved success.');
 			}
 
@@ -104,8 +99,6 @@ class RolesController extends Controller
 
 		if (Yii::$app->authManager->remove($role)){
 			Yii::$app->session->setFlash('success', 'Role removed success.');
-		}else{
-			Yii::$app->session->setFlash('error', 'Role not removed.');
 		}
 
 		return $this->redirect(['permissions/index']);

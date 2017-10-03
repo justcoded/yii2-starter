@@ -9,7 +9,6 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\web\Controller;
-use justcoded\yii2\rbac\models\Permission;
 use justcoded\yii2\rbac\models\ItemSearch;
 
 /**
@@ -60,9 +59,9 @@ class PermissionsController extends Controller
 		$action = 'rbac/scan';
 
 		$cmd = PHP_BINDIR . '/php ' . Yii::getAlias($file) . ' ' . $action;
-		pclose(popen($cmd . ' > /dev/null &', 'r'));
-
-		Yii::$app->session->setFlash('success', 'Routes scanned success.');
+		if (pclose(popen($cmd . ' > /dev/null &', 'r'))) {
+			Yii::$app->session->setFlash('success', 'Routes scanned success.');
+		}
 
 		return $this->redirect(['index']);
 	}
@@ -81,10 +80,8 @@ class PermissionsController extends Controller
 			return ActiveForm::validate($model);
 		}
 
-		if ($model->load(Yii::$app->request->post())){
-			$permission = new Permission();
-
-			if($permission->store($model)) {
+		if($model->load(Yii::$app->request->post())){
+			if ($model->store()) {
 				Yii::$app->session->setFlash('success', 'Permission saved success.');
 			}
 
@@ -110,10 +107,8 @@ class PermissionsController extends Controller
 			return ActiveForm::validate($model);
 		}
 
-		if ($model->load(Yii::$app->request->post())){
-			$role = new Permission();
-
-			if($role->store($model)) {
+		if($model->load(Yii::$app->request->post())){
+			if ($model->store()) {
 				Yii::$app->session->setFlash('success', 'Permission saved success.');
 			}
 
@@ -139,8 +134,6 @@ class PermissionsController extends Controller
 
 		if (Yii::$app->authManager->remove($role)){
 			Yii::$app->session->setFlash('success', 'Permission removed success.');
-		}else{
-			Yii::$app->session->setFlash('error', 'Permission not removed.');
 		}
 
 		return $this->redirect(['index']);
