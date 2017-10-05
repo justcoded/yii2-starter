@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\Url;
+use justcoded\yii2\rbac\forms\ItemForm;
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -18,7 +19,11 @@ use yii\helpers\Url;
                 <h4>Permission Details</h4>
             </div>
             <div class="box-body height-400">
-                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+                <?= $form->field($model, 'name')->textInput([
+                        'maxlength' => true,
+                        'disabled' => $model->scenario == ItemForm::SCENARIO_CREATE ? false : true
+                    ]) ?>
 
                 <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 

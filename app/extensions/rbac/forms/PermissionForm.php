@@ -26,7 +26,8 @@ class PermissionForm extends ItemForm
 	public function rules()
 	{
 		return ArrayHelper::merge(parent::rules(), [
-			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\/]*$/i'],
+			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\\\]*$/i'],
+			['ruleName', 'issetClass'],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
 		]);
 	}
@@ -38,7 +39,23 @@ class PermissionForm extends ItemForm
 	public function uniqueName($attribute)
 	{
 		if (Yii::$app->authManager->getPermission($this->getAttributes()['name'])) {
-			$this->addError($attribute, 'Name must be unique');
+			$this->addError($attribute, 'Name must be unique.');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param $attribute
+	 * @return bool
+	 */
+	public function issetClass($attribute)
+	{
+		$rule = $this->getAttributes()['ruleName'];
+		if (!empty($rule) && !class_exists($rule)) {
+			$this->addError($attribute, 'Class not exists.');
 
 			return false;
 		}
@@ -115,23 +132,19 @@ class PermissionForm extends ItemForm
 		if(!$permission = Yii::$app->authManager->getPermission($this->name)){
 			$permission = Yii::$app->authManager->createPermission($this->name);
 			$permission->description = $this->description;
+			if (!empty($this->ruleName)){
+				$permission->ruleName = $this->ruleName;
+			}
 			if(!Yii::$app->authManager->add($permission)){
 				return false;
 			}
 		}else{
 			$permission->description = $this->description;
+
+			$permission->ruleName = (!empty($this->ruleName)) ? $this->ruleName : null;
+
 			Yii::$app->authManager->update($this->name, $permission);
 		}
-
-//		if(!empty($data->rule_name)){
-//
-//			if (!Yii::$app->authManager->getRule($data->rule_name)) {
-//
-////				$rule = Yii::createObject(['class' => Item::class], $data);
-////				pa($rule,1);
-//				pa(Yii::$app->authManager->add($data),1 );
-//			}
-//		}
 
 		$this->storeParentRoles();
 		$this->storeParentPermissions();

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+use justcoded\yii2\rbac\forms\ItemForm;
 ?>
 
 <div class="role-form box">
@@ -13,7 +13,10 @@ use yii\bootstrap\ActiveForm;
 	]); ?>
 
 	<div class="box-body">
-		<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+		<?= $form->field($model, 'name')->textInput([
+		        'maxlength' => true,
+		        'disabled' => $model->scenario == ItemForm::SCENARIO_CREATE ? false : true
+            ]) ?>
 
 		<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
