@@ -108,12 +108,8 @@ class RoleForm extends ItemForm
 	 */
 	public function treeAllowPermissions()
 	{
-		if (!empty($this->name)){
-			$permissions =Yii::$app->authManager->getPermissionsByRole($this->name);
-		}else{
-			$permissions = Yii::$app->authManager->getPermissions();
-		}
-
+		$permissions =Yii::$app->authManager->getPermissionsByRole($this->name);
+		
 		return $this->treePermissions($permissions);
 	}
 
