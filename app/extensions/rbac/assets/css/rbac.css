@@ -9,6 +9,12 @@
     overflow-y: auto;
     height: 100px;
 }
+#allowUL > li > ul > li {
+    color: #bcbcbc;
+}
+#dennyUL > li > ul > li {
+    color: #bcbcbc;
+}
 #allow-permissions > .permissions{
     margin: 5px 0;
 }

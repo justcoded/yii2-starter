@@ -56,7 +56,11 @@ use justcoded\yii2\rbac\forms\ItemForm;
 	            <?= Html::label($model->getAttributeLabel('deny_permissions')) ?>
                 <input type="text" id="denySearch" class="form-control" placeholder="Search...">
                 <div id="deny-permissions">
-                    <ul></ul>
+                    <ul id="dennyUL">
+	                    <?php if ($model->treeDennyPermissions()): ?>
+		                    <?= $model->treeDennyPermissions() ?>
+	                    <?php endif; ?>
+                    </ul>
                 </div>
             </div>
 

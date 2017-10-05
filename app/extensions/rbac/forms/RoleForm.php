@@ -50,7 +50,6 @@ class RoleForm extends ItemForm
 	public function beforeValidate()
 	{
 		$this->type = Role::TYPE_ROLE;
-		$this->permissions = explode(',', $this->allow_permissions);
 		return parent::beforeValidate();
 	}
 
@@ -87,13 +86,42 @@ class RoleForm extends ItemForm
 	}
 
 
-	public function arrayAllowPermissions()
+	/**
+	 * @return string
+	 */
+	public function treeDennyPermissions()
 	{
 		$permissions = Yii::$app->authManager->getPermissions();
 
-		if(!$permissions){
-			return false;
+		if (!empty($this->name)){
+			$allow_permissions =Yii::$app->authManager->getPermissionsByRole($this->name);
+			foreach ($allow_permissions as $name => $item) {
+				unset($permissions[$name]);
+			}
 		}
+
+		return $this->treePermissions($permissions);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function treeAllowPermissions()
+	{
+		if (!empty($this->name)){
+			$permissions =Yii::$app->authManager->getPermissionsByRole($this->name);
+		}else{
+			$permissions = Yii::$app->authManager->getPermissions();
+		}
+
+		return $this->treePermissions($permissions);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function treePermissions(array $permissions)
+	{
 		ArrayHelper::remove($permissions, '*');
 
 		$data = [];
@@ -122,21 +150,13 @@ class RoleForm extends ItemForm
 			$data[$name] = [];
 		}
 
-		return $data;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function treeAllowPermissions()
-	{
 		$html = '';
-		foreach ($this->arrayAllowPermissions() as $parent => $children){
-			$html .= '<li class="permissions">'. $parent;
+		foreach ($data as $parent => $children){
+			$html .= '<li class="permissions" data-name='.$parent.'>'. $parent;
 			if (!empty($children)){
 				$html .= '<ul>';
 					foreach ($children as $child){
-						$html .= "<li class='permissions'>$child</li>";
+						$html .= "<li>$child</li>";
 					}
 				$html .= '</ul>';
 			}
@@ -182,18 +202,10 @@ class RoleForm extends ItemForm
 			$this->addChildrenArray($this->inherit_permissions, ['parent' => $new_role], false);
 		}
 
-		if ($this->permissions) {
+		if ($this->allow_permissions) {
+			$this->permissions = explode(',', $this->allow_permissions);
 			$this->addChildrenArray($this->permissions, ['parent' => $new_role]);
 		}
-
-//		if ($data->deny_permissions){
-//			$deny_permissions = explode(',', $data->deny_permissions);
-//			foreach ($deny_permissions as $permission) {
-//				if($permission_for_remove = AuthItemChild::find()->where(['parent' => $name, 'child' => $permission])->one()) {
-//					$permission_for_remove->delete();
-//				}
-//			}
-//		}
 
 		return true;
 	}

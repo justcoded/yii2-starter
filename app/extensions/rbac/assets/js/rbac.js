@@ -1,12 +1,12 @@
 jQuery(document).on('click', '#allow-permissions > ul > li.permissions', function() {
-  jQuery('#deny-permissions ul').append(jQuery(this));
+  jQuery('#deny-permissions ul#dennyUL').append(jQuery(this));
 });
 jQuery(document).on('click', '#deny-permissions > ul > li.permissions', function() {
-  jQuery('#allow-permissions ul').append(jQuery(this));
+  jQuery('#allow-permissions ul#allowUL').append(jQuery(this));
 });
 jQuery(document).on('click', '', function() {
   var dataList = jQuery("#allow-permissions > ul > li.permissions").map(function() {
-    return $(this).get('li');
+    return $(this).data("name");
   }).get();
   var dataListDeny = jQuery("#deny-permissions > .permissions").map(function() {
     return $(this).data("name");
