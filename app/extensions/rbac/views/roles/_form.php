@@ -24,11 +24,11 @@ use yii\bootstrap\ActiveForm;
         <p class="text-center">* Permissions will be updated only after Save</p>
 
         <?= $form->field($model, 'allow_permissions')
-            ->textInput(['value' => $model->allowPermissions])
+            ->hiddenInput(['value' => $model->allowPermissions])
             ->label(false); ?>
 
 		<?= $form->field($model, 'deny_permissions')
-            ->textInput()
+            ->hiddenInput()
             ->label(false); ?>
 
         <div class="row">

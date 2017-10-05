@@ -5,8 +5,8 @@ jQuery(document).on('click', '#deny-permissions > ul > li.permissions', function
   jQuery('#allow-permissions ul').append(jQuery(this));
 });
 jQuery(document).on('click', '', function() {
-  var dataList = jQuery("#allow-permissions > .permissions").map(function() {
-    return $(this).data("name");
+  var dataList = jQuery("#allow-permissions > ul > li.permissions").map(function() {
+    return $(this).get('li');
   }).get();
   var dataListDeny = jQuery("#deny-permissions > .permissions").map(function() {
     return $(this).data("name");
