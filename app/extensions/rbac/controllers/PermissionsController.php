@@ -121,10 +121,9 @@ class PermissionsController extends Controller
 	}
 
 	/**
-	 * @param $name
 	 * @return Response
 	 */
-	public function actionDelete($name)
+	public function actionDelete()
 	{
 		if(!$post_data = Yii::$app->request->post('PermissionForm')){
 			return $this->redirect(['index']);

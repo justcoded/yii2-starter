@@ -15,7 +15,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
 	<div class="box-body">
 		<?= $form->field($model, 'name')->textInput([
 		        'maxlength' => true,
-		        'disabled' => $model->scenario == ItemForm::SCENARIO_CREATE ? false : true
+		        'readonly' => $model->scenario == ItemForm::SCENARIO_CREATE ? false : true
             ]) ?>
 
 		<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
