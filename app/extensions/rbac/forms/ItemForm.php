@@ -32,6 +32,7 @@ class ItemForm extends Model
 	{
 		return  [
 			[['type', 'name'], 'required'],
+			[['name', 'ruleName'], 'trim'],
 			[['name', 'description', 'ruleName', 'data'], 'string'],
 			[['type', 'createdAt', 'updatedAt'], 'integer'],
 			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
