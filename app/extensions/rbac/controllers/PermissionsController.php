@@ -43,7 +43,7 @@ class PermissionsController extends Controller
 
 		$dataProviderPermissions = $searchModel->searchPermissions(Yii::$app->request->queryParams);
 
-		return $this->render('/index', [
+		return $this->render('index', [
 			'searchModel' => $searchModel,
 			'dataProviderRoles' => $dataProviderRoles,
 			'dataProviderPermissions' => $dataProviderPermissions,

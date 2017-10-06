@@ -2,51 +2,51 @@
 
 namespace justcoded\yii2\rbac\models;
 
+use yii\base\Model;
 use yii\data\ArrayDataProvider;
+use yii\rbac\Role as RbacRole;
+use yii\rbac\Permission as RbacPermission;
 use Yii;
 
 
-class ItemSearch extends Item
+class ItemSearch extends Model
 {
-
-	public $name;
-	public $role;
-	public $roles;
+	public $roleName;
+	public $permName;
+	public $permRole;
 
 	/**
 	 * @inheritdoc
 	 */
 	public function rules()
 	{
+		$roles = array_keys(Yii::$app->authManager->getRoles());
 		return [
-			[['name', 'role', 'roles'], 'safe'],
+			[['roleName', 'permName'], 'string'],
+			[['permRole'], 'in', 'range' => $roles],
 		];
 	}
 
 	/**
 	 * @param $params
+	 *
 	 * @return ArrayDataProvider
 	 */
 	public function searchRoles($params)
 	{
-		$array = Yii::$app->authManager->getRoles();
+		$this->load($params);
 
-		if (isset($params['role'])){
-			foreach ($array as $name => $role){
-				$pattern = '/'.addcslashes($params['role'], '/').'/i';
-				if (!preg_match( $pattern, $name)){
-					unset($array[$name]);
-				}
-			}
+		$roles = Yii::$app->authManager->getRoles();
+		if ($this->roleName) {
+			$roles = array_filter($roles, function (RbacRole $role) {
+				return false !== strpos(strtolower($role->name), $this->roleName);
+			});
 		}
 
 		$dataProvider = new ArrayDataProvider([
-			'allModels' => $array,
+			'allModels'  => $roles,
 			'pagination' => [
-				'pageSize' => 10,
-			],
-			'sort' => [
-				'attributes' => ['name'],
+				'pageSize' => 20,
 			],
 		]);
 
@@ -55,75 +55,68 @@ class ItemSearch extends Item
 
 	/**
 	 * @param $params
+	 *
 	 * @return ArrayDataProvider
 	 */
 	public function searchPermissions($params)
 	{
-		$array = Yii::$app->authManager->getPermissions();
+		$this->load($params);
 
-		if (isset($params['roles']) || isset($params['permission'])){
+		$permissions = $this->permRole ? Yii::$app->authManager->getPermissionsByRole($this->permRole) :
+			Yii::$app->authManager->getPermissions();
 
-			if (!empty($params['roles'])){
-				$array = Yii::$app->authManager->getPermissionsByRole($params['roles']);
-			}else {
-				$array = Yii::$app->authManager->getPermissions();
-			}
-
-			if(!empty($params['permission'])){
-				foreach ($array as $name => $permission) {
-					$pattern = '/' . addcslashes($params['permission'], '/') . '/i';
-					if (!preg_match($pattern, $name)) {
-						unset($array[$name]);
-					}
-				}
-			}
+		if ($this->permName) {
+			$permissions = array_filter($permissions, function (RbacPermission $permission) {
+				return false !== strpos(strtolower($permission->name), $this->permName);
+			});
 		}
 
 		$dataProvider = new ArrayDataProvider([
-			'allModels' => $array,
+			'allModels'  => $permissions,
 			'pagination' => [
-				'pageSize' => 10,
-			],
-			'sort' => [
-				'attributes' => ['name'],
+				'pageSize' => 20,
 			],
 		]);
+
 		return $dataProvider;
 	}
 
 	/**
 	 * @return array
 	 */
-	public  static function getRoleByPermission()
+	public static function getRoleByPermission($permissionName)
 	{
 		$roles = Yii::$app->authManager->getRoles();
 
 		$array = [];
-		foreach ($roles as $role){
+		foreach ($roles as $role) {
 			$permissions = Yii::$app->authManager->getPermissionsByRole($role->name);
 			foreach ($permissions as $permission) {
-				if(!isset($array[$permission->name])){
-					$array[$permission->name] = '';
+				if ($permissionName == $permission->name) {
+					$array[] = $role->name;
 				}
-				$array[$permission->name] .= $role->name.'<br>';
 			}
 
 		}
+
 		return $array;
 	}
 
 	/**
 	 * @param $parent
+	 *
 	 * @return mixed|string
 	 */
 	public static function getInherit($parent)
 	{
-		if($children = Yii::$app->authManager->getChildren($parent)){
-			foreach ($children as $child){
-				if($child->type == static::TYPE_ROLE){
-					return $child->name;
+		$array = [];
+		if ($children = Yii::$app->authManager->getChildren($parent)) {
+			foreach ($children as $child) {
+				if ($child->type == Item::TYPE_ROLE) {
+					$array[] = $child->name;
 				}
 			}
 		}
+		return $array;
 	}
 }
