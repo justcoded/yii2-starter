@@ -2,6 +2,7 @@
 
 namespace justcoded\yii2\rbac\commands;
 
+use justcoded\yii2\rbac\forms\ScanForm;
 use justcoded\yii2\rbac\models\Item;
 use Yii;
 use yii\base\InvalidParamException;
@@ -15,12 +16,53 @@ use yii\rbac\Rule;
 
 class RbacController extends Controller
 {
-	public $prefix;
-
-	protected $itemsCache;
+	/**
+	 * @var string Path to scan.
+	 */
+	public $path = '@app';
 
 	/**
-	 * Init default roles
+	 * @var string Paths to ignore.
+	 * Use comma to specify several paths.
+	 */
+	public $ignorePath = [];
+
+	/**
+	 * @var string Routes base prefix to be added to all found routes
+	 */
+	public $routesBase = '';
+
+	/**
+	 * @inheritdoc
+	 *
+	 * @return array|string[]
+	 */
+	public function options($actionID)
+	{
+		if ('scan' === $actionID) {
+			return ['path', 'ignorePath', 'routesBase'];
+		} else {
+			return parent::options($actionID);
+		}
+	}
+
+	/**
+	 * @inheritdoc
+	 *
+	 * @return array
+	 */
+	public function optionAliases()
+	{
+		return [
+			'p' => 'path',
+			'i' => 'ignorePath',
+			'b' => 'routesBase',
+		];
+	}
+
+	/**
+	 * Init default roles, master and administer permissions.
+	 *
 	 * @return int
 	 */
 	public function actionInit()
@@ -54,17 +96,6 @@ class RbacController extends Controller
 
 		$this->success("Finished.");
 		return ExitCode::OK;
-	}
-
-	/**
-	 * @param string $actionID
-	 * @return array
-	 */
-	public function options($actionID)
-	{
-		return array_merge(parent::options($actionID), [
-			'prefix'
-		]);
 	}
 
 	/**
@@ -134,162 +165,31 @@ class RbacController extends Controller
 	 *      runs recursive search for *Controller.php, ignores files, which specified in ignorePath
 	 *      register auth Permissions based on Controller public actions (methods in format "action{something}")
 	 *
-	 * @param string $directory
-	 * @param array  $ignorePath
-	 *
 	 * @return int
 	 */
-	public function actionScan($directory = '@app',  array $ignorePath = ['app/console', 'app/extensions'])
+	public function actionScan()
 	{
-		$path = Yii::getAlias($directory);
-		$controllers = $this->scanDirectory($path, $ignorePath);
-		$this->warning('Found ' . count($controllers) . ' controllers');
+		$scanner = new ScanForm();
+		$scanner->path = $this->path;
+		$scanner->ignorePath = $this->ignorePath;
+		$scanner->routesBase = $this->routesBase;
 
-		$actionRoutes = $this->scanControllerRoutes($controllers);
-		$this->line("\tfound " . count($actionRoutes) . ' routes');
+		$this->warning('Scanning directory for controllers and routes...');
 
-		// TODO: support /* permission
-
-		$auth = Yii::$app->authManager;
-		$parents = [];
-
-		$inserted = 0;
-		foreach ($actionRoutes as $route) {
-			if (! $auth->getPermission($route)) {
-				$wildcard = $this->getRouteWildcardPermission($this->prefix . $route, 'Route ');
-				$this->addPermission($this->prefix . $route, 'Route ' . $this->prefix . $route, null, [$wildcard]);
-				$inserted++;
+		if ($actionRoutes = $scanner->scan()) {
+			$this->line("\tfound " . count($actionRoutes) . ' routes');
+			$inserted = $scanner->importPermissions($actionRoutes);
+			foreach ($inserted as $route => $status) {
+				$this->line("\t\tadded " . $route);
 			}
+
+			$inserted = count($inserted);
+			$this->success("Inserted {$inserted} new permissions.");
+		} else {
+			$this->line("No routes to import");
 		}
 
-		$this->success("Inserted {$inserted} new permissions.");
 		return ExitCode::OK;
-	}
-
-	/**
-	 * Recursive scan of directory searching the controllers.
-	 *
-	 * @param string $directory
-	 * @param array  $ignorePath
-	 *
-	 * @return array
-	 */
-	protected function scanDirectory(string $directory, array $ignorePath)
-	{
-		$ignoreRegexp = false;
-		if (! empty($ignorePath) && is_array($ignorePath)) {
-			$ignoreRegexp = '('.implode('|', $ignorePath).')';
-		}
-
-		// register iterator to find files
-		$dirIt = new \RecursiveDirectoryIterator($directory);
-		$it = new \RecursiveIteratorIterator($dirIt);
-
-		// get all controllers
-		$allControllers = new \RegexIterator(
-			$it,
-			'/^.+Controller\.php$/',
-			\RecursiveRegexIterator::GET_MATCH
-		);
-		// find controllers, which should be ignored
-		$ignoredControllers = new \RegexIterator(
-			$allControllers,
-			"#^.+{$ignoreRegexp}.+Controller\.php$#",
-			\RecursiveRegexIterator::GET_MATCH,
-			\RecursiveRegexIterator::USE_KEY
-		);
-
-		$allControllers = array_keys(iterator_to_array($allControllers));
-		$ignoredControllers = array_keys(iterator_to_array($ignoredControllers));
-
-		$controllers = array_diff($allControllers, $ignoredControllers);
-		return $controllers;
-	}
-
-	/**
-	 * Scan controllers by filenames to find their public action routes.
-	 *
-	 * @param array $controllers
-	 *
-	 * @return array
-	 */
-	protected function scanControllerRoutes(array $controllers)
-	{
-		$actions = [];
-		foreach ($controllers as $filename) {
-			$content = file_get_contents($filename);
-
-			// ignore abstract classes
-			if (false !== strpos($content, 'abstract class')) {
-				continue;
-			}
-
-			if (! preg_match('/namespace\s+([a-z0-9_\\\\]+)/i', $content, $namespaceMatch)) {
-				continue;
-			}
-
-			if (! preg_match('/class\s+(([a-z0-9_]+)Controller)[^{]+{/i', $content, $classMatch)) {
-				continue;
-			}
-
-			$className = '\\' . $namespaceMatch[1] . '\\' . $classMatch[1];
-			$reflection = new \ReflectionClass($className);
-			$methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
-
-			$moduleId = '';
-			if (preg_match('/modules\\\\([a-z0-9_-]+)\\\\/i', $reflection->getNamespaceName(), $moduleMatch)) {
-				$moduleId = Inflector::slug(Inflector::camel2words($moduleMatch[1])) . '/';
-			}
-
-			foreach ($methods as $method) {
-				if (! preg_match('/^action([A-Z]([a-zA-Z0-9]+))$/', $method->getName(), $actionMatch)
-					&& !('actions' === $method->getName() && $reflection->getName() === $method->class)
-				) {
-					continue;
-				}
-				$controllerId = Inflector::slug(Inflector::camel2words($classMatch[2]));
-
-				if ('actions' === $method->getName()) {
-					try {
-						$controllerObj = Yii::createObject($method->class, [$controllerId, Yii::$app]);
-						$customActions = $controllerObj->actions();
-						foreach ($customActions as $actionId => $params) {
-							$actions[] = $moduleId . $controllerId . '/' . $actionId;
-						}
-					} catch (\Exception $e) {
-						$this->error("\t\tcan't scan custom actions from {$method->class}::actions(). You will need to add them manually.");
-					}
-
-				} else {
-					$actionId = Inflector::slug(Inflector::camel2words($actionMatch[1]));
-					$actions[] = $moduleId . $controllerId . '/' . $actionId;
-				}
-			}
-		}
-
-		return $actions;
-	}
-
-	/**
-	 * Find route wildcard permission (controller/*).
-	 * Creates if not exists
-	 *
-	 * @param string $routeName
-	 * @param string $descrPrefix
-	 *
-	 * @return Permission
-	 */
-	protected function getRouteWildcardPermission($routeName, $descrPrefix = 'Route ')
-	{
-		$wildcardName = dirname($routeName) . '/*';
-
-		if (! isset($this->itemsCache[$wildcardName])) {
-			$this->itemsCache[$wildcardName] = Yii::$app->authManager->getPermission($wildcardName);
-			if (! $this->itemsCache[$wildcardName]) {
-				$this->itemsCache[$wildcardName] = $this->addPermission($wildcardName, $descrPrefix . $wildcardName);
-			}
-		}
-		return $this->itemsCache[$wildcardName];
 	}
 
 	/**

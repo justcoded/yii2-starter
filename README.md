@@ -128,7 +128,7 @@ php yii rbac/assign-master 1
 php yii rbac/scan
  
  ```for scan routes extension/rbac```
- php yii rbac/scan 'app/extensions' 'admin/rbac/'
+ php yii rbac/scan -p='app/extensions' -b='admin/rbac/'
 ```
 
 Now you should be able to access the application through the following URL, assuming `my-project` is the directory
