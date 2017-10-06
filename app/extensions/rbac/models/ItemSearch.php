@@ -33,7 +33,7 @@ class ItemSearch extends Item
 
 		if (isset($params['role'])){
 			foreach ($array as $name => $role){
-				$pattern = '/'.$params['role'].'/i';
+				$pattern = '/'.addcslashes($params['role'], '/').'/i';
 				if (!preg_match( $pattern, $name)){
 					unset($array[$name]);
 				}
@@ -71,7 +71,7 @@ class ItemSearch extends Item
 
 			if(!empty($params['permission'])){
 				foreach ($array as $name => $permission) {
-					$pattern = '/' . $params['permission'] . '/i';
+					$pattern = '/' . addcslashes($params['permission'], '/') . '/i';
 					if (!preg_match($pattern, $name)) {
 						unset($array[$name]);
 					}

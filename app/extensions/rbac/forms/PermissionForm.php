@@ -28,6 +28,7 @@ class PermissionForm extends ItemForm
 		return ArrayHelper::merge(parent::rules(), [
 			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\\\]*$/i'],
 			['ruleName', 'issetClass'],
+			['name', 'match', 'pattern' => '/^[a-z\-\/]*$/'],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
 		]);
 	}
