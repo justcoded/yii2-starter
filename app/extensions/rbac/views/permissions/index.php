@@ -23,8 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			<div class="panel box">
 				<div class="panel-header box-header with-border">
-					<?= Html::a('Add Role', ['roles/create'], ['class' => 'btn btn-xs btn-success pull-right']); ?>
-					<h3 class="box-title">Roles</h3>
+					<h3 class="box-title">Roles
+						&nbsp;
+						<?= Html::a('Add Role', ['roles/create'], ['class' => 'btn btn-xs btn-success']); ?>
+					</h3>
 				</div>
 				<div class="panel-body box-body">
 					<?= GridView::widget([
@@ -65,9 +67,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="col-md-6">
 			<div class="panel box">
 				<div class="panel-header box-header with-border">
-					<?= Html::a('Scan Routes', ['permissions/scan'], ['class' => 'btn btn-xs btn-default pull-right col-md-offset-1']); ?>
-					<?= Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-xs btn-success pull-right']); ?>
-					<h3 class="box-title">Permissions</h3>
+					<h3 class="box-title">Permissions
+						&nbsp;
+						<?= Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-xs btn-success']); ?>
+						<?= Html::a('Scan Routes', ['permissions/scan'], ['class' => 'btn btn-xs btn-default']); ?>
+					</h3>
 				</div>
 				<div class="panel-body box-body">
 					<?= GridView::widget([
