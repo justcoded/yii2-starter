@@ -27,7 +27,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
         <p class="text-center">* Permissions will be updated only after Save</p>
 
         <?= $form->field($model, 'allow_permissions')
-            ->textInput(['value' => $model->allowPermissions])
+            ->hiddenInput(['value' => $model->allowPermissions])
             ->label(false); ?>
 
 		<?= $form->field($model, 'deny_permissions')

@@ -16,6 +16,13 @@ jQuery(document).on('click', '#deny-permissions li', function(event) {
   jQuery('#allow-permissions ul#allowUL').append($this);
 });
 jQuery(document).on('click', '', function() {
+  //
+  // var dataList = jQuery("#allowUL > li").filter(function(element){console.log(element);
+  //   return element.id == 1;
+  // }).map(function() {
+  //   return $(this).text();
+  // });
+
   var dataList = jQuery("#allowUL > li").map(function() {
     return $(this).text();
   }).get();

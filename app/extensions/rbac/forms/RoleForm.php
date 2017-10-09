@@ -2,7 +2,6 @@
 
 namespace justcoded\yii2\rbac\forms;
 
-use justcoded\yii2\rbac\models\Item;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Role;
 use Yii;
