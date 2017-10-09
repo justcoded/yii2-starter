@@ -41,9 +41,9 @@ use justcoded\yii2\rbac\forms\ItemForm;
                 <input type="text" id="allowSearch" class="form-control" placeholder="Search...">
                 <div id="allow-permissions">
                     <ul id="allowUL">
-	                <?php if ($model->treeAllowPermissions()): ?>
+<!--	                --><?php //if ($model->treeAllowPermissions()): ?>
                         <?= $model->treeAllowPermissions() ?>
-	                <?php endif; ?>
+<!--	                --><?php //endif; ?>
                     </ul>
                 </div>
             </div>
@@ -58,9 +58,9 @@ use justcoded\yii2\rbac\forms\ItemForm;
                 <input type="text" id="denySearch" class="form-control" placeholder="Search...">
                 <div id="deny-permissions">
                     <ul id="dennyUL">
-	                    <?php if ($model->treeDennyPermissions()): ?>
+<!--	                    --><?php //if ($model->treeDennyPermissions()): ?>
 		                    <?= $model->treeDennyPermissions() ?>
-	                    <?php endif; ?>
+<!--	                    --><?php //endif; ?>
                     </ul>
                 </div>
             </div>

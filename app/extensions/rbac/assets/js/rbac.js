@@ -1,22 +1,39 @@
-jQuery(document).on('click', '#allow-permissions > ul > li.permissions', function() {
+jQuery(document).on('click', '#allow-permissions li', function() {
   jQuery('#deny-permissions ul#dennyUL').append(jQuery(this));
 });
-jQuery(document).on('click', '#deny-permissions > ul > li.permissions', function() {
-  jQuery('#allow-permissions ul#allowUL').append(jQuery(this));
+jQuery(document).on('click', '#deny-permissions li', function(event) {
+  event.stopPropagation();
+  var $this = $(this);
+  if($this.hasClass('permissions')){
+    var element = $('#allow-permissions li').filter(function() {
+      return $(this).data('parent-name') === $this.data('name');
+    });
+    element.appendTo($this.find('ul'));
+  }else{
+    var parentName = $this.closest('.permissions').data('name');
+    $this.data('parent-name', parentName);
+  }
+  jQuery('#allow-permissions ul#allowUL').append($this);
 });
 jQuery(document).on('click', '', function() {
-  var dataList = jQuery("#allow-permissions > ul > li.permissions").map(function() {
-    return $(this).data("name");
+  //
+  // var dataList = jQuery("#allowUL > li").filter(function(element){console.log(element);
+  //   return element.id == 1;
+  // }).map(function() {
+  //   return $(this).text();
+  // });
+
+  var dataList = jQuery("#allowUL > li").map(function() {
+    return $(this).text();
   }).get();
-  var dataListDeny = jQuery("#deny-permissions > .permissions").map(function() {
-    return $(this).data("name");
+  var dataListDeny = jQuery("#denyUL > li").map(function() {
+    return $(this).text();
   }).get();
   jQuery('#roleform-allow_permissions').val(dataList);
   jQuery('#roleform-deny_permissions').val(dataListDeny);
 });
 jQuery(document).on('click', '#parent_roles_search', function() {
   var title = jQuery('#select2-permissionform-parent_roles_search-container').attr('title');
-  console.log(title);
   jQuery('#parent_roles_list .table').append(divWrapper(title));
 });
 jQuery(document).on('click', '#parent_permissions_search', function() {

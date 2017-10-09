@@ -10,6 +10,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\web\Controller;
 use justcoded\yii2\rbac\models\ItemSearch;
+use justcoded\yii2\rbac\forms\ScanForm;
 
 /**
  * PermissionsController implements the CRUD actions for AuthItems model.
@@ -48,22 +49,6 @@ class PermissionsController extends Controller
 			'dataProviderRoles' => $dataProviderRoles,
 			'dataProviderPermissions' => $dataProviderPermissions,
 		]);
-	}
-
-	/**
-	 * @return \yii\web\Response
-	 */
-	public function actionScanRoutes()
-	{
-		$file = '@app/../yii';
-		$action = 'rbac/scan';
-
-		$cmd = PHP_BINDIR . '/php ' . Yii::getAlias($file) . ' ' . $action;
-		if (pclose(popen($cmd . ' > /dev/null &', 'r'))) {
-			Yii::$app->session->setFlash('success', 'Routes scanned success.');
-		}
-
-		return $this->redirect(['index']);
 	}
 
 	/**
@@ -136,6 +121,26 @@ class PermissionsController extends Controller
 		}
 
 		return $this->redirect(['index']);
+	}
+
+	/**
+	 * @return string|Response
+	 */
+	public function actionScan()
+	{
+		$model = new ScanForm();
+
+		if($model->load(Yii::$app->request->post()) && $model->validate()){
+			if ($model->scan()) {
+				Yii::$app->session->setFlash('success', 'Routes scanned success.');
+			}
+
+			return $this->redirect(['index']);
+		}
+
+		return $this->render('scan', [
+			'model' => $model,
+		]);
 	}
 }
 
