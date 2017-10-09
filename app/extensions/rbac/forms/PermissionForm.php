@@ -12,14 +12,15 @@ use yii\helpers\ArrayHelper;
 
 class PermissionForm extends ItemForm
 {
+	/**
+	 * @var string
+	 */
+	public $ruleClass;
 
-	public $parent_roles;
-	public $parent_permissions;
-	public $children_permissions;
-
-	public $parent_roles_search;
-	public $parent_permissions_search;
-	public $children_permissions_search;
+	/**
+	 * @var Permission
+	 */
+	protected $permission;
 
 	/**
 	 * @inheritdoc
@@ -27,6 +28,7 @@ class PermissionForm extends ItemForm
 	public function init()
 	{
 		$this->type = RbacPermission::TYPE_PERMISSION;
+		$this->permission = new Permission();
 	}
 
 	/**
@@ -36,11 +38,24 @@ class PermissionForm extends ItemForm
 	public function rules()
 	{
 		return ArrayHelper::merge(parent::rules(), [
-			['name', 'match', 'pattern' => '/^[a-z\-\/]*$/'],
-			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\\\]*$/i'],
-			['ruleName', 'validRuleClass', 'skipOnEmpty' => true],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
+
+
+			['ruleClass', 'match', 'pattern' => '/^[a-z][\w\d\_\\\]*$/i'],
+			['ruleClass', 'validRuleClass', 'skipOnEmpty' => true],
 		]);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function attributeHints()
+	{
+		return [
+			'ruleClass' => 'This is the name of RBAC Rule class to be generated. 
+					It should be a fully qualified namespaced class name, 
+					e.g., <code>app\rbac\MyRule</code>',
+		];
 	}
 
 	/**
@@ -79,197 +94,77 @@ class PermissionForm extends ItemForm
 	}
 
 	/**
-	 * @return string
+	 * Load permission data to properties and set correct ruleClass
+	 *
+	 * @param Permission $permission
 	 */
-	public function getParentRolesString()
+	public function setPermission(Permission $permission)
 	{
-		$roles = $this->findRolesWithChildItem();
-
-		$string_roles = '';
-		foreach ($roles as $role_name => $role){
-			foreach ($role->data as $child_name => $child){
-				if ($child->name == $this->name){
-					$string_roles .= $role_name .',';
-				}
-			}
-		}
-
-		return substr($string_roles, 0, -1);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getParentPermissionsString()
-	{
-		$permissions = $this->findPermissionsWithChildItem();
-
-		$string_permissions = '';
-		foreach ($permissions as $name_permissions => $permission){
-			foreach ($permission->data as $child_name => $child){
-				if ($child->name == $this->name){
-					$string_permissions .= $name_permissions .',';
-				}
-			}
-		}
-
-		return substr($string_permissions, 0, -1);
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getChildrenPermissionsString()
-	{
-		$permissions = Yii::$app->authManager->getChildren($this->name);
-
-		return implode(',', array_keys($permissions));
+		$this->permission = $permission;
+		$this->load((array)$permission->getItem(), '');
+		$this->ruleClass = $this->getRuleClassName();
 	}
 
 	/**
+	 * Create single permission with rule name
+	 *
 	 * @return bool
 	 */
-	public function store()
+	public function save()
 	{
-
-		if(!$permission = Yii::$app->authManager->getPermission($this->name)){
-			$permission = Yii::$app->authManager->createPermission($this->name);
-			$permission->description = $this->description;
-			if (!empty($this->ruleName)){
-				$permission->ruleName = $this->ruleName;
-			}
-			if(!Yii::$app->authManager->add($permission)){
-				return false;
-			}
-		}else{
-			$permission->description = $this->description;
-
-			$permission->ruleName = (!empty($this->ruleName)) ? $this->ruleName : null;
-
-			Yii::$app->authManager->update($this->name, $permission);
+		if (! $this->validate()) {
+			return false;
 		}
 
-		$this->storeParentRoles();
-		$this->storeParentPermissions();
-		$this->storeChildrenPermissions();
-
-		return true;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function storeParentRoles()
-	{
-		$permission = Yii::$app->authManager->getPermission($this->name);
-
-		$this->removeChildrenArray($this->parentRoles, $permission);
-
-		if (!empty($this->parent_roles)){
-			return $this->addChildrenArray(explode(',', $this->parent_roles), ['child' => $permission], false);
+		if (! $item = $this->permission->getItem()) {
+			$item = Permission::create($this->name, $this->description);
 		}
 
-		return true;
+		$item->description = $this->description;
+		if ($this->ruleClass) {
+			$rule = $this->getRule($this->ruleClass);
+			$item->ruleName = $rule->name;
+		}
+
+
+		return Yii::$app->authManager->update($item->name, $item);
 	}
 
 	/**
-	 * @return bool
+	 * Get RBAC Rule object
+	 * create/register in case rule doesn't exists
+	 *
+	 * @param string $className
+	 *
+	 * @return object|\yii\rbac\Rule
 	 */
-	public function storeParentPermissions()
+	public function getRule($className)
 	{
-		$permission = Yii::$app->authManager->getPermission($this->name);
-
-		$this->removeChildrenArray($this->parentPermissions, $permission);
-
-		if (!empty($this->parent_permissions)){
-			return $this->addChildrenArray(explode(',', $this->parent_permissions), ['child' => $permission]);
-		}
-
-		return true;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function storeChildrenPermissions()
-	{
-		$permission = Yii::$app->authManager->getPermission($this->name);
-		Yii::$app->authManager->removeChildren($permission);
-
-		if (!empty($this->children_permissions)){
-			return $this->addChildrenArray(explode(',', $this->children_permissions), ['parent' => $permission]);
-		}
-
-		return true;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getParentPermissions()
-	{
-		$permissions = $this->findPermissionsWithChildItem();
-
-		$parent_permissions = [];
-		foreach ($permissions as $name_permission => $permission){
-			foreach ($permission->data as $child_name => $child){
-				if ($child->name == $this->name){
-					$parent_permissions[$name_permission] = $permission;
-				}
+		$rules = Yii::$app->authManager->getRules();
+		foreach ($rules as $rule) {
+			if (get_class($rule) === $className) {
+				return $rule;
 			}
 		}
 
-		return $parent_permissions;
+		// no rule found - creating rule
+		$rule = Yii::createObject("\\" . $className);
+		Yii::$app->authManager->add($rule);
+		return $rule;
 	}
 
 	/**
-	 * @return array
+	 * Find rule namespaced class name by current ruleName
+	 *
+	 * @return null|string
 	 */
-	public function getParentRoles()
+	public function getRuleClassName()
 	{
-		$roles = $this->findRolesWithChildItem();
-
-		$parent_roles = [];
-		foreach ($roles as $name_role => $role){
-			foreach ($role->data as $child_name => $child){
-				if ($child->name == $this->name){
-					$parent_roles[$name_role] = $role;
-				}
-			}
+		if ($this->ruleName) {
+			$rule = Yii::$app->authManager->getRule($this->ruleName);
+			return get_class($rule);
 		}
-
-		return $parent_roles;
-	}
-
-	/**
-	 * @return \yii\rbac\Role[]
-	 */
-	public function findRolesWithChildItem()
-	{
-		$data = Yii::$app->authManager->getRoles();
-
-		foreach ($data as $role => $value){
-			$data[$role]->data = Yii::$app->authManager->getChildren($value->name);
-		}
-
-		return $data;
-	}
-
-	/**
-	 * @return \yii\rbac\Permission[]
-	 */
-	public function findPermissionsWithChildItem()
-	{
-		$data = Yii::$app->authManager->getPermissions();
-
-		foreach ($data as $permission => $value){
-			$data[$permission]->data = Yii::$app->authManager->getChildren($value->name);
-		}
-
-		return $data;
+		return null;
 	}
 
 }

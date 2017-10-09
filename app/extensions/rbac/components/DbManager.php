@@ -8,6 +8,9 @@ use yii\rbac\Permission;
 
 class DbManager extends \yii\rbac\DbManager
 {
+	/**
+	 * @var Permission|null
+	 */
 	protected $_masterPermission;
 
 	/**

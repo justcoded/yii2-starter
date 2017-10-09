@@ -3,11 +3,12 @@
 namespace justcoded\yii2\rbac\controllers;
 
 use justcoded\yii2\rbac\forms\PermissionForm;
+use justcoded\yii2\rbac\forms\PermissionRelForm;
+use justcoded\yii2\rbac\models\Permission;
 use Yii;
-use app\traits\controllers\FindModelOrFail;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\widgets\ActiveForm;
 use yii\web\Controller;
 use justcoded\yii2\rbac\models\ItemSearch;
 use justcoded\yii2\rbac\forms\ScanForm;
@@ -17,8 +18,6 @@ use justcoded\yii2\rbac\forms\ScanForm;
  */
 class PermissionsController extends Controller
 {
-	use FindModelOrFail;
-
 	/**
 	 * @inheritdoc
 	 */
@@ -29,6 +28,7 @@ class PermissionsController extends Controller
 				'class'   => VerbFilter::className(),
 				'actions' => [
 					'delete' => ['POST'],
+					'remove-relation' => ['POST'],
 				],
 			],
 		];
@@ -59,18 +59,10 @@ class PermissionsController extends Controller
 		$model = new PermissionForm();
 		$model->scenario = $model::SCENARIO_CREATE;
 
-		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::$app->session->setFlash('success', 'Permission saved successfully.');
 
-			return ActiveForm::validate($model);
-		}
-
-		if($model->load(Yii::$app->request->post())){
-			if ($model->store()) {
-				Yii::$app->session->setFlash('success', 'Permission saved success.');
-			}
-
-			return $this->redirect(['index']);
+			return $this->redirect(['update', 'name' => $model->name]);
 		}
 
 		return $this->render('create', [
@@ -79,50 +71,101 @@ class PermissionsController extends Controller
 	}
 
 	/**
-	 * @param $name
+	 * @param string $name
+	 *
 	 * @return array|string|Response
+	 * @throws NotFoundHttpException
 	 */
 	public function actionUpdate($name)
 	{
-		$perm = Yii::$app->authManager->getPermission($name);
-		$model = new PermissionForm($perm);
-
-		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
+		if (! $perm = Permission::find($name)) {
+			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
-		if($model->load(Yii::$app->request->post())){
-			if ($model->store()) {
-				Yii::$app->session->setFlash('success', 'Permission saved success.');
-			}
+		$model = new PermissionForm();
+		$model->setPermission($perm);
 
-			return $this->redirect(['index']);
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::$app->session->setFlash('success', 'Permission saved successfully.');
+
+			return $this->redirect(['update', 'name' => $model->name]);
 		}
 
+		$relModel = new PermissionRelForm();
 		return $this->render('update', [
-			'model' => $model
+			'model' => $model,
+			'permission' => $perm,
+			'relModel' => $relModel,
 		]);
 	}
 
 	/**
+	 * Delete a permission
+	 *
+	 * @param string $name
+	 *
 	 * @return Response
+	 * @throws NotFoundHttpException
 	 */
-	public function actionDelete()
+	public function actionDelete($name)
 	{
-		if(!$post_data = Yii::$app->request->post('PermissionForm')){
-			return $this->redirect(['index']);
+		if (! $perm = Permission::find($name)) {
+			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
-		$role = Yii::$app->authManager->getPermission($post_data['name']);
-
-		if (Yii::$app->authManager->remove($role)){
-			Yii::$app->session->setFlash('success', 'Permission removed success.');
+		if (Yii::$app->authManager->remove($perm->getItem())) {
+			Yii::$app->session->setFlash('success', 'Permission removed successfully.');
 		}
 
 		return $this->redirect(['index']);
 	}
 
+	/**
+	 * Add relations to a permission
+	 *
+	 * @param string $name
+	 *
+	 * @return Response
+	 * @throws NotFoundHttpException
+	 */
+	public function actionAddRelation($name)
+	{
+		if (! $perm = Permission::find($name)) {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$model = new PermissionRelForm();
+		if ($model->load(Yii::$app->request->post())) {
+			$model->setPermission($perm);
+			if ($model->addRelations()) {
+				Yii::$app->session->setFlash('success', 'New relations added successfully.');
+			} else {
+				$errors = $model->getFirstErrors();
+				Yii::$app->session->setFlash('warning', $errors ? reset($errors) : 'Some error occured.');
+			}
+		}
+
+		return $this->redirect(['update', 'name' => $name]);
+	}
+
+	/**
+	 * Remove relation from permission
+	 *
+	 * @param string $name
+	 * @param string $item
+	 * @param string $scenario
+	 *
+	 * @return Response
+	 */
+	public function actionRemoveRelation($name, $item, $scenario)
+	{
+		// TODO: finish action
+
+		return $this->redirect(['update', 'name' => $name]);
+	}
+
+
+	// TODO: check scan form
 	/**
 	 * @return string|Response
 	 */
@@ -130,7 +173,7 @@ class PermissionsController extends Controller
 	{
 		$model = new ScanForm();
 
-		if($model->load(Yii::$app->request->post()) && $model->validate()){
+		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 			if ($model->scan()) {
 				Yii::$app->session->setFlash('success', 'Routes scanned success.');
 			}

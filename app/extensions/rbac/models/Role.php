@@ -11,17 +11,52 @@ use yii\rbac\Rule as RbacRule;
 
 class Role
 {
+	/**
+	 * @var RbacRole Rbac item object.
+	 */
+	private $item;
+
+	/**
+	 * Role constructor.
+	 *
+	 * @param RbacRole|null $item
+	 */
+	public function __construct(RbacRole $item = null)
+	{
+		if ($item) {
+			$this->setItem($item);
+		}
+	}
+
+	/**
+	 * @param RbacRole|null $item
+	 */
+	public function setItem(RbacRole $item = null)
+	{
+		$this->item = $item;
+	}
+
+	/**
+	 * @return RbacRole
+	 */
+	public function getItem()
+	{
+		return $this->item;
+	}
 
 	/**
 	 * Alias for authManager getPermission
 	 *
 	 * @param string $name
 	 *
-	 * @return null|RbacRole
+	 * @return null|Role
 	 */
 	public static function find($name)
 	{
-		return Yii::$app->authManager->getRole($name);
+		if ($item = Yii::$app->authManager->getRole($name)) {
+			return new Role($item);
+		}
+		return null;
 	}
 
 	/**

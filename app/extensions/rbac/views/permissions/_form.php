@@ -1,21 +1,23 @@
 <?php
 
+/* @var $this \yii\web\View */
+/* @var $model \justcoded\yii2\rbac\forms\PermissionForm */
+/* @var $permission \justcoded\yii2\rbac\models\Permission */
+/* @var $relModel PermissionRelForm */
+
+use justcoded\yii2\rbac\forms\PermissionRelForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use kartik\select2\Select2;
-use yii\helpers\Url;
 use justcoded\yii2\rbac\forms\ItemForm;
 
 ?>
 
-<?php $form = ActiveForm::begin([
-	'id'                   => 'form-permission',
-	//'layout'               => 'horizontal',
-	'enableAjaxValidation' => true,
-]); ?>
-
 <div class="row">
 	<div class="col-md-7">
+		<?php $form = ActiveForm::begin([
+			'id' => 'form-permission',
+		]); ?>
 		<div class="panel box">
 			<div class="panel-header box-header with-border">
 				<h3 class="box-title">Permission Details</h3>
@@ -29,165 +31,70 @@ use justcoded\yii2\rbac\forms\ItemForm;
 
 				<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-				<?= $form->field($model, 'ruleName')->textInput() ?>
+				<?= $form->field($model, 'ruleClass')->textInput() ?>
 
-				<?= $form->field($model, 'parent_roles')
-					->hiddenInput(['value' => $model->parentRolesString])
-					->label(false)
-				?>
-				<?= $form->field($model, 'parent_permissions')
-					->hiddenInput(['value' => $model->parentPermissionsString])
-					->label(false)
-				?>
-				<?= $form->field($model, 'children_permissions')
-					->hiddenInput(['value' => $model->childrenPermissionsString])
-					->label(false)
-				?>
 			</div>
 			<div class="box-footer text-right">
 				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-				<?= Html::a('delete', ['delete', 'name' => $model->name],
-					['class' => 'delete', 'data-method' => 'post']) ?>
+				<?= Html::a(
+					'delete',
+					['delete', 'name' => $model->name],
+					[
+						'class' => 'text-danger',
+						'data' => [
+							'confirm' => 'Are you sure you want to delete this item?',
+							'method' => 'post',
+						],
+					]
+				) ?>
 			</div>
 		</div>
+		<?php ActiveForm::end(); ?>
 	</div>
+
+	<?php if (!empty($permission)) : ?>
 	<div class="col-md-5">
-		<div class="box">
-			<div class="box-header">
-				<h4>Roles</h4>
-			</div>
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-8">
-						<?= Select2::widget([
-							'model'         => $model,
-							'attribute'     => 'parent_roles_search',
-							'data'          => \justcoded\yii2\rbac\models\Role::getList(),
-							'options'       => ['placeholder' => 'Search roles ...'],
-							'pluginOptions' => [
-								'allowClear' => true
-							],
-						]); ?>
-					</div>
-					<div class="col-md-4">
-						<?= Html::button('Add', [
-							'class' => 'btn btn-md btn-default no-border-radius',
-							'style' => 'width:100%',
-							'id'    => 'parent_roles_search'
-						]) ?>
-					</div>
-				</div>
-				<div id="parent_roles_list">
-					<table class="table table-striped">
-						<tbody>
-						<?php if ($model->parentRolesString): ?>
-							<?php foreach (explode(',', $model->parentRolesString) as $role): ?>
-								<tr>
-									<td class="alert" data-name="<?= $role ?>">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-											&times;
-										</button>
-										<?= $role ?>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						<?php endif; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="box">
-			<div class="box-header">
-				<h4>Parents</h4>
-			</div>
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-8">
-						<?= Select2::widget([
-							'model'         => $model,
-							'attribute'     => 'parent_permissions_search',
-							'data'          => \justcoded\yii2\rbac\models\Permission::getList(),
-							'options'       => ['placeholder' => 'Search permissions ...'],
-							'pluginOptions' => [
-								'allowClear' => true
-							],
-						]); ?>
-					</div>
-					<div class="col-md-4">
-						<?= Html::button('Add', [
-							'class' => 'btn btn-md btn-default no-border-radius',
-							'style' => 'width:100%',
-							'id'    => 'parent_permissions_search'
-						]) ?>
-					</div>
-				</div>
-				<div id="parent_permissions_list">
-					<table class="table table-striped">
-						<tbody>
-						<?php if ($model->parentPermissionsString): ?>
-							<?php foreach (explode(',', $model->parentPermissionsString) as $permission): ?>
-								<tr>
-									<td class="alert" data-name="<?= $permission ?>">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-											&times;
-										</button>
-										<?= $permission ?>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						<?php endif; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="box">
-			<div class="box-header">
-				<h4>Children</h4>
-			</div>
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-8">
-						<?= Select2::widget([
-							'model'         => $model,
-							'attribute'     => 'children_permissions_search',
-							'data'          => \justcoded\yii2\rbac\models\Permission::getList(),
-							'options'       => ['placeholder' => 'Search permissions ...'],
-							'pluginOptions' => [
-								'allowClear' => true
-							],
-						]); ?>
-					</div>
-					<div class="col-md-4">
-						<?= Html::button('Add', [
-							'class' => 'btn btn-md btn-default no-border-radius',
-							'style' => 'width:100%',
-							'id'    => 'children_permissions_search'
-						]) ?>
-					</div>
-				</div>
-				<div id="children_permissions_list">
-					<table class="table table-striped">
-						<tbody>
-						<?php if ($model->childrenPermissionsString): ?>
-							<?php foreach (explode(',', $model->childrenPermissionsString) as $permission): ?>
-								<tr>
-									<td class="alert" data-name="<?= $permission ?>">
-										<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-											&times;
-										</button>
-										<?= $permission ?>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						<?php endif; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+		<?php
+
+		$relModel->scenario = PermissionRelForm::SCENARIO_ADDROLE;
+		echo $this->render('_rel-form', [
+				'title' => 'Asigned Roles',
+				'relModel' => $relModel,
+				'model' => $model,
+				'introMsg' => 'Permission is assigned to such roles:',
+				'emptyMsg' => 'Permission is not assigned to any roles.',
+				'searchMsg' => 'Search roles...',
+				'options' => \justcoded\yii2\rbac\models\Role::getList(),
+				'selected' => $permission->getRoles(),
+				'btnTxt' => 'Assign',
+		]);
+
+		$relModel->scenario = PermissionRelForm::SCENARIO_ADDPARENT;
+		echo $this->render('_rel-form', [
+				'title' => 'Parents',
+				'relModel' => $relModel,
+				'model' => $model,
+				'introMsg' => 'Permission is a <b>child</b> of such permissions:',
+				'emptyMsg' => 'Permission doesn\'t have parents.',
+				'searchMsg' => 'Search permissions...',
+				'options' => \justcoded\yii2\rbac\models\Permission::getList(),
+				'selected' => $permission->getParents(),
+				'btnTxt' => 'Add Parents',
+		]);
+
+		$relModel->scenario = PermissionRelForm::SCENARIO_ADDCHILD;
+		echo $this->render('_rel-form', [
+				'title' => 'Children',
+				'relModel' => $relModel,
+				'model' => $model,
+				'introMsg' => 'Permission is a <b>parent</b> of such permissions:',
+				'emptyMsg' => 'Permission doesn\'t have children.',
+				'searchMsg' => 'Search permissions...',
+				'options' => \justcoded\yii2\rbac\models\Permission::getList(),
+				'selected' => $permission->getChildren(),
+				'btnTxt' => 'Add Childs',
+		]); ?>
+	<?php endif; ?>
 </div>
 
-<?php ActiveForm::end(); ?>
+

@@ -11,18 +11,57 @@ use yii\rbac\Rule as RbacRule;
 
 class Permission
 {
+	/**
+	 * @var RbacPermission[]
+	 */
 	public static $itemsCache;
+
+	/**
+	 * @var RbacPermission Rbac item object.
+	 */
+	private $item;
+
+	/**
+	 * Role constructor.
+	 *
+	 * @param RbacPermission|null $item
+	 */
+	public function __construct(RbacPermission $item = null)
+	{
+		if ($item) {
+			$this->setItem($item);
+		}
+	}
+
+	/**
+	 * @param RbacPermission|null $item
+	 */
+	public function setItem(RbacPermission $item = null)
+	{
+		$this->item = $item;
+	}
+
+	/**
+	 * @return RbacPermission
+	 */
+	public function getItem()
+	{
+		return $this->item;
+	}
 
 	/**
 	 * Alias for authManager getPermission
 	 *
 	 * @param string $name
 	 *
-	 * @return null|RbacPermission
+	 * @return null|Permission
 	 */
 	public static function find($name)
 	{
-		return Yii::$app->authManager->getPermission($name);
+		if ($item = Yii::$app->authManager->getPermission($name)) {
+			return new Permission($item);
+		}
+		return null;
 	}
 
 	/**
@@ -93,5 +132,53 @@ class Permission
 			static::$itemsCache[$wildcardName] = $permission;
 		}
 		return static::$itemsCache[$wildcardName];
+	}
+
+	/**
+	 * Permission roles it's assigned to
+	 *
+	 * @return \yii\rbac\Role[]
+	 */
+	public function getRoles()
+	{
+		$parents = [];
+		$roles = Yii::$app->authManager->getRoles();
+		foreach ($roles as $role) {
+			$permissions = Yii::$app->authManager->getPermissionsByRole($role->name);
+			if (isset($permissions[$this->item->name])) {
+				$role->data['_inherit'] = ! Yii::$app->authManager->hasChild($role, $this->item);
+				$parents[$role->name] = $role;
+			}
+		}
+
+		return $parents;
+	}
+
+	/**
+	 * Permission direct parent permissions
+	 *
+	 * @return \yii\rbac\Permission[]
+	 */
+	public function getParents()
+	{
+		$parents = [];
+		$permissions = Yii::$app->authManager->getPermissions();
+		foreach ($permissions as $perm) {
+			if (Yii::$app->authManager->hasChild($perm, $this->item)) {
+				$parents[$perm->name] = $perm;
+			}
+		}
+
+		return $parents;
+	}
+
+	/**
+	 * Permission direct children permissions
+	 *
+	 * @return \yii\rbac\Permission[]|\yii\rbac\Item[]
+	 */
+	public function getChildren()
+	{
+		return Yii::$app->authManager->getChildren($this->item->name);
 	}
 }

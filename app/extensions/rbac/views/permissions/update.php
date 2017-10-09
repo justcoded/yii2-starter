@@ -14,6 +14,8 @@ $this->params['subheading']    = 'Update Permission';
 
 	<?= $this->render('_form', [
 		'model' => $model,
+		'permission' => $permission,
+		'relModel' => $relModel,
 	]) ?>
 
 </div>

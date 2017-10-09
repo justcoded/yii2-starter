@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: user
- * Date: 28/09/17
- * Time: 09:28
- */
 
 namespace justcoded\yii2\rbac\forms;
 
@@ -14,7 +8,6 @@ use yii\helpers\ArrayHelper;
 
 abstract class ItemForm extends Model
 {
-
 	const SCENARIO_CREATE = 'create';
 
 	public $name;
@@ -31,6 +24,7 @@ abstract class ItemForm extends Model
 	public function rules()
 	{
 		return  [
+			['name', 'match', 'pattern' => static::getNamePattern()],
 			[['type', 'name'], 'required'],
 			['name', 'uniqueItemName', 'on' => static::SCENARIO_CREATE],
 			[['name', 'ruleName'], 'trim'],
@@ -63,15 +57,13 @@ abstract class ItemForm extends Model
 	}
 
 	/**
-	 * @inheritdoc
+	 * RBAC Item name validation pattern
+	 *
+	 * @return string
 	 */
-	public function attributeHints()
+	public static function getNamePattern()
 	{
-		return [
-			'ruleName' => 'This is the name of RBAC Rule class to be generated. 
-					It should be a fully qualified namespaced class name, 
-					e.g., <code>app\rbac\MyRule</code>',
-		];
+		return '/^[a-z0-9\s\_\-\/]+$/i';
 	}
 
 	///=======================
