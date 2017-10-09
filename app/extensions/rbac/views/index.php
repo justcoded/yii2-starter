@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use justcoded\yii2\rbac\widgets\RbacGridView;
+use yii\grid\GridView;
 use justcoded\yii2\rbac\assets\RbacAssetBundle;
 use justcoded\yii2\rbac\models\ItemSearch;
 use yii\helpers\ArrayHelper;
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?=  Html::a('Add Role', ['roles/create'], ['class' => 'btn btn-sm btn-success']); ?>
                         </div>
                     </div>
-                    <?= RbacGridView::widget([
+                    <?= GridView::widget([
                         'dataProvider' => $dataProviderRoles,
                         'filterModel'  => $searchModel,
                         'columns'      => [
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?=  Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-sm btn-default']); ?>
                         </div>
                     </div>
-                    <?= RbacGridView::widget([
+                    <?= GridView::widget([
                         'dataProvider' => $dataProviderPermissions,
                         'filterModel'  => $searchModel,
                         'columns'      => [
