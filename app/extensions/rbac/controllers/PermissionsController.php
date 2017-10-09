@@ -156,10 +156,23 @@ class PermissionsController extends Controller
 	 * @param string $scenario
 	 *
 	 * @return Response
+	 * @throws NotFoundHttpException
 	 */
 	public function actionRemoveRelation($name, $item, $scenario)
 	{
-		// TODO: finish action
+		if (! $perm = Permission::find($name)) {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+
+		$model = new PermissionRelForm();
+		$model->setScenario($scenario);
+		$model->setPermission($perm);
+
+		if ($model->removeRelation($item)) {
+			Yii::$app->session->setFlash('success', 'Relations removed.');
+		} else {
+			Yii::$app->session->setFlash('warning', 'Some error occured.');
+		}
 
 		return $this->redirect(['update', 'name' => $name]);
 	}

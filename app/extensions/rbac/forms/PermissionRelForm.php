@@ -12,6 +12,9 @@ class PermissionRelForm extends Model
 	const SCENARIO_ADDPARENT = 'parent';
 	const SCENARIO_ADDCHILD = 'child';
 
+	/**
+	 * @var string[]
+	 */
 	public $names;
 
 	/**
@@ -19,6 +22,10 @@ class PermissionRelForm extends Model
 	 */
 	protected $permission;
 
+	/**
+	 * @inheritdoc
+	 * @return array
+	 */
 	public function rules()
 	{
 		return [
@@ -34,6 +41,11 @@ class PermissionRelForm extends Model
 		];
 	}
 
+	/**
+	 * List of available scenarios
+	 *
+	 * @return array
+	 */
 	public static function getScenarios()
 	{
 		return [
@@ -43,11 +55,21 @@ class PermissionRelForm extends Model
 		];
 	}
 
-	public function setPermission($permission)
+	/**
+	 * Setter for $permission
+	 *
+	 * @param Permission $permission
+	 */
+	public function setPermission(Permission $permission)
 	{
 		$this->permission = $permission;
 	}
 
+	/**
+	 * ADD form process method
+	 *
+	 * @return bool|int
+	 */
 	public function addRelations()
 	{
 		if (! $this->validate()) {
@@ -56,14 +78,9 @@ class PermissionRelForm extends Model
 
 		$added = 0;
 		foreach ($this->names as $name) {
-			$item = (static::SCENARIO_ADDROLE === $this->scenario) ?
-				Yii::$app->authManager->getRole($name) :
-				Yii::$app->authManager->getPermission($name);
+			list($parent, $child) = $this->getParentChild($name);
 
-			$parent = (static::SCENARIO_ADDCHILD === $this->scenario)? $this->permission->getItem() : $item;
-			$child = (static::SCENARIO_ADDCHILD === $this->scenario)? $item : $this->permission->getItem();
-
-			if ($item && ! Yii::$app->authManager->hasChild($parent, $child)) {
+			if ($parent && $child && ! Yii::$app->authManager->hasChild($parent, $child)) {
 				Yii::$app->authManager->addChild($parent, $child);
 				$added++;
 			}
@@ -71,4 +88,38 @@ class PermissionRelForm extends Model
 		return $added;
 	}
 
+	/**
+	 * REMOVE form process method
+	 *
+	 * @param string $itemName
+	 *
+	 * @return bool
+	 */
+	public function removeRelation($itemName)
+	{
+		list($parent, $child) = $this->getParentChild($itemName);
+		if (! $parent || ! $child || ! Yii::$app->authManager->hasChild($parent, $child)) {
+			return false;
+		}
+		return Yii::$app->authManager->removeChild($parent, $child);
+	}
+
+	/**
+	 * Helper to define correct parent and child
+	 *
+	 * @param string $itemName
+	 *
+	 * @return array
+	 */
+	public function getParentChild($itemName)
+	{
+		$item = (static::SCENARIO_ADDROLE === $this->scenario) ?
+			Yii::$app->authManager->getRole($itemName) :
+			Yii::$app->authManager->getPermission($itemName);
+
+		$parent = (static::SCENARIO_ADDCHILD === $this->scenario)? $this->permission->getItem() : $item;
+		$child = (static::SCENARIO_ADDCHILD === $this->scenario)? $item : $this->permission->getItem();
+
+		return [$parent, $child];
+	}
 }
