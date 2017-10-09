@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <h4>Permissions</h4>
                         </div>
                         <div class="col-sm-offset-6 col-md-offset-3">
-                            <?=  Html::a('Scan Routes', ['scan-routes'], ['class' => 'btn btn-sm btn-success']); ?>
+                            <?=  Html::a('Scan Routes', ['scan/'], ['class' => 'btn btn-sm btn-success']); ?>
                             <?=  Html::a('Add Permission', ['permissions/create'], ['class' => 'btn btn-sm btn-default']); ?>
                         </div>
                     </div>
