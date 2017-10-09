@@ -4,6 +4,7 @@ namespace justcoded\yii2\rbac\models;
 
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\rbac\Permission as RbacPermission;
 use yii\rbac\Role as RbacRole;
 use yii\rbac\Rule as RbacRule;
@@ -22,6 +23,18 @@ class Permission
 	public static function find($name)
 	{
 		return Yii::$app->authManager->getPermission($name);
+	}
+
+	/**
+	 * Return key-value pairs of all permission names
+	 *
+	 * @return array
+	 */
+	public static function getList()
+	{
+		$data = Yii::$app->authManager->getPermissions();
+
+		return ArrayHelper::map($data, 'name', 'name');
 	}
 
 	/**

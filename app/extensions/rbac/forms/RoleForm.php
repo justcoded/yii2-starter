@@ -3,8 +3,9 @@
 namespace justcoded\yii2\rbac\forms;
 
 use justcoded\yii2\rbac\models\Item;
+use justcoded\yii2\rbac\models\Role;
 use yii\helpers\ArrayHelper;
-use yii\rbac\Role;
+use yii\rbac\Role as RbacRole;
 use Yii;
 
 
@@ -23,35 +24,29 @@ class RoleForm extends ItemForm
 	 */
 	public function rules()
 	{
-		return  ArrayHelper::merge(parent::rules(),[
+		return  ArrayHelper::merge(parent::rules(), [
 			[['allow_permissions', 'deny_permissions', 'permissions', 'inherit_permissions'], 'safe']
 		]);
 	}
 
-
 	/**
-	 * @param $attribute
-	 * @return bool
+	 * @inheritdoc
 	 */
-	public function uniqueName($attribute)
+	public function init()
 	{
-		if (Yii::$app->authManager->getRole($this->getAttributes()['name'])) {
-			$this->addError($attribute, 'Name must be unique');
-
-			return false;
-		}
-
-		return true;
+		$this->type = RbacRole::TYPE_ROLE;
 	}
 
 	/**
-	 * @return bool
+	 * @inheritdoc
 	 */
-	public function beforeValidate()
+	public function uniqueItemName($attribute, $params, $validator)
 	{
-		$this->type = Role::TYPE_ROLE;
-		return parent::beforeValidate();
+		$permission = Role::getList();
+		return ! isset($permission[$this->$attribute]);
 	}
+
+	// TODO: refactor below
 
 
 	/**

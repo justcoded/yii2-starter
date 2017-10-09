@@ -3,19 +3,20 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use justcoded\yii2\rbac\forms\ItemForm;
+
 ?>
 
-<div class="role-form box">
-
-	<?php $form = ActiveForm::begin([
-			'layout' => 'horizontal',
-	        'enableAjaxValidation' => true,
-	]); ?>
-
-	<div class="box-body">
+<?php $form = ActiveForm::begin([
+	'enableAjaxValidation' => true,
+]); ?>
+<div class="role-form panel box">
+	<div class="panel-header box-header with-border">
+		<h3 class="box-title">Role</h3>
+	</div>
+	<div class="panel-body box-body">
 		<?= $form->field($model, 'name')->textInput([
 		        'maxlength' => true,
-		        'readonly' => $model->scenario == ItemForm::SCENARIO_CREATE ? false : true
+		        'readonly' => $model->scenario != ItemForm::SCENARIO_CREATE
             ]) ?>
 
 		<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
@@ -24,7 +25,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
             ->checkboxList($model->listInheritPermissions, [
                     'value' => $model->inheritPermissions,
                 ]) ?>
-        <p class="text-center">* Permissions will be updated only after Save</p>
+        <p class="hint">* Permissions will be updated only after Save</p>
 
         <?= $form->field($model, 'allow_permissions')
             ->hiddenInput(['value' => $model->allowPermissions])
@@ -35,7 +36,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
             ->label(false); ?>
 
         <div class="row">
-            <div class="col-md-offset-2 col-md-4">
+            <div class="col-md-4">
 	            <?= Html::label($model->getAttributeLabel('allow_permissions')) ?>
                 <input type="text" id="allowSearch" class="form-control" placeholder="Search...">
                 <div id="allow-permissions">
@@ -72,6 +73,6 @@ use justcoded\yii2\rbac\forms\ItemForm;
         <?= Html::a('delete', ['delete', 'name' => $model->name], ['class' => 'delete', 'data-method' => 'post']) ?>
 	</div>
 
-	<?php ActiveForm::end(); ?>
 </div>
+<?php ActiveForm::end(); ?>
 

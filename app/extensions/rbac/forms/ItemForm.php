@@ -12,7 +12,7 @@ use yii\base\Model;
 use Yii;
 use yii\helpers\ArrayHelper;
 
-class ItemForm extends Model
+abstract class ItemForm extends Model
 {
 
 	const SCENARIO_CREATE = 'create';
@@ -32,35 +32,50 @@ class ItemForm extends Model
 	{
 		return  [
 			[['type', 'name'], 'required'],
+			['name', 'uniqueItemName', 'on' => static::SCENARIO_CREATE],
 			[['name', 'ruleName'], 'trim'],
 			[['name', 'description', 'ruleName', 'data'], 'string'],
 			[['type', 'createdAt', 'updatedAt'], 'integer'],
-			['name', 'uniqueName', 'on' => static::SCENARIO_CREATE],
 		];
 	}
 
+	/**
+	 * Validate item (permission/role) name to be unique
+	 *
+	 * @param string $attribute
+	 * @param array  $params
+	 * @param mixed  $validator
+	 *
+	 * @return bool
+	 */
+	abstract public function uniqueItemName($attribute, $params, $validator);
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
-	public static function getRolesList()
+	public function attributeLabels()
 	{
-		$data = Yii::$app->authManager->getRoles();
-
-		return ArrayHelper::map($data, 'name', 'name');
+		return [
+			'name' => 'Name',
+			'description' => 'Description',
+			'ruleName' => 'Rule Class',
+		];
 	}
-
 
 	/**
-	 * @return array
+	 * @inheritdoc
 	 */
-	public function getPermissionsList()
+	public function attributeHints()
 	{
-		$data = Yii::$app->authManager->getPermissions();
-
-		return ArrayHelper::map($data, 'name', 'name');
+		return [
+			'ruleName' => 'This is the name of RBAC Rule class to be generated. 
+					It should be a fully qualified namespaced class name, 
+					e.g., <code>app\rbac\MyRule</code>',
+		];
 	}
 
+	///=======================
+	/// TODO: regactor below
 
 	/**
 	 * @param array $array_parent

@@ -3,7 +3,9 @@
 namespace justcoded\yii2\rbac\forms;
 
 use justcoded\yii2\rbac\models\Item;
-use yii\rbac\Role;
+use justcoded\yii2\rbac\models\Permission;
+use yii\rbac\Role as RbacRole;
+use yii\rbac\Permission as RbacPermission;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -21,58 +23,60 @@ class PermissionForm extends ItemForm
 
 	/**
 	 * @inheritdoc
+	 */
+	public function init()
+	{
+		$this->type = RbacPermission::TYPE_PERMISSION;
+	}
+
+	/**
+	 * @inheritdoc
 	 * @return array
 	 */
 	public function rules()
 	{
 		return ArrayHelper::merge(parent::rules(), [
-			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\\\]*$/i'],
-			['ruleName', 'issetClass'],
 			['name', 'match', 'pattern' => '/^[a-z\-\/]*$/'],
+			['ruleName', 'match', 'pattern' => '/^[a-z][\w\-\\\]*$/i'],
+			['ruleName', 'validRuleClass', 'skipOnEmpty' => true],
 			[['parent_roles', 'parent_permissions', 'children_permissions'], 'string'],
 		]);
 	}
 
 	/**
-	 * @param $attribute
+	 * @inheritdoc
+	 */
+	public function uniqueItemName($attribute, $params, $validator)
+	{
+		$permission = Permission::getList();
+		return ! isset($permission[$this->$attribute]);
+	}
+
+	/**
+	 * Validate Rule Class to be namespaced class name and instance of yii\rbac\Rule
+	 *
+	 * @param string $attribute
+	 * @param array  $params
+	 * @param mixed  $validator
+	 *
 	 * @return bool
 	 */
-	public function uniqueName($attribute)
+	public function validRuleClass($attribute, $params, $validator)
 	{
-		if (Yii::$app->authManager->getPermission($this->getAttributes()['name'])) {
-			$this->addError($attribute, 'Name must be unique.');
-
+		$class = $this->$attribute;
+		if (! class_exists($class)) {
+			$this->addError($attribute, 'Not valid class name.');
 			return false;
+		} else {
+			$reflect = new \ReflectionClass($class);
+			if (! $reflect->isSubclassOf(\yii\rbac\Rule::className())) {
+				$this->addError($attribute, 'Class have to be extended of \\yii\\rbac\\Rule class');
+				return false;
+			}
 		}
 
 		return true;
 	}
-
-	/**
-	 * @param $attribute
-	 * @return bool
-	 */
-	public function issetClass($attribute)
-	{
-		$rule = $this->getAttributes()['ruleName'];
-		if (!empty($rule) && !class_exists($rule)) {
-			$this->addError($attribute, 'Class not exists.');
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function beforeValidate()
-	{
-		$this->type = Role::TYPE_PERMISSION;
-		return parent::beforeValidate();
-	}
-
 
 	/**
 	 * @return string

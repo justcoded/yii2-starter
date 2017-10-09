@@ -22,9 +22,6 @@
     text-align: center;
     transform: translateY(+100%);
 }
-#roleform-inherit_permissions{
-    text-align: center;
-}
 #roleform-inherit_permissions .checkbox-inline{
     padding-right: 20px;
     font-weight: bold;

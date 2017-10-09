@@ -17,6 +17,11 @@ class RouteAccessControl extends ActionFilter
 	public $allowActions = [];
 
 	/**
+	 * @var string Allow route pattern
+	 */
+	public $allowRegexp = '/(gii)/i';
+
+	/**
 	 * This method is invoked right before an action is to be executed (after all possible filters.)
 	 * Check $allowActions or RBAC permission for such entries:
 	 *      {controller}/{action}   (or  {module}/{controller}/{action})
@@ -34,6 +39,10 @@ class RouteAccessControl extends ActionFilter
 
 		$action_rule = "{$action->controller->uniqueId}/{$action->id}";
 		$controller_rule = "{$action->controller->uniqueId}/*";
+
+		if (preg_match($this->allowRegexp, $action_rule)) {
+			return true;
+		}
 
 		if (in_array($action_rule, $this->allowActions)
 		    || in_array($controller_rule, $this->allowActions)

@@ -99,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								'header' => 'Role',
 								'format' => 'html',
 								'headerOptions' => ['class' => 'col-md-2'],
-								'filter'    => Html::activeDropDownList($searchModel, 'permRole', RoleForm::getRolesList(),
+								'filter'    => Html::activeDropDownList($searchModel, 'permRole', \justcoded\yii2\rbac\models\Role::getList(),
 									['class' => 'form-control', 'prompt' => 'Any']
 								),
 								'value'  => function ($data) {
