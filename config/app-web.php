@@ -32,6 +32,9 @@ $config = [
 			'loginUrl' => ['auth/login'],
 			'enableAutoLogin' => true,
 		],
+		'authManager' => [
+			'class' => 'justcoded\yii2\rbac\components\DbManager',
+		],
 		'urlManager' => [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,

@@ -23,20 +23,15 @@ return [
 	'language'   => 'en-US',
 	'components' => [
 		'db'           => $db,
+		'authManager' => [
+			'class' => 'justcoded\yii2\rbac\components\DbManager',
+		],
 		'mailer'       => [
 			'useFileTransport' => true,
 		],
 		'assetManager' => [
 			'basePath' => __DIR__ . '/../web/assets',
 			'forceCopy' => YII_DEBUG,
-		],
-		'view' => [
-			'theme' => [
-				'basePath' => '@app/theme',
-				'pathMap'  => [
-					'@app/views' => '@app/theme',
-				],
-			]
 		],
 		'urlManager'   => [
 			'showScriptName' => true,

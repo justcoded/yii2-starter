@@ -14,7 +14,7 @@
     "vlucas/phpdotenv": "~2.2",
     "dmstr/yii2-adminlte-asset": "2.4.3",
     "justcoded/yii2-settings": "*",
-    "kartik-v/yii2-widget-select2": "@dev"
+    "justcoded/yii2-rbac": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",
@@ -34,8 +34,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "app\\fixtures\\": "database/fixtures",
-      "justcoded\\yii2\\rbac\\": "app/extensions/rbac"
+      "app\\fixtures\\": "database/fixtures"
     }
   },
   "scripts": {
