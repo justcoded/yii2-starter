@@ -181,4 +181,32 @@ class Permission extends Item
 	{
 		return Yii::$app->authManager->getChildren($this->item->name);
 	}
+
+	/**
+	 * Build map of parents and childs
+	 *
+	 * @param array $names
+	 *
+	 * @return array
+	 */
+	public static function getParentChildMap($names = array())
+	{
+		if (empty($names)) {
+			$names = array_keys(Yii::$app->authManager->getPermissions());
+		}
+
+		$parents = [];
+		$childs = [];
+
+		foreach ($names as $parentName) {
+			$children = Yii::$app->authManager->getChildren($parentName);
+			foreach ($children as $childName => $item) {
+				$childs[$parentName][$childName] = $childName;
+				$parents[$childName][$parentName] = $parentName;
+			}
+		}
+
+		return [$parents, $childs];
+	}
+
 }

@@ -3,6 +3,7 @@
 namespace justcoded\yii2\rbac\forms;
 
 use justcoded\yii2\rbac\models\Item;
+use justcoded\yii2\rbac\models\Permission;
 use justcoded\yii2\rbac\models\Role;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Role as RbacRole;
@@ -14,12 +15,17 @@ class RoleForm extends ItemForm
 	/**
 	 * @var string[]
 	 */
-	public $childRoles;
+	public $childRoles = [];
 
 	/**
 	 * @var string[]
 	 */
-	public $allowPermissions;
+	public $allowPermissions = [];
+
+	/**
+	 * @var string[]
+	 */
+	protected $inheritPermissions = [];
 
 	/**
 	 * @var Role
@@ -87,8 +93,11 @@ class RoleForm extends ItemForm
 		$this->role = $role;
 		$this->load((array)$role->getItem(), '');
 
-		$children = Yii::$app->authManager->getChildRoles($this->name);
-		$this->childRoles = ArrayHelper::map($children, 'name', 'name');
+		$childRoles = Yii::$app->authManager->getChildRoles($this->name);
+		$this->childRoles = array_diff(array_keys($childRoles), [$this->name]);
+
+		$this->allowPermissions = Role::getPermissionsRecursive($this->name);
+		$this->inheritPermissions = $this->getInheritPermissions();
 	}
 
 	/**
@@ -114,163 +123,122 @@ class RoleForm extends ItemForm
 
 		// set relations from input
 		Role::addChilds($item, $this->childRoles, Role::TYPE_ROLE);
-		Role::addChilds($item, $this->allowPermissions, Role::TYPE_PERMISSION);
+
+		$allow = $this->getCleanAllowPermissions();
+		Role::addChilds($item, $allow, Role::TYPE_PERMISSION);
 
 		return $updated;
 	}
 
-	// TODO: refactor below
-
-
 	/**
-	 * @return array|bool
+	 * Get array of inherit permissions from child Roles
+	 *
+	 * @return string[]
 	 */
 	public function getInheritPermissions()
 	{
-		if(empty($this->name)){
-			return false;
+		$herited = [];
+		foreach ($this->childRoles as $roleName) {
+			$permissions = Yii::$app->authManager->getPermissionsByRole($roleName);
+			$herited = array_merge(
+				$herited,
+				array_keys($permissions)
+			);
 		}
 
-		$child = Yii::$app->authManager->getChildRoles($this->name);
-		ArrayHelper::remove($child, $this->name);
-
-		return ArrayHelper::map($child, 'name', 'name');
+		$herited = array_unique($herited);
+		$herited = array_combine($herited, $herited);
+		return $herited;
 	}
 
 	/**
-	 * @return bool|null|string
+	 * List of available deny permissions
+	 * (all permissions without allow/inherit permissions)
+	 *
+	 * @return string[]
 	 */
-	public function getAllowPermissions()
+	public function getDenyPermissions()
 	{
-		if ($this->name){
-			$permissions = Yii::$app->authManager->getPermissionsByRole($this->name);
-		}else{
-			$permissions = Yii::$app->authManager->getPermissions();
-		}
-
-		$permissions_name = implode(',', array_keys($permissions));
-
-		return $permissions_name;
+		$permissions = Permission::getList();
+		$permissions = array_diff($permissions, $this->allowPermissions, $this->inheritPermissions);
+		return $permissions;
 	}
 
-
 	/**
-	 * @return string
+	 * Clean allowPermissions from inherit Permissions and recursive childs, which should not be added to RBAC relations
+	 *
+	 * @return string[]
 	 */
-	public function treeDennyPermissions()
+	public function getCleanAllowPermissions()
 	{
-		$permissions = Yii::$app->authManager->getPermissions();
+		$allowPermissions = array_diff($this->allowPermissions, $this->inheritPermissions);
+		list($parents, $children) = Permission::getParentChildMap($allowPermissions);
 
-		if (!empty($this->name)){
-			$allow_permissions =Yii::$app->authManager->getPermissionsByRole($this->name);
-			foreach ($allow_permissions as $name => $item) {
-				unset($permissions[$name]);
+		$cleanPermissions = array_combine($allowPermissions, $allowPermissions);
+		foreach ($parents as $child => $childParents) {
+			if (isset($cleanPermissions[$child])
+				&& array_intersect($childParents, $allowPermissions)
+			) {
+				unset($cleanPermissions[$child]);
 			}
 		}
 
-		return $this->treePermissions($permissions);
+		return $cleanPermissions;
 	}
 
 	/**
-	 * @return string
-	 */
-	public function treeAllowPermissions()
-	{
-		$permissions =Yii::$app->authManager->getPermissionsByRole($this->name);
-		
-		return $this->treePermissions($permissions);
-	}
-
-	/**
-	 * @return string
-	 */
-	public function treePermissions(array $permissions)
-	{
-		ArrayHelper::remove($permissions, '*');
-
-		$data = [];
-		foreach ($permissions as $name => $permission){
-			if (substr($name, -1) == '*'){
-				ArrayHelper::remove($permissions, $name);
-				$data[$name] = [];
-			}
-		}
-
-		foreach ($permissions as $name => $permission) {
-			foreach ($data as $parent_name => $perm) {
-				$cut_name = substr($parent_name, 0,-1);
-
-				$pattern = '/' . addcslashes($cut_name,'/') . '/';
-
-				if (preg_match($pattern, $name)) {
-					$data[$parent_name][] = $name;
-					ArrayHelper::remove($permissions, $name);
-				}
-			}
-		}
-
-		foreach ($permissions as $name => $permission){
-			ArrayHelper::remove($permissions, $name);
-			$data[$name] = [];
-		}
-
-		$html = '';
-		foreach ($data as $parent => $children){
-			$html .= '<li class="permissions" data-name='.$parent.'>'. $parent;
-			if (!empty($children)){
-				$html .= '<ul>';
-					foreach ($children as $child){
-						$html .= "<li>$child</li>";
-					}
-				$html .= '</ul>';
-			}
-			$html .= '</li>';
-		}
-		return $html;
-	}
-
-
-	/**
+	 * Prepare linear tree array with depth and weight parameters
+	 *
+	 * @param string[] $permissions
+	 *
 	 * @return array
 	 */
-	public function getListInheritPermissions()
+	public function getLinearTree($permissions)
 	{
-		$roles = Yii::$app->authManager->getRoles();
-		$array_roles = ArrayHelper::map($roles, 'name', 'name');
-		ArrayHelper::remove($array_roles, $this->name);
+		if (empty($permissions)) {
+			return [];
+		}
 
-		return $array_roles;
+		list($parents, $children) = Permission::getParentChildMap($permissions);
+
+		$tree = $this->buildLinearTree($permissions, $permissions, $children);
+
+		return $tree;
 	}
 
 	/**
-	 * @return bool
+	 * Recursive function to go over tree and sort/move items correctly.
+	 *
+	 * @param array $array
+	 * @param array $items
+	 * @param array $children
+	 * @param int $depth
+	 *
+	 * @return array
 	 */
-	public function store()
+	protected function buildLinearTree($array, &$items, &$children, $depth = 0)
 	{
-		if(!$new_role = Yii::$app->authManager->getRole($this->name)){
-			$new_role = Yii::$app->authManager->createRole($this->name);
-			$new_role->description = $this->description;
+		static $position;
 
-			if(!Yii::$app->authManager->add($new_role)){
-				return false;
+		$tree = [];
+		foreach ($array as $item) {
+			if (! isset($items[$item])) {
+				continue;
 			}
-		}else{
-			$new_role->description = $this->description;
-			Yii::$app->authManager->update($this->name, $new_role);
+
+			$tree[$item] = [
+				'name' => $item,
+				'depth' => $depth,
+				'order' => (int) $position++,
+			];
+			unset($items[$item]);
+
+			if (!empty($children[$item])) {
+				$tree += $this->buildLinearTree($children[$item], $items, $children, $depth+1);
+			}
 		}
 
-		$new_role = Yii::$app->authManager->getRole($this->name);
-		Yii::$app->authManager->removeChildren($new_role);
-
-		if ($this->inherit_permissions){
-			$this->addChildrenArray($this->inherit_permissions, ['parent' => $new_role], false);
-		}
-
-		if ($this->allow_permissions) {
-			$this->permissions = explode(',', $this->allow_permissions);
-			$this->addChildrenArray($this->permissions, ['parent' => $new_role]);
-		}
-
-		return true;
+		return $tree;
 	}
+
 }

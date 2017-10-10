@@ -1,10 +1,7 @@
 <?php
 
-use justcoded\yii2\rbac\assets\RbacAssetBundle;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-
-RbacAssetBundle::register($this);
 
 $this->title = 'Scan Routes Permissions';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['permissions/']];

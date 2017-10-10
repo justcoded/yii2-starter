@@ -1,8 +1,4 @@
 <?php
-use justcoded\yii2\rbac\assets\RbacAssetBundle;
-
-RbacAssetBundle::register($this);
-
 $this->title                   = 'Add Permission';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

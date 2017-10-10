@@ -1,12 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use justcoded\yii2\rbac\assets\RbacAssetBundle;
 use justcoded\yii2\rbac\models\ItemSearch;
 use justcoded\yii2\rbac\forms\RoleForm;
 use yii\grid\GridView;
-
-RbacAssetBundle::register($this);
 
 /* @var $this yii\web\View */
 /* @var $searchModel justcoded\yii2\rbac\models\ItemSearch */

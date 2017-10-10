@@ -91,4 +91,20 @@ class Role extends Item
 		return $r;
 	}
 
+	public static function getPermissionsRecursive($roleName)
+	{
+		$results = [];
+
+		$children = Yii::$app->authManager->getChildren($roleName);
+		foreach ($children as $name => $item) {
+			if (Role::TYPE_ROLE == $item->type) {
+				continue;
+			}
+
+			$results[$name] = $name;
+			$results += static::getPermissionsRecursive($name);
+		}
+
+		return $results;
+	}
 }

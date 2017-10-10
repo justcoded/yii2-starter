@@ -34,8 +34,8 @@ use justcoded\yii2\rbac\forms\ItemForm;
 				<?= $form->field($model, 'ruleClass')->textInput() ?>
 
 			</div>
-			<div class="box-footer text-right">
-				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+			<div class="panel-footer box-footer text-right">
+				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?> &nbsp;
 				<?= Html::a(
 					'delete',
 					['delete', 'name' => $model->name],
@@ -50,6 +50,11 @@ use justcoded\yii2\rbac\forms\ItemForm;
 			</div>
 		</div>
 		<?php ActiveForm::end(); ?>
+
+		<p class="text-center">
+			<br>
+			<?= Html::a('Add another permission', ['permissions/create'], ['class' => 'btn btn-default bg-gray']); ?>
+		</p>
 	</div>
 
 	<?php if (!empty($permission)) : ?>
@@ -57,7 +62,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
 		<?php
 
 		$relModel->scenario = PermissionRelForm::SCENARIO_ADDROLE;
-		echo $this->render('_rel-form', [
+		echo $this->render('_relations-box', [
 				'title' => 'Asigned Roles',
 				'relModel' => $relModel,
 				'model' => $model,
@@ -70,7 +75,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
 		]);
 
 		$relModel->scenario = PermissionRelForm::SCENARIO_ADDPARENT;
-		echo $this->render('_rel-form', [
+		echo $this->render('_relations-box', [
 				'title' => 'Parents',
 				'relModel' => $relModel,
 				'model' => $model,
@@ -83,7 +88,7 @@ use justcoded\yii2\rbac\forms\ItemForm;
 		]);
 
 		$relModel->scenario = PermissionRelForm::SCENARIO_ADDCHILD;
-		echo $this->render('_rel-form', [
+		echo $this->render('_relations-box', [
 				'title' => 'Children',
 				'relModel' => $relModel,
 				'model' => $model,
@@ -96,5 +101,4 @@ use justcoded\yii2\rbac\forms\ItemForm;
 		]); ?>
 	<?php endif; ?>
 </div>
-
 
