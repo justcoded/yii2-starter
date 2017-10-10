@@ -177,18 +177,28 @@ class PermissionsController extends Controller
 		return $this->redirect(['update', 'name' => $name]);
 	}
 
-
-	// TODO: check scan form
 	/**
+	 * Scan routes and create missing permissions
+	 *
 	 * @return string|Response
 	 */
 	public function actionScan()
 	{
 		$model = new ScanForm();
 
-		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-			if ($model->scan()) {
-				Yii::$app->session->setFlash('success', 'Routes scanned success.');
+		if ($model->load(Yii::$app->request->post()) && $actionRoutes = $model->scan()) {
+			if ($inserted = $model->importPermissions($actionRoutes)) {
+				Yii::$app->session->setFlash('success', 'Added '. count($inserted) .' permission(s).');
+
+				if (defined('YII_DEBUG') && YII_DEBUG) {
+					$detailedMsg = implode('</li><li>', array_keys($inserted));
+					Yii::$app->session->setFlash(
+						'success',
+						"Added permissions: <ul><li>{$detailedMsg}</li></ul>"
+					);
+				}
+			} else {
+				Yii::$app->session->setFlash('warning', 'No new permissions found.');
 			}
 
 			return $this->redirect(['index']);

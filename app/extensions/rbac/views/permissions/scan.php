@@ -1,35 +1,41 @@
 <?php
+
 use justcoded\yii2\rbac\assets\RbacAssetBundle;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 RbacAssetBundle::register($this);
 
-$this->title                   = 'Scan Routes';
+$this->title = 'Scan Routes Permissions';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['permissions/']];
 $this->params['breadcrumbs'][] = $this->title;
-$this->params['heading']       = 'Scan';
-$this->params['subheading']    = 'scan routes';
+$this->params['heading'] = 'Permissions';
+$this->params['subheading'] = 'Scan routes';
 ?>
 
-<div class="scan box">
+<div class="row">
+	<div class="col-md-8 col-sm-12">
+		<?php $form = ActiveForm::begin(); ?>
+		<div class="panel box scan-routes">
+			<div class="panel-body box-body">
+				<p>You can scan your controllers to find routes and create permissions for them automatically.</p>
+				<p>Please note, that for permission names we use a path of Controller Unique ID and Action ID,
+					not friendly URLs (specified inside UrlManager configuration).</p>
 
-		<?php $form = ActiveForm::begin([
-			'layout' => 'horizontal',
-		]); ?>
+				<?= $form->field($model, 'path')->textInput(['maxlength' => true, 'placeholder' => 'Ex.: @app']) ?>
 
-        <div class="box-body">
-			<?= $form->field($model, 'path')->textInput(['maxlength' => true]) ?>
+				<?= $form->field($model, 'ignorePath')->textInput([
+					'value' => is_array($model->ignorePath) ? implode(',', $model->ignorePath) : '',
+					'placeholder' => 'Ex.: /commands,/modules/api',
+				]) ?>
 
-			<?= $form->field($model, 'ignorePath')->textInput(['value' => is_array($model->ignorePath) ? implode(',', $model->ignorePath) : '']) ?>
+				<?= $form->field($model, 'routesBase')->textInput(['maxlength' => true]) ?>
 
-			<?= $form->field($model, 'routesBase')->textInput(['maxlength' => true]) ?>
-
-        </div>
-        <div class="box-footer text-right">
-			<?= Html::submitButton('Scan' , ['class' => 'btn btn-success']) ?>
-        </div>
-
+			</div>
+			<div class="box-footer text-right">
+				<?= Html::submitButton('Scan', ['class' => 'btn btn-success']) ?>
+			</div>
+		</div>
 		<?php ActiveForm::end(); ?>
-
+	</div>
 </div>

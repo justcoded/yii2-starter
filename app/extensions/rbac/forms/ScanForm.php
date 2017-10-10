@@ -11,6 +11,8 @@ use justcoded\yii2\rbac\models\Permission;
 
 class ScanForm extends Model
 {
+	const SCENARIO_WEB = 'web';
+
 	/**
 	 * Path to scan.
 	 *
@@ -49,6 +51,8 @@ class ScanForm extends Model
 		return [
 			[['path'], 'required'],
 			[['path', 'routesBase'], 'string'],
+
+			[['path'], 'default', 'value' => '@app', 'on' => static::SCENARIO_WEB],
 			[['routesBase'], 'default', 'value' => ''],
 
 			[['path'], 'filter', 'filter' => function ($value) {
@@ -87,6 +91,35 @@ class ScanForm extends Model
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * @inheritdoc
+	 * @return array
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'path'       => 'Path to Scan',
+			'ignorePath' => 'Paths to Ignore',
+			'routesBase' => 'Base path for found routes',
+		];
+	}
+
+	/**
+	 * @inheritdoc
+	 * @return array
+	 */
+	public function attributeHints()
+	{
+		return [
+			'path' => 'Server path or Yii alias for directory to scan.<br> 
+				Examples: <code>@app</code>, <code>@vendor/justcoded/yii2-rbac</code>',
+			'ignorePath' => 'Comma separate list of directories to ignore, RegExp syntax is allowed.',
+			'routesBase' => 'Useful for 3rd party modules, which added inside your application. <br>
+				For example, for "rbac" module added to "admin" module, 
+				you can specify <code>admin/rbac/</code> base path',
+		];
 	}
 
 	/**
