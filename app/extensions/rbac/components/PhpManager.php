@@ -6,7 +6,7 @@ use justcoded\yii2\rbac\models\Item;
 use yii\db\Query;
 use yii\rbac\Permission;
 
-class DbManager extends \yii\rbac\DbManager
+class PhpManager extends \yii\rbac\PhpManager
 {
 	use AutoMasterItemTrait;
 
