@@ -1,6 +1,7 @@
 <?php
 /* @var $this \yii\web\View */
 /* @var $model \justcoded\yii2\rbac\forms\RoleForm */
+/* @var $role \justcoded\yii2\rbac\models\Role */
 
 use justcoded\yii2\rbac\models\Role;
 use yii\helpers\Html;
@@ -25,10 +26,10 @@ RbacAssetBundle::register($this);
 		<?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
 		<?= $form->field($model, 'childRoles')
+				->inline()
 				->checkboxList(array_diff(Role::getList(), [$model->name]), [
 					'value' => $model->childRoles,
 				])
-				->inline()
 		?>
 
 		<?= $this->render('_permissions', [
@@ -38,17 +39,19 @@ RbacAssetBundle::register($this);
 	</div>
 	<div class="panel-footer box-footer text-right">
 		<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?> &nbsp;
-		<?= Html::a(
-			'delete',
-			['delete', 'name' => $model->name],
-			[
-				'class' => 'text-danger',
-				'data'  => [
-					'confirm' => 'Are you sure you want to delete this item?',
-					'method'  => 'post',
-				],
-			]
-		) ?>
+		<?php if (!empty($role)) : ?>
+			<?= Html::a(
+				'delete',
+				['delete', 'name' => $model->name],
+				[
+					'class' => 'text-danger',
+					'data'  => [
+						'confirm' => 'Are you sure you want to delete this item?',
+						'method'  => 'post',
+					],
+				]
+			) ?>
+		<?php endif; ?>
 	</div>
 
 </div>

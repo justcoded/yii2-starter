@@ -1,5 +1,4 @@
 <?php
-
 /* @var $this \yii\web\View */
 /* @var $model \justcoded\yii2\rbac\forms\PermissionForm */
 /* @var $permission \justcoded\yii2\rbac\models\Permission */
@@ -36,25 +35,29 @@ use justcoded\yii2\rbac\forms\ItemForm;
 			</div>
 			<div class="panel-footer box-footer text-right">
 				<?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?> &nbsp;
-				<?= Html::a(
-					'delete',
-					['delete', 'name' => $model->name],
-					[
-						'class' => 'text-danger',
-						'data' => [
-							'confirm' => 'Are you sure you want to delete this item?',
-							'method' => 'post',
-						],
-					]
-				) ?>
+				<?php if (!empty($permission)) : ?>
+					<?= Html::a(
+						'delete',
+						['delete', 'name' => $model->name],
+						[
+							'class' => 'text-danger',
+							'data' => [
+								'confirm' => 'Are you sure you want to delete this item?',
+								'method' => 'post',
+							],
+						]
+					) ?>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php ActiveForm::end(); ?>
 
+		<?php if (!empty($permission)) : ?>
 		<p class="text-center">
 			<br>
 			<?= Html::a('Add another permission', ['permissions/create'], ['class' => 'btn btn-default bg-gray']); ?>
 		</p>
+		<?php endif; ?>
 	</div>
 
 	<?php if (!empty($permission)) : ?>

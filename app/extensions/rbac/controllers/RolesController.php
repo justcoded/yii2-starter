@@ -5,11 +5,9 @@ namespace justcoded\yii2\rbac\controllers;
 use justcoded\yii2\rbac\forms\RoleForm;
 use justcoded\yii2\rbac\models\Role;
 use Yii;
-use app\traits\controllers\FindModelOrFail;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\widgets\ActiveForm;
 use yii\web\Controller;
 
 /**
@@ -17,8 +15,6 @@ use yii\web\Controller;
  */
 class RolesController extends Controller
 {
-	use FindModelOrFail;
-
 	/**
 	 * @inheritdoc
 	 */
@@ -35,6 +31,8 @@ class RolesController extends Controller
 	}
 
 	/**
+	 * Create form/action
+	 *
 	 * @return array|string|Response
 	 */
 	public function actionCreate()
@@ -42,28 +40,24 @@ class RolesController extends Controller
 		$model = new RoleForm();
 		$model->scenario = $model::SCENARIO_CREATE;
 
-		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
-		}
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::$app->session->setFlash('success', 'Role saved successfully.');
 
-		if($model->load(Yii::$app->request->post())){
-			if ($model->store()) {
-				Yii::$app->session->setFlash('success', 'Role saved success.');
-			}
-
-			return $this->redirect(['permissions/index']);
+			return $this->redirect(['update', 'name' => $model->name]);
 		}
 
 		return $this->render('create', [
 			'model' => $model,
 		]);
-
 	}
 
 	/**
-	 * @param $name
+	 * Update form/action
+	 *
+	 * @param string $name
+	 *
 	 * @return array|string|Response
+	 * @throws NotFoundHttpException
 	 */
 	public function actionUpdate($name)
 	{
@@ -81,23 +75,27 @@ class RolesController extends Controller
 		}
 
 		return $this->render('update', [
-			'model' => $model
+			'model' => $model,
+			'role'  => $role,
 		]);
 	}
 
 	/**
+	 * Delete action
+	 *
+	 * @param string $name
+	 *
 	 * @return Response
+	 * @throws NotFoundHttpException
 	 */
-	public function actionDelete()
+	public function actionDelete($name)
 	{
-		if(!$post_data = Yii::$app->request->post('RoleForm')){
-			return $this->redirect(['permissions/index']);
+		if (! $role = Role::find($name)) {
+			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
-		$role = Yii::$app->authManager->getRole($post_data['name']);
-
-		if (Yii::$app->authManager->remove($role)){
-			Yii::$app->session->setFlash('success', 'Role removed success.');
+		if (Yii::$app->authManager->remove($role->getItem())) {
+			Yii::$app->session->setFlash('success', 'Role removed successfully.');
 		}
 
 		return $this->redirect(['permissions/index']);

@@ -1,4 +1,9 @@
 <?php
+/* @var $this \yii\web\View */
+/* @var $model \justcoded\yii2\rbac\forms\PermissionForm */
+/* @var $relModel \justcoded\yii2\rbac\forms\PermissionRelForm */
+/* @var $permission \justcoded\yii2\rbac\models\Permission */
+
 $this->title                   = 'Update Permission';
 $this->params['breadcrumbs'][] = ['label' => 'Permissions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

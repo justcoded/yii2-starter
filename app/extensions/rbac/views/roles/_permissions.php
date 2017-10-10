@@ -17,9 +17,11 @@ $inheritTree = $model->getLinearTree($model->inheritPermissions);
 		<select name="<?= $model->formName() ?>[allowPermissions][]" id="allow_permissions" class="form-control" size="16" multiple="multiple">
 			<?= $this->render('_permission-options', ['treeItems' => $allowTree]); ?>
 
+			<?php if (!empty($inheritTree)) : ?>
 			<optgroup label="Inherit Permissions" data-weight="<?= end($inheritTree)['order']; ?>">
 				<?= $this->render('_permission-options', ['treeItems' => $inheritTree]); ?>
 			</optgroup>
+			<?php endif; ?>
 		</select>
 	</div>
 

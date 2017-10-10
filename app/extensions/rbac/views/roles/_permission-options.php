@@ -1,5 +1,5 @@
 <?php
-
+/* @var $this \yii\web\View */
 /* @var $treeItems array */
 
 use yii\helpers\Html;
