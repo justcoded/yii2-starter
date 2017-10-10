@@ -11,7 +11,6 @@ use app\assets\AssetBundle;
 
 AssetBundle::register($this);
 
-//$this->
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

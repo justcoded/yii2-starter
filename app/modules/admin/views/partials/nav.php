@@ -13,6 +13,11 @@
 					 	'url' => ['/admin/users'],
 					 	'active' => 'users' === Yii::$app->controller->id,
 					],
+					['label' => 'Permissions',
+					 'icon' => 'lock',
+					 'url' => ['/admin/rbac/permissions'],
+					 'active' => 'permissions' === Yii::$app->controller->id,
+					],
 					[
 						'label' => 'Settings',
 						'icon'  =>  'gears',

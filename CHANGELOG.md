@@ -3,6 +3,11 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.8
+---------------------
+* Moved RBAC as separate extension.
+* Added RBAC GUI to admin module
+
 v0.7
 ---------------------
 * Moved settings to external package

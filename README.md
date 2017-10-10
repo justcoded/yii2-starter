@@ -42,7 +42,6 @@ DIRECTORY STRUCTURE
 The difference from [Yii2 basic template](https://github.com/yiisoft/yii2-app-basic):
 
 * Improved IDE support for custom components (`Yii::$app->getComponent(...)`)
-* Application params `Yii::$app->params` presented as object (to allow IDE autocompletion)
 * Main code is grouped under `/app` directory
 * Config files are moved outside app and use .env extension (ability to get values from server ENV variables or .env file)
 * Console and Web presented as separate folders to be able to keep some very-specific classes inside. Each has Application class, which is loaded instead of Yii standard Application class on request.
@@ -50,7 +49,8 @@ The difference from [Yii2 basic template](https://github.com/yiisoft/yii2-app-ba
 * Form models has it's own folder to separate from ActiveRecords
 * Theme is used to populate assets in the same way (for root app and modules)
 * Admin module with CRUD example (Users management)
-* Advanced RBAC based on 4 default roles and route-based access control
+* Advanced RBAC based on 4 default roles and route-based access control. See [justcoded/yii2-rbac](https://github.com/justcoded/yii2-rbac)
+* Application params replaced with settings extensions (IDE autocompletion available). See [justcoded/yii2-settings](https://github.com/justcoded/yii2-settings)
 
 
 REQUIREMENTS
@@ -126,6 +126,7 @@ php yii fixture/load User
 php yii rbac/init
 php yii rbac/assign-master 1
 php yii rbac/scan
+php yii rbac/scan -p='@vendor/justcoded/yii2-rbac/' -b='admin/rbac/'
 ```
 
 Now you should be able to access the application through the following URL, assuming `my-project` is the directory

@@ -9,4 +9,7 @@ return [
 
 	'<controller>/<id:\d>/<action>' => '<controller>/<action>',
 	'<controller>/<action>' => '<controller>/<action>',
+
+	//'admin/permissions/<action>' => 'admin/rbac/permissions/<action>',
+
 ];
