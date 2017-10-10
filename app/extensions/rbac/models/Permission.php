@@ -9,7 +9,7 @@ use yii\rbac\Permission as RbacPermission;
 use yii\rbac\Role as RbacRole;
 use yii\rbac\Rule as RbacRule;
 
-class Permission
+class Permission extends Item
 {
 	/**
 	 * @var RbacPermission[]

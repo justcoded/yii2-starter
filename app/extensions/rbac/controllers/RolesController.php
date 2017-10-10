@@ -3,9 +3,11 @@
 namespace justcoded\yii2\rbac\controllers;
 
 use justcoded\yii2\rbac\forms\RoleForm;
+use justcoded\yii2\rbac\models\Role;
 use Yii;
 use app\traits\controllers\FindModelOrFail;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\web\Controller;
@@ -65,20 +67,17 @@ class RolesController extends Controller
 	 */
 	public function actionUpdate($name)
 	{
-		$role = Yii::$app->authManager->getRole($name);
-		$model = new RoleForm($role);
-
-		if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
+		if (! $role = Role::find($name)) {
+			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 
-		if($model->load(Yii::$app->request->post())){
-			if ($model->store()) {
-				Yii::$app->session->setFlash('success', 'Role saved success.');
-			}
+		$model = new RoleForm();
+		$model->setRole($role);
 
-			return $this->redirect(['permissions/index']);
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			Yii::$app->session->setFlash('success', 'Role saved successfully.');
+
+			return $this->redirect(['update', 'name' => $model->name]);
 		}
 
 		return $this->render('update', [

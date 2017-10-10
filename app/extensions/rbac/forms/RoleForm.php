@@ -11,12 +11,29 @@ use Yii;
 
 class RoleForm extends ItemForm
 {
-	public $allow_permissions;
-	public $deny_permissions;
-	public $inherit_permissions;
-	public $role;
-	public $permissions;
-	public $permissions_search;
+	/**
+	 * @var string[]
+	 */
+	public $childRoles;
+
+	/**
+	 * @var string[]
+	 */
+	public $allowPermissions;
+
+	/**
+	 * @var Role
+	 */
+	protected $role;
+
+	/**
+	 * @inheritdoc
+	 */
+	public function init()
+	{
+		$this->type = RbacRole::TYPE_ROLE;
+		$this->role = new Role();
+	}
 
 	/**
 	 * @inheritdoc
@@ -25,16 +42,31 @@ class RoleForm extends ItemForm
 	public function rules()
 	{
 		return  ArrayHelper::merge(parent::rules(), [
-			[['allow_permissions', 'deny_permissions', 'permissions', 'inherit_permissions'], 'safe']
+			[['childRoles', 'allowPermissions'], 'each', 'rule' => ['string']],
 		]);
 	}
 
 	/**
 	 * @inheritdoc
+	 * @return array
 	 */
-	public function init()
+	public function attributeLabels()
 	{
-		$this->type = RbacRole::TYPE_ROLE;
+		return array_merge(parent::attributeLabels(), [
+			'childRoles' => 'Inherit Roles'
+		]);
+	}
+
+	/**
+	 * @inheritdoc
+	 * @return array
+	 */
+	public function attributeHints()
+	{
+		return [
+			'childRoles' => 'You can inherit other roles to have the same permissions as other roles. <br> 
+				Allowed Permissions box will be updated with inherited permissions once you save changes.',
+		];
 	}
 
 	/**
@@ -44,6 +76,47 @@ class RoleForm extends ItemForm
 	{
 		$permission = Role::getList();
 		return ! isset($permission[$this->$attribute]);
+	}
+
+	/**
+	 * Setter for $role
+	 * @param Role $role
+	 */
+	public function setRole(Role $role)
+	{
+		$this->role = $role;
+		$this->load((array)$role->getItem(), '');
+
+		$children = Yii::$app->authManager->getChildRoles($this->name);
+		$this->childRoles = ArrayHelper::map($children, 'name', 'name');
+	}
+
+	/**
+	 * Main form process method
+	 *
+	 * @return bool
+	 */
+	public function save()
+	{
+		if (! $this->validate()) {
+			return false;
+		}
+
+		if (! $item = $this->role->getItem()) {
+			$item = Role::create($this->name, $this->description);
+		}
+
+		$item->description = $this->description;
+		$updated = Yii::$app->authManager->update($item->name, $item);
+
+		// clean relations
+		Yii::$app->authManager->removeChildren($item);
+
+		// set relations from input
+		Role::addChilds($item, $this->childRoles, Role::TYPE_ROLE);
+		Role::addChilds($item, $this->allowPermissions, Role::TYPE_PERMISSION);
+
+		return $updated;
 	}
 
 	// TODO: refactor below

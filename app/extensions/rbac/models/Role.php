@@ -9,7 +9,7 @@ use yii\rbac\Permission as RbacPermission;
 use yii\rbac\Role as RbacRole;
 use yii\rbac\Rule as RbacRule;
 
-class Role
+class Role extends Item
 {
 	/**
 	 * @var RbacRole Rbac item object.
@@ -69,6 +69,26 @@ class Role
 		$data = Yii::$app->authManager->getRoles();
 
 		return ArrayHelper::map($data, 'name', 'name');
+	}
+
+	/**
+	 * Create role inside application authManager
+	 *
+	 * @param string    $name
+	 * @param string    $descr
+	 *
+	 * @return \yii\rbac\Role
+	 */
+	public static function create($name, $descr)
+	{
+		$auth = Yii::$app->authManager;
+
+		// create permission
+		$r = $auth->createRole($name);
+		$r->description = $descr;
+		$auth->add($r);
+
+		return $r;
 	}
 
 }

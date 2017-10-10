@@ -3,7 +3,7 @@
 namespace justcoded\yii2\rbac\models;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+use yii\rbac\Item as RbacItem;
 
 class Item
 {
@@ -17,5 +17,31 @@ class Item
 
 	const PERMISSION_ADMINISTER = 'administer';
 	const PERMISSION_MASTER = '*';
+
+	/**
+	 * @param RbacItem $parent
+	 * @param string[] $childNames
+	 *
+	 * @return bool
+	 */
+	public static function addChilds(RbacItem $parent, $childNames, $type = RbacItem::TYPE_PERMISSION)
+	{
+		if (empty($childNames)) return false;
+		if (!is_array($childNames)) $childNames = [$childNames];
+
+		$auth = Yii::$app->authManager;
+
+		foreach ($childNames as $childName) {
+			$item = (RbacItem::TYPE_ROLE === $type) ?
+				$auth->getRole($childName) :
+				$auth->getPermission($childName);
+
+			if ($item && ! $auth->hasChild($parent, $item)) {
+				$auth->addChild($parent, $item);
+			}
+		}
+
+		return true;
+	}
 
 }
