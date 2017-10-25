@@ -48,7 +48,6 @@ class User extends ActiveRecord implements IdentityInterface
 			['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_BLOCKED]],
 			[['first_name', 'last_name', 'email', 'username'], 'string'],
 			[['email', 'username'], 'unique'],
-			[['email', 'username'], 'required'],
 			['email', 'email'],
 		];
 	}
