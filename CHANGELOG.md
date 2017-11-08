@@ -3,9 +3,17 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
-v0.8.1
+v0.8.3
 ---------------------
 * Renamed root "web" folder to "public"
+
+v0.8.2
+---------------------
+* User model validation rules
+
+v0.8.1
+---------------------
+* Update versions dependency for Yii to 2.0.12
 
 v0.8
 ---------------------
