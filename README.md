@@ -37,7 +37,7 @@ DIRECTORY STRUCTURE
       database/           contains migration and fixtures
       tests/              contains various tests for the basic application
       vendor/             contains dependent 3rd-party packages
-      web/                contains the web entry script
+      public/             contains public assets and web entry script index.php
 
 The difference from [Yii2 basic template](https://github.com/yiisoft/yii2-app-basic):
 
