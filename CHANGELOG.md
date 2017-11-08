@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.8.1
+---------------------
+* Renamed root "web" folder to "public"
+
 v0.8
 ---------------------
 * Moved RBAC as separate extension.
