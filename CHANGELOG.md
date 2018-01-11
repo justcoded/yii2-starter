@@ -3,6 +3,11 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.8.4
+---------------------
+* Added prefer-stable directive to composer.json
+* Added optimize autoloader directive to composer.json
+
 v0.8.3
 ---------------------
 * Renamed root "web" folder to "public"
