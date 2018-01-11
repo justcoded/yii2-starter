@@ -5,6 +5,7 @@
   "type": "project",
   "license": "BSD-3-Clause",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": ">=7.0",
     "yiisoft/yii2": "~2.0.12",
@@ -24,7 +25,10 @@
     "codeception/specify": "~0.4.3"
   },
   "config": {
-    "process-timeout": 1800
+    "process-timeout": 1800,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
   },
   "repositories": [
     {
