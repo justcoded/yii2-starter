@@ -133,8 +133,15 @@ Now you should be able to access the application through the following URL, assu
 directly under the Web root.
 
 ~~~
-http://localhost/my-project/web/
+http://localhost/my-project/public/
 ~~~
+
+Admin panel can be accessible only after login. If you used fixtures to fill the database with dummy content,
+then admin panel access will be:
+
+	http://localhost/my-project/public/admin/
+	User:       admin@domain.com
+	Password:   password_0
 
 TESTING
 -------

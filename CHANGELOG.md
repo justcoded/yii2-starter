@@ -3,6 +3,14 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+
+v0.8.5
+---------------------
+* Issue #19: Updated README about how to access the site
+* Issue #20: Admin panel chrome console error: not working adminlte js
+* Issue #21: Replace custom Application classes with simple IDE helper file with definitions
+* Issue #22: "Clickjacking" attack fix
+
 v0.8.4
 ---------------------
 * Added prefer-stable directive to composer.json

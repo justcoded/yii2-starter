@@ -12,6 +12,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
+	'controllerNamespace' => 'app\\web\\controllers',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
 		'@config'=> '@app/../config',
@@ -23,8 +24,14 @@ $config = [
 	],
 	'components' => [
 		'request'      => [
-			// TODO: move generator to console command
+			// TODO: move generator to console command.
 			'cookieValidationKey' => env('APP_KEY'),
+		],
+		'response' => [
+			// "Clickjacking" attack fix.
+			'on beforeSend' => function ($event) {
+				$event->sender->headers->add('X-Frame-Options', 'SAMEORIGIN');
+			},
 		],
 		'db'           => $db,
 		'user'         => [
