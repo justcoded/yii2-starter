@@ -12,6 +12,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
+	'controllerNamespace' => 'app\\web\\controllers',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
 		'@config'=> '@app/../config',

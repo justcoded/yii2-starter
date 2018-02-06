@@ -22,6 +22,6 @@ require __DIR__ . '/vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/config/app-console.php';
 
-$application = new \app\console\Application($config);
+$application = new \yii\console\Application($config);
 $exitCode = $application->run();
 exit($exitCode);
