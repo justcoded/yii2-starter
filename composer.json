@@ -13,7 +13,7 @@
     "yiisoft/yii2-swiftmailer": "~2.0.0",
     "yiisoft/yii2-faker": "~2.0.0",
     "vlucas/phpdotenv": "~2.2",
-    "dmstr/yii2-adminlte-asset": "2.4.3",
+    "dmstr/yii2-adminlte-asset": "~2.6",
     "justcoded/yii2-settings": "*",
     "justcoded/yii2-rbac": "*"
   },

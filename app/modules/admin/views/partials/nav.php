@@ -4,7 +4,7 @@
 
 		<?= dmstr\widgets\Menu::widget(
 			[
-				'options' => ['class' => 'sidebar-menu'],
+				'options' => ['class' => 'sidebar-menu', 'data-widget' => 'tree',],
 				'items'   => [
 					['label' => 'MAIN NAVIGATION', 'options' => ['class' => 'header']],
 					['label' => 'Dashboard', 'icon' => 'dashboard', 'url' => ['/admin/dashboard']],
