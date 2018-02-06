@@ -23,8 +23,14 @@ $config = [
 	],
 	'components' => [
 		'request'      => [
-			// TODO: move generator to console command
+			// TODO: move generator to console command.
 			'cookieValidationKey' => env('APP_KEY'),
+		],
+		'response' => [
+			// "Clickjacking" attack fix.
+			'on beforeSend' => function ($event) {
+				$event->sender->headers->add('X-Frame-Options', 'SAMEORIGIN');
+			},
 		],
 		'db'           => $db,
 		'user'         => [
