@@ -5,6 +5,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use justcoded\yii2\rbac\models\Item as RbacItem;
 
 NavBar::begin([
 	'brandLabel' => 'My Company',
@@ -19,6 +20,8 @@ echo Nav::widget([
 		['label' => 'Home', 'url' => ['/site/index']],
 		['label' => 'About', 'url' => ['/site/about']],
 		['label' => 'Contact', 'url' => ['/site/contact']],
+
+		['label' => 'Admin Panel', 'url' => ['/admin'], 'visible' => user()->can(RbacItem::PERMISSION_ADMINISTER)],
 		Yii::$app->user->isGuest ? (
 		['label' => 'Login', 'url' => ['/auth/login']]
 		) : (
