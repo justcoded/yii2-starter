@@ -2,8 +2,8 @@
 
 \Yii::setAlias('@app', dirname(__DIR__) . '/app');
 
-$db     = require __DIR__ . '/db.php';
-$params = require __DIR__ . '/params.php';
+$db       = require __DIR__ . '/db.php';
+$settings = require __DIR__ . '/settings.php';
 
 dotenv()->required('APP_KEY')->notEmpty();
 
@@ -88,13 +88,7 @@ $config = [
 				],
 			],
 		],
-		'settings' => [
-			'class'     => 'app\components\Settings',
-			'defaults' => $params,
-			'modelsMap' => [
-				'app' => 'justcoded\yii2\settings\forms\AppSettingsForm',
-			],
-		],
+		'settings' => $settings,
 	],
 ];
 

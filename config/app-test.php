@@ -2,20 +2,21 @@
 
 \Yii::setAlias('@app', dirname(__DIR__) . '/app');
 
-$params = require __DIR__ . '/params.php';
-$db     = require __DIR__ . '/db.php';
+$db       = require __DIR__ . '/db.php';
+$settings = require __DIR__ . '/settings.php';
 
 /**
  * Application configuration shared by all test types
  */
 return [
-	'class' => 'app\web\Application',
+	'class' => 'yii\web\Application',
 
 	'id'         => 'main-tests',
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
 	'controllerNamespace' => 'app\\web\\controllers',
+	'bootstrap'  => ['settings'],
 	'aliases'    => [
 		'@config'=> '@app/../config',
 		'@bower' => '@vendor/bower-asset',
@@ -31,7 +32,7 @@ return [
 			'useFileTransport' => true,
 		],
 		'assetManager' => [
-			'basePath' => __DIR__ . '/../web/assets',
+			'basePath' => __DIR__ . '/../public/assets',
 			'forceCopy' => YII_DEBUG,
 		],
 		'urlManager'   => [
@@ -54,6 +55,7 @@ return [
 		'errorHandler' => [
 			'errorAction' => 'site/error',
 		],
+		'settings' => $settings,
+
 	],
-	'params'     => $params,
 ];
