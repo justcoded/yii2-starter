@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.8.7
+---------------------
+* Issue #14: Reset password
+
 v0.8.6
 ---------------------
 * Fixed unit/functional tests
