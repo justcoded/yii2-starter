@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var \yii\web\View $this
+ * @var \app\forms\RegisterForm $model
+ */
+
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
@@ -40,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<div class="row">
 		<div class="col-md-3 col-md-offset-1">
-			<p>Already have an account? <?= Html::a('Login!', ['auth/login']); ?></p>
+			<p>Already have an account? <?= Html::a('Login!', ['auth/login']) ?></p>
 		</div>
 	</div>
 </div>

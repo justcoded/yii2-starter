@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	
 	<div class="row">
 		<div class="col-md-3 col-md-offset-1">
-			<p>Don't have an account? <?= Html::a('Register!', ['auth/register']); ?></p>
+			<p>Don't have an account? <?= Html::a('Register!', ['auth/register']) ?></p>
 		</div>
 	</div>
 
