@@ -2,12 +2,12 @@
 
 namespace app\web\controllers;
 
+use app\forms\LoginForm;
+use app\forms\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\forms\LoginForm;
-use app\forms\ContactForm;
+use yii\web\Response;
 
 class AuthController extends Controller
 {
@@ -36,7 +36,7 @@ class AuthController extends Controller
 			],
 		];
 	}
-
+	
 	/**
 	 * Login action.
 	 *
@@ -44,21 +44,22 @@ class AuthController extends Controller
 	 */
 	public function actionLogin()
 	{
-		if ( ! Yii::$app->user->isGuest) {
+		if (!Yii::$app->user->isGuest) {
 			return $this->goHome();
 		}
-
+		
 		$model = new LoginForm();
 		if ($model->load(Yii::$app->request->post()) && $model->login()) {
 			$model->assignAuthenticatedRole();
+			
 			return $this->goBack();
 		}
-
+		
 		return $this->render('login', [
 			'model' => $model,
 		]);
 	}
-
+	
 	/**
 	 * Logout action.
 	 *
@@ -67,8 +68,32 @@ class AuthController extends Controller
 	public function actionLogout()
 	{
 		Yii::$app->user->logout();
-
+		
 		return $this->goHome();
 	}
-
+	
+	/**
+	 * Register action.
+	 *
+	 * @return string|Response
+	 */
+	public function actionRegister()
+	{
+		if (!Yii::$app->user->isGuest) {
+			return $this->goHome();
+		}
+		
+		$model = new RegisterForm();
+		
+		if ($model->load(Yii::$app->request->post()) && $model->register()) {
+			Yii::$app->session->addFlash('success', 'You have been successfully registered');
+			
+			return $this->goBack();
+		}
+		
+		return $this->render('register', [
+			'model' => $model,
+		]);
+	}
+	
 }
