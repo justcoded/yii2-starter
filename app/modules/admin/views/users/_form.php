@@ -28,11 +28,13 @@ use yii\helpers\Html;
 		
 		<?= $form->field($model, 'password')->passwordInput() ?>
 		
-		<?= $form->field($model, 'password_repeat')->passwordInput() ?>
+		<?= $form->field($model, 'passwordRepeat')->passwordInput() ?>
 		
 		<?= $form->field($model, 'status')->dropDownList(User::getStatusesList()) ?>
 		
-		<?= $form->field($model, 'role')->dropDownList(User::getRolesList()) ?>
+		<?= $form->field($model, 'roles')->dropDownList(User::getRolesList(), [
+			'multiple' => 'multiple',
+		]) ?>
 	</div>
 	<div class="box-footer text-right">
 		<?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => 'btn btn-success']) ?>

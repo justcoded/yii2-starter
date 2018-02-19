@@ -15,12 +15,12 @@ class UserForm extends User
 	/**
 	 * @var string
 	 */
-	public $password_repeat;
+	public $passwordRepeat;
 	
 	/**
 	 * @var string
 	 */
-	public $role;
+	public $roles;
 	
 	/**
 	 * @inheritdoc
@@ -30,8 +30,16 @@ class UserForm extends User
 	{
 		return array_merge(parent::rules(), [
 			['password', 'safe'],
-			['password_repeat', 'compare', 'compareAttribute' => 'password'],
-			['role', 'in', 'range' => array_keys(static::getRolesList())],
+			[
+				'passwordRepeat',
+				'required',
+				'when'       => function () {
+					return !empty($this->password);
+				},
+				'whenClient' => 'function() { return $.trim($("#userform-password").val()).length || false; }',
+			],
+			['passwordRepeat', 'compare', 'compareAttribute' => 'password'],
+			['roles', 'in', 'range' => array_keys(static::getRolesList()), 'allowArray' => true],
 		]);
 	}
 	
@@ -45,10 +53,36 @@ class UserForm extends User
 			$this->setPassword($this->password);
 		}
 		
-		if ($this->role) {
-			$this->assignRole($this->role);
-		}
+		$this->updateUserRoles($this->roles);
 		
 		return parent::beforeSave($insert);
+	}
+	
+	/**
+	 * @inheritdoc
+	 */
+	public function afterFind()
+	{
+		$roles = array_keys(Yii::$app->authManager->getRolesByUser($this->id));
+		$roles = array_combine($roles, $roles);
+		$this->roles = $roles;
+		
+		parent::afterFind();
+	}
+	
+	/**
+	 * @param array|string $roles
+	 */
+	protected function updateUserRoles($roles)
+	{
+		if (empty($roles)) {
+			return;
+		}
+		
+		Yii::$app->authManager->revokeAll($this->id);
+		
+		foreach ($roles as $role) {
+			$this->assignRole($role);
+		}
 	}
 }
