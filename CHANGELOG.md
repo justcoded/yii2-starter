@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.9.1
+---------------------
+* Fix Codeception tests errors when run through PHPStorm.
+
 v0.9
 ---------------------
 * Upgrade app folder structure: moved controllers from web to root, moved commands to console, 
