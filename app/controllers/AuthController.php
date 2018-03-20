@@ -1,6 +1,6 @@
 <?php
 
-namespace app\web\controllers;
+namespace app\controllers;
 
 use app\forms\LoginForm;
 use app\forms\RegisterForm;

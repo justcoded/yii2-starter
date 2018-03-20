@@ -1,6 +1,6 @@
 <?php
 
-namespace app\console\controllers;
+namespace app\modules\base\console;
 
 
 use yii\console\Exception;
@@ -10,17 +10,17 @@ class MigrateController extends \yii\console\controllers\MigrateController
 	/**
 	 * @inheritdoc
 	 */
-	public $templateFile = '@app/console/views/migrate/migration.php';
+	public $templateFile = '@app/modules/base/views/migrate/migration.php';
 
 	/**
 	 * @inheritdoc
 	 */
 	public $generatorTemplateFiles = [
-		'create_table' => '@app/console/views/migrate/createTableMigration.php',
-		'drop_table' => '@app/console/views/migrate/dropTableMigration.php',
-		'add_column' => '@app/console/views/migrate/addColumnMigration.php',
-		'drop_column' => '@app/console/views/migrate/dropColumnMigration.php',
-		'create_junction' => '@app/console/views/migrate/createTableMigration.php',
+		'create_table' => '@app/modules/base/views/migrate/createTableMigration.php',
+		'drop_table' => '@app/modules/base/views/migrate/dropTableMigration.php',
+		'add_column' => '@app/modules/base/views/migrate/addColumnMigration.php',
+		'drop_column' => '@app/modules/base/views/migrate/dropColumnMigration.php',
+		'create_junction' => '@app/modules/base/views/migrate/createTableMigration.php',
 	];
 
 	/**

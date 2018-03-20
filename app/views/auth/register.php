@@ -21,8 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		'id'          => 'register-form',
 		'layout'      => 'horizontal',
 		'fieldConfig' => [
-			'template'     => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-			'labelOptions' => ['class' => 'col-lg-1 control-label'],
+			//'template'     => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+			//'labelOptions' => ['class' => 'col-lg-1 control-label'],
 		],
 	]); ?>
 	
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= $form->field($model, 'passwordRepeat')->passwordInput() ?>
 
 	<div class="form-group">
-		<div class="col-lg-offset-1 col-lg-11">
+		<div class="col-md-6 col-md-offset-3">
 			<?= Html::submitButton('Register', ['class' => 'btn btn-primary']) ?>
 		</div>
 	</div>
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php ActiveForm::end(); ?>
 
 	<div class="row">
-		<div class="col-md-3 col-md-offset-1">
+		<div class="col-md-6 col-md-offset-3">
 			<p>Already have an account? <?= Html::a('Login!', ['auth/login']) ?></p>
 		</div>
 	</div>

@@ -9,19 +9,31 @@
 /* @var $table string the name table */
 /* @var $fields array the fields */
 
+preg_match('/^add_(.+)_columns?_to_(.+)_table$/', $name, $matches);
+$columns = $matches[1];
+
+if (empty($fields)) {
+	$fields = [
+		[
+			'property' => $columns,
+			'decorators' => 'string()',
+		],
+	];
+}
+
 echo "<?php\n";
 if (!empty($namespace)) {
     echo "\nnamespace {$namespace};\n";
 }
 ?>
 
-use app\console\Migration;
+use app\modules\base\db\Migration;
 
 /**
- * Handles the dropping of table `<?= $table ?>`.
+ * Handles adding <?= $columns ?> to table `<?= $table ?>`.
 <?= $this->render('_foreignTables', [
-	'foreignKeys' => $foreignKeys,
-]) ?>
+     'foreignKeys' => $foreignKeys,
+ ]) ?>
  */
 class <?= $className ?> extends Migration
 {
@@ -30,8 +42,9 @@ class <?= $className ?> extends Migration
 	 */
 	public function up()
 	{
-<?= $this->render('_dropTable', [
+<?= $this->render('_addColumns', [
 	'table' => $table,
+	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,
 ])
 ?>
@@ -42,7 +55,7 @@ class <?= $className ?> extends Migration
 	 */
 	public function down()
 	{
-<?= $this->render('_createTable', [
+<?= $this->render('_dropColumns', [
 	'table' => $table,
 	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,
