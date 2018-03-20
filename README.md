@@ -19,17 +19,18 @@ DIRECTORY STRUCTURE
 -------------------
 
       app/                contains your application classes and files
+        |-- assets           css/js assets and AssetBundle classes
         |-- base             base classes (overwrite yii\base or few more) 
         |-- components       application "components" classes 
-        |-- console          controllers and application object for console commands
+        |-- console          controllers for console commands
+        |-- controllers      controllers for web application
         |-- filters          application filters (similar to yii\filters) 
         |-- forms            various form models 
         |-- mail             view files for e-mails 
         |-- models           ActiveRecord model classes 
         |-- modules          connected modules, admin panel module by default
         |-- rbac             RBAC Manager / components 
-        |-- theme            Web resources and assets definition 
-        |-- traits           global traits, grouped by components 
+        |-- traits           global traits, grouped by type 
         |-- views            view files for the Web application
         |-- web              Web controllers and application object 
         |-- widgets          application widgets to use inside views 
@@ -44,10 +45,9 @@ The difference from [Yii2 basic template](https://github.com/yiisoft/yii2-app-ba
 * Improved IDE support for custom components (`Yii::$app->getComponent(...)`)
 * Main code is grouped under `/app` directory
 * Config files are moved outside app and use .env extension (ability to get values from server ENV variables or .env file)
-* Console and Web presented as separate folders to be able to keep some very-specific classes inside. Each has Application class, which is loaded instead of Yii standard Application class on request.
-* Controllers moved under `/console` and `/web` folders (only for root app, not in modules)
+* `commands` folder is renamed to `Console` (because inside we actually have Controllers, not Commands).
 * Form models has it's own folder to separate from ActiveRecords
-* Theme is used to populate assets in the same way (for root app and modules)
+* `assets` folder is used to store public assets as well (to be able to publish assets in the same way for app / modules / widgets)
 * Admin module with CRUD example (Users management)
 * Advanced RBAC based on 4 default roles and route-based access control. See [justcoded/yii2-rbac](https://github.com/justcoded/yii2-rbac)
 * Application params replaced with settings extensions (IDE autocompletion available). See [justcoded/yii2-settings](https://github.com/justcoded/yii2-settings)
