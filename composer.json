@@ -43,7 +43,11 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "yii\\composer\\Installer::postInstall"
+      "yii\\composer\\Installer::postInstall",
+      "@php tests/_phpstorm.php"
+    ],
+    "post-update-cmd": [
+      "@php tests/_phpstorm.php"
     ],
     "post-create-project-cmd": [
       "yii\\composer\\Installer::postCreateProject",
