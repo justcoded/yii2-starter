@@ -10,7 +10,7 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'controllerNamespace' => 'app\\console\\controllers',
+	'controllerNamespace' => 'app\\console',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
 		'@config'=> dirname(__DIR__) . '/config',
@@ -20,7 +20,7 @@ $config = [
 	],
 	'controllerMap' => [
 		'migrate' => [
-			'class' => 'app\console\controllers\MigrateController',
+			'class' => 'app\modules\base\console\MigrateController',
 			'migrationPath' => [
 				'@migrations',
 				'@yii/rbac/migrations',
@@ -58,7 +58,7 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
-	// configuration adjustments for 'dev' environment
+	// configuration adjustments for 'dev' environment.
 	$config['bootstrap'][]    = 'gii';
 	$config['modules']['gii'] = [
 		'class' => 'yii\gii\Module',
