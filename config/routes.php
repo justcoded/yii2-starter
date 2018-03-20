@@ -1,10 +1,11 @@
 <?php
 
 return [
-	'/' => 'site/index',
+	'/'     => 'site/index',
 	'login' => 'auth/login',
+	'register'        => 'auth/register',
 	'password/forgot' => 'auth/password-request',
-	'password/update' => 'auth/password-update',
+	'password/update/<token:\w+>' => 'auth/password-update',
 	'logout' => 'site/logout',
 
 	'<controller>/<id:\d>/<action>' => '<controller>/<action>',

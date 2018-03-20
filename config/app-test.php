@@ -15,7 +15,6 @@ return [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'controllerNamespace' => 'app\\web\\controllers',
 	'bootstrap'  => ['settings'],
 	'aliases'    => [
 		'@config'=> '@app/../config',

@@ -3,6 +3,13 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.9
+---------------------
+* Upgrade app folder structure: moved controllers from web to root, moved commands to console, 
+* Moved migration component/views custom configuration to a separate module.
+* Issue #13: Registration is absent
+* Issue #14: Reset password
+
 v0.8.6
 ---------------------
 * Fixed unit/functional tests
