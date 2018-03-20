@@ -17,17 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php $form = ActiveForm::begin([
 		'id'          => 'update-password-form',
 		'layout'      => 'horizontal',
-		'fieldConfig' => [
-			'template'     => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-			'labelOptions' => ['class' => 'col-lg-1 control-label'],
-		],
 	]); ?>
 	
 	<?= $form->field($model, 'newPassword')->passwordInput(['autofocus' => true]) ?>
 	<?= $form->field($model, 'newPasswordRepeat')->passwordInput() ?>
 
 	<div class="form-group">
-		<div class="col-lg-offset-1 col-lg-11">
+		<div class="col-md-offset-3 col-md-6">
 			<?= Html::submitButton('Update Password', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
 		</div>
 	</div>

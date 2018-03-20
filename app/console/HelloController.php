@@ -1,6 +1,6 @@
 <?php
 
-namespace app\console\controllers;
+namespace app\console;
 
 /**
  * This command echoes the first argument that you have entered.
