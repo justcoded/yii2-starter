@@ -7,6 +7,9 @@ v0.9
 ---------------------
 * Upgrade app folder structure: moved controllers from web to root, moved commands to console, 
 * Moved migration component/views custom configuration to a separate module.
+* Admin panel: Added user "Roles" fields to edit form.
+* Issue #13: Registration is absent
+* Issue #14: Reset password
 
 v0.8.6
 ---------------------
