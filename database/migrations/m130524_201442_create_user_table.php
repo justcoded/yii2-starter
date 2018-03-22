@@ -1,6 +1,8 @@
 <?php
 
-class m130524_201442_create_user_table extends \app\console\Migration
+use app\modules\base\db\Migration;
+
+class m130524_201442_create_user_table extends Migration
 {
 	public function up()
 	{
