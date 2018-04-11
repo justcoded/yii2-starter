@@ -9,7 +9,7 @@ $settings = require __DIR__ . '/settings.php';
  * Application configuration shared by all test types
  */
 return [
-	'class' => 'yii\web\Application',
+	'class' => \yii\web\Application::class,
 
 	'id'         => 'main-tests',
 	'basePath'   => dirname(__DIR__) . '/app',
@@ -25,7 +25,7 @@ return [
 	'components' => [
 		'db'           => $db,
 		'authManager' => [
-			'class' => 'justcoded\yii2\rbac\components\DbManager',
+			'class' => \justcoded\yii2\rbac\components\DbManager::class,
 		],
 		'mailer'       => [
 			'useFileTransport' => true,
@@ -38,7 +38,7 @@ return [
 			'showScriptName' => true,
 		],
 		'user'         => [
-			'identityClass' => 'app\models\User',
+			'identityClass' => \app\models\User::class,
 			'loginUrl' => ['auth/login'],
 		],
 		'request'      => [
@@ -46,10 +46,10 @@ return [
 			'enableCsrfValidation' => false,
 		],
 		'formatter' => [
-			'class' => 'app\i18n\Formatter',
+			'class' => \app\i18n\Formatter::class,
 		],
 		'cache' => [
-			'class' => 'yii\caching\FileCache',
+			'class' => \yii\caching\FileCache::class,
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error',

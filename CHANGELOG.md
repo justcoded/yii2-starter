@@ -3,6 +3,11 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.9.2
+---------------------
+* Fix './yii serve' command.
+* Updated configs to PHP 7 syntax (with ::class call, instead of hard-coded text value)
+
 v0.9.1
 ---------------------
 * Fix Codeception tests errors when run through PHPStorm.
