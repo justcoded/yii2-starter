@@ -3,10 +3,14 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
-v0.9.2
+v0.9.3
 ---------------------
 * Fix './yii serve' command.
 * Updated configs to PHP 7 syntax (with ::class call, instead of hard-coded text value)
+
+v0.9.2
+---------------------
+* Fix user migration after code refactoring in v0.9
 
 v0.9.1
 ---------------------
@@ -15,7 +19,7 @@ v0.9.1
 v0.9
 ---------------------
 * Upgrade app folder structure: moved controllers from web to root, moved commands to console, 
-* Moved migration component/views custom configuration to a separate module.
+* Moved migration console/views custom configuration to a separate module.
 * Admin panel: Added user "Roles" fields to edit form.
 * Issue #13: Registration is absent
 * Issue #14: Reset password
