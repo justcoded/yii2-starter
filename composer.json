@@ -28,7 +28,10 @@
     "process-timeout": 1800,
     "preferred-install": "dist",
     "sort-packages": true,
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "fxp-asset": {
+      "enabled": false
+    }
   },
   "repositories": [
     {
