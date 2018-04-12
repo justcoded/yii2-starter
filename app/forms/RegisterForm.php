@@ -25,7 +25,7 @@ class RegisterForm extends Model
 		return [
 			[['email', 'password', 'passwordRepeat', 'firstName', 'lastName'], 'required'],
 			['email', 'email'],
-			['email', 'unique', 'targetClass' => User::className()],
+			['email', 'unique', 'targetClass' => User::class],
 			['passwordRepeat', 'compare', 'compareAttribute' => 'password'],
 		];
 	}
