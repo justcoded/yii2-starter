@@ -22,7 +22,7 @@ class UsersController extends Controller
 	public function init()
 	{
 		parent::init();
-		$this->modelClass = UserForm::className();
+		$this->modelClass = UserForm::class;
 	}
 	
 	/**
@@ -32,7 +32,7 @@ class UsersController extends Controller
 	{
 		return [
 			'verbs' => [
-				'class'   => VerbFilter::className(),
+				'class'   => VerbFilter::class,
 				'actions' => [
 					'delete' => ['POST'],
 				],

@@ -9,9 +9,9 @@ use yii\web\NotFoundHttpException;
 return [
 	'as adminAccess' => [
 		// TODO: write own class to simplify this check.
-		'class' => AccessControl::className(),
+		'class' => AccessControl::class,
 		'rules' => [
-			// custom rule to deny access to "/admin/*" if user doesn't have permission 'administer'
+			// custom rule to deny access to "/admin/*" if user doesn't have permission 'administer'.
 			[
 				'allow'   => false,
 				'controllers' => ['admin/*'],
@@ -30,19 +30,19 @@ return [
 			],
 		],
 	],
-	// Route based permission filter
+	// Route based permission filter.
 	'as routeAccess' => [
-		'class' => 'justcoded\yii2\rbac\filters\RouteAccessControl',
+		'class' => \justcoded\yii2\rbac\filters\RouteAccessControl::class,
 		'allowActions' => [
 			'site/*',
 			'auth/*',
 		],
 	],
 
-	// authManager settings
+	// authManager settings.
 	'components' => [
 		'authManager' => [
-			'class' => 'justcoded\yii2\rbac\components\DbManager',
+			'class' => \justcoded\yii2\rbac\components\DbManager::class,
 			'defaultRoles' => ['Guest'],
 		],
 	],
