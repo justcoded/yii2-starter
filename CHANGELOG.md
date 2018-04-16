@@ -3,9 +3,13 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
-v0.9.4
+v0.9.5
 ---------------------
 * Fix yii rbac/scan for Windows OS (SettingsController generated an error for some reason)
+
+v0.9.4
+---------------------
+* Updated configs to PHP 7 syntax (with ::class call, instead of hard-coded text value)
 
 v0.9.3
 ---------------------
