@@ -70,7 +70,11 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 You can then install this project template using the following command:
 
 ~~~
-php composer.phar create-project --prefer-dist --stability=dev justcoded/yii2-starter my-project
+php composer.phar create-project --prefer-dist justcoded/yii2-starter my-project
+
+	or 
+
+composer create-project --prefer-dist justcoded/yii2-starter my-project
 ~~~
 
 CONFIGURATION
