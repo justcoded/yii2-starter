@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.9.4
+---------------------
+* Fix yii rbac/scan for Windows OS (SettingsController generated an error for some reason)
+
 v0.9.3
 ---------------------
 * Fix './yii serve' command.
