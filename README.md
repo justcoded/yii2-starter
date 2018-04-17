@@ -32,21 +32,20 @@ DIRECTORY STRUCTURE
         |-- rbac             RBAC Manager / components 
         |-- traits           global traits, grouped by type 
         |-- views            view files for the Web application
-        |-- web              Web controllers and application object 
         |-- widgets          application widgets to use inside views 
       config/             contains application configurations
       database/           contains migration and fixtures
       tests/              contains various tests for the basic application
       vendor/             contains dependent 3rd-party packages
-      public/             contains public assets and web entry script index.php
+      public/             contains public assets and web entry script index.php / server docroot
 
 The difference from [Yii2 basic template](https://github.com/yiisoft/yii2-app-basic):
 
 * Improved IDE support for custom components (`Yii::$app->getComponent(...)`)
-* Main code is grouped under `/app` directory
-* Config files are moved outside app and use .env extension (ability to get values from server ENV variables or .env file)
-* `commands` folder is renamed to `Console` (because inside we actually have Controllers, not Commands).
-* Form models has it's own folder to separate from ActiveRecords
+* Application code is moved to it's own folder `/app`
+* Config files are moved outside application code folder and use .env extension (ability to get values from server ENV variables or .env file)
+* `commands` folder is renamed to `console` (because inside we actually have Controllers, not Commands).
+* Form models have their own folder to separate them from ActiveRecord models
 * `assets` folder is used to store public assets as well (to be able to publish assets in the same way for app / modules / widgets)
 * Admin module with CRUD example (Users management)
 * Advanced RBAC based on 4 default roles and route-based access control. See [justcoded/yii2-rbac](https://github.com/justcoded/yii2-rbac)
@@ -69,13 +68,11 @@ at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
 
 You can then install this project template using the following command:
 
-~~~
-php composer.phar create-project --prefer-dist justcoded/yii2-starter my-project
+	php composer.phar create-project --prefer-dist justcoded/yii2-starter my-project
 
-	or 
+or 
 
-composer create-project --prefer-dist justcoded/yii2-starter my-project
-~~~
+	composer create-project --prefer-dist justcoded/yii2-starter my-project
 
 CONFIGURATION
 -------------
@@ -91,8 +88,8 @@ or .env file in project root (the simplest option).
 To start using the project template copy .env-example as .env in the project root and setup it.
 
 ### Web
-Copy .htaccess-example as .htaccess to enable pretty URLs support and cache/expire tokens required by 
-Google PageSpeed Insights test.
+Copy `/public/.htaccess-example` as `/public/.htaccess` to enable pretty URLs support and cache/expire 
+tokens required by Google PageSpeed Insights test.
 
 Furthermore you should check such options inside .env:
 
@@ -121,7 +118,7 @@ DB_PASS=12345
 LAUNCH
 -------
 
-You will need to create requried tables through migrations and init RBAC settings.
+You will need to create required tables through migrations and init RBAC extension.
 Launch the commands below from terminal:
 
 ```bash
@@ -130,15 +127,15 @@ php yii fixture/load User
 php yii rbac/init
 php yii rbac/assign-master 1
 php yii rbac/scan
-php yii rbac/scan -p='@vendor/justcoded/yii2-rbac/' -b='admin/rbac/'
+php yii rbac/scan --path=@vendor/justcoded/yii2-rbac/ --routesBase=admin/rbac/
 ```
 
 Now you should be able to access the application through the following URL, assuming `my-project` is the directory
 directly under the Web root.
 
-~~~
-http://localhost/my-project/public/
-~~~
+	http://localhost/my-project/public/
+
+Or you can run `yii serve` to launch Yii built-in web server, similar to usual Yii basic application.
 
 Admin panel can be accessible only after login. If you used fixtures to fill the database with dummy content,
 then admin panel access will be:
