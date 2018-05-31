@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\forms\LoginForm;
 use app\forms\PasswordRequestForm;
 use app\forms\PasswordUpdateForm;
+use app\forms\RegisterForm;
 use app\models\User;
 
 class AuthController extends Controller
