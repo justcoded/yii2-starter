@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v0.9.6
+---------------------
+* Fix register page, controller missed use statement for RegisterForm.
+
 v0.9.5
 ---------------------
 * Fix yii rbac/scan for Windows OS (SettingsController generated an error for some reason)
