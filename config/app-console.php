@@ -1,22 +1,23 @@
 <?php
 
-\Yii::setAlias('@app', dirname(__DIR__) . '/app');
-\Yii::setAlias('@webroot', dirname(__DIR__) . '/public');
+\Yii::setAlias('@srcPath', dirname(__DIR__));
+\Yii::setAlias('@app', '@srcPath/app');
+\Yii::setAlias('@webroot', '@srcPath/public');
 
 $db       = require __DIR__ . '/db.php';
 $settings = require __DIR__ . '/settings.php';
 
 $config = [
 	'id'                  => 'main-console',
-	'basePath'   => dirname(__DIR__) . '/app',
-	'runtimePath'   => dirname(__DIR__) . '/runtime',
-	'vendorPath'   => dirname(__DIR__) . '/vendor',
+	'basePath'   => '@app',
+	'runtimePath'   => '@srcPath/runtime',
+	'vendorPath'   => '@srcPath/vendor',
 	'controllerNamespace' => 'app\\console',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
-		'@config'=> dirname(__DIR__) . '/config',
-		'@migrations' => dirname(__DIR__) . '/database/migrations',
-		'@fixtures' => dirname(__DIR__) . '/database/fixtures',
+		'@config'=> '@srcPath/config',
+		'@migrations' => '@srcPath/database/migrations',
+		'@fixtures' => '@srcPath/database/fixtures',
 		'@app/fixtures' => '@fixtures',
 	],
 	'controllerMap' => [

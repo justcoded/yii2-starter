@@ -50,12 +50,11 @@
       "yii\\composer\\Installer::postInstall",
       "@php tests/_phpstorm.php"
     ],
-    "post-update-cmd": [
-      "@php tests/_phpstorm.php"
-    ],
     "post-create-project-cmd": [
       "yii\\composer\\Installer::postCreateProject",
-      "yii\\composer\\Installer::postInstall"
+      "yii\\composer\\Installer::postInstall",
+      "cp -n .env-example .env",
+      "php yii security/app-key"
     ]
   },
   "extra": {
