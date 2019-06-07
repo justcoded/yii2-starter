@@ -14,9 +14,10 @@ $config = [
 	'controllerNamespace' => 'app\\console',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
-		'@config'=> dirname(__DIR__) . '/config',
-		'@migrations' => dirname(__DIR__) . '/database/migrations',
-		'@fixtures' => dirname(__DIR__) . '/database/fixtures',
+		'@root' => dirname(__DIR__),
+		'@config'=> '@root/config',
+		'@migrations' => '@root/database/migrations',
+		'@fixtures' => '@root/database/fixtures',
 		'@app/fixtures' => '@fixtures',
 	],
 	'controllerMap' => [
