@@ -21,7 +21,7 @@ class SecurityController extends Controller
 	public function actionAppKey()
 	{
 		$key = Yii::$app->security->generateRandomString();
-		$envPath = Yii::getAlias('@root/.env');
+		$envPath = Yii::getAlias('@srcPath/.env');
 
 		if (file_exists($envPath)) {
 			$envData = file_get_contents($envPath);
