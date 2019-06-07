@@ -1,6 +1,6 @@
 <?php
 
-namespace app\console\controllers;
+namespace app\console;
 
 use Yii;
 use yii\base\Exception;
@@ -10,7 +10,7 @@ use yii\base\Exception;
  *
  * @package app\console\controllers
  */
-class GenerateController extends Controller
+class SecurityController extends Controller
 {
 	/**
 	 * Action Generate
@@ -18,7 +18,7 @@ class GenerateController extends Controller
 	 * @return bool|int
 	 * @throws Exception
 	 */
-	public function actionKey()
+	public function actionAppKey()
 	{
 		$key = Yii::$app->security->generateRandomString();
 		$envPath = Yii::getAlias('@root/.env');
