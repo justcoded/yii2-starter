@@ -1,7 +1,8 @@
 <?php
 
-\Yii::setAlias('@app', dirname(__DIR__) . '/app');
-\Yii::setAlias('@webroot', dirname(__DIR__) . '/public');
+\Yii::setAlias('@srcPath', dirname(__DIR__));
+\Yii::setAlias('@app', '@srcPath/app');
+\Yii::setAlias('@webroot', '@srcPath/public');
 
 $db       = require __DIR__ . '/db.php';
 $settings = require __DIR__ . '/settings.php';
@@ -14,7 +15,6 @@ $config = [
 	'controllerNamespace' => 'app\\console',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
-		'@srcPath' => dirname(__DIR__),
 		'@config'=> '@srcPath/config',
 		'@migrations' => '@srcPath/database/migrations',
 		'@fixtures' => '@srcPath/database/fixtures',
