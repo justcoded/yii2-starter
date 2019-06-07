@@ -9,9 +9,9 @@ $settings = require __DIR__ . '/settings.php';
 
 $config = [
 	'id'                  => 'main-console',
-	'basePath'   => dirname(__DIR__) . '/app',
-	'runtimePath'   => dirname(__DIR__) . '/runtime',
-	'vendorPath'   => dirname(__DIR__) . '/vendor',
+	'basePath'   => '@app',
+	'runtimePath'   => '@srcPath/runtime',
+	'vendorPath'   => '@srcPath/vendor',
 	'controllerNamespace' => 'app\\console',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
