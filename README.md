@@ -98,7 +98,11 @@ APP_DEBUG=true
 APP_KEY=wUZvVVKJyHFGDB9qK_Lop4QE1vwb4bYU
 ```
 
-*`APP_KEY` is used as cookie verification key. Unfortunately there are no post install composer script to generate it automatically*
+*`APP_KEY` is used as cookie verification key. In order to set or change it, run:
+ 
+```bash
+php yii generate/key
+```
 
 ### Database
 

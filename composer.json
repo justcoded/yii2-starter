@@ -43,7 +43,9 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "yii\\composer\\Installer::postInstall"
+      "yii\\composer\\Installer::postInstall",
+      "cp -n .env-example .env",
+      "php yii generate/key"
     ],
     "post-create-project-cmd": [
       "yii\\composer\\Installer::postCreateProject",
