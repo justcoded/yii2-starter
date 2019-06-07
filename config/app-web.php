@@ -12,7 +12,6 @@ $config = [
 	'basePath'   => dirname(__DIR__) . '/app',
 	'runtimePath'   => dirname(__DIR__) . '/runtime',
 	'vendorPath'   => dirname(__DIR__) . '/vendor',
-	'controllerNamespace' => 'app\\web\\controllers',
 	'bootstrap'  => ['log', 'settings'],
 	'aliases'    => [
 		'@config'=> '@app/../config',
@@ -20,7 +19,7 @@ $config = [
 		'@npm'   => '@vendor/npm-asset',
 	],
 	'modules' => [
-		'admin' => 'app\modules\admin\Module',
+		'admin' => \app\modules\admin\Module::class,
 	],
 	'components' => [
 		'request'      => [
@@ -40,7 +39,7 @@ $config = [
 			'enableAutoLogin' => true,
 		],
 		'authManager' => [
-			'class' => 'justcoded\yii2\rbac\components\DbManager',
+			'class' => \justcoded\yii2\rbac\components\DbManager::class,
 		],
 		'urlManager' => [
 			'enablePrettyUrl' => true,
@@ -48,10 +47,10 @@ $config = [
 			'rules' => require(__DIR__ . '/routes.php'),
 		],
 		'formatter' => [
-			'class' => 'app\i18n\Formatter',
+			'class' => \app\i18n\Formatter::class,
 		],
 		'cache' => [
-			'class' => 'yii\caching\FileCache',
+			'class' => \yii\caching\FileCache::class,
 		],
 		/*
 		'i18n' => [

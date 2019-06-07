@@ -6,6 +6,8 @@
  */
 /* @var $className string the new migration class name without namespace */
 /* @var $namespace string the new migration class namespace */
+/* @var $table string the name table */
+/* @var $fields array the fields */
 
 echo "<?php\n";
 if (!empty($namespace)) {
@@ -13,43 +15,38 @@ if (!empty($namespace)) {
 }
 ?>
 
-use app\console\Migration;
+use app\modules\base\db\Migration;
 
 /**
- * Class <?= $className . "\n" ?>
+ * Handles the dropping of table `<?= $table ?>`.
+<?= $this->render('_foreignTables', [
+	'foreignKeys' => $foreignKeys,
+]) ?>
  */
 class <?= $className ?> extends Migration
 {
 	/**
 	 * @inheritdoc
 	 */
-	public function safeUp()
+	public function up()
 	{
-
+<?= $this->render('_dropTable', [
+	'table' => $table,
+	'foreignKeys' => $foreignKeys,
+])
+?>
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function safeDown()
-	{
-		echo "<?= $className ?> cannot be reverted.\n";
-
-		return false;
-	}
-
-	/*
-	// Use up()/down() to run migration code without a transaction.
-	public function up()
-	{
-
-	}
-
 	public function down()
 	{
-		echo "<?= $className ?> cannot be reverted.\n";
-
-		return false;
+<?= $this->render('_createTable', [
+	'table' => $table,
+	'fields' => $fields,
+	'foreignKeys' => $foreignKeys,
+])
+?>
 	}
-	*/
 }
