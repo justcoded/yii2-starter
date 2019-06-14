@@ -3,6 +3,8 @@
 namespace app\console;
 
 
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use yii\console\ExitCode;
 use yii\helpers\Console;
 
 abstract class Controller extends \yii\console\Controller
@@ -34,22 +36,25 @@ abstract class Controller extends \yii\console\Controller
 	 * Prints a yellow line to STDOUT.
 	 *
 	 * @param string $string the string to print
-	 * @return int|bool Number of bytes printed or false on error
+	 * @return int Exit code status
 	 */
 	protected function warning($string)
 	{
-		return $this->line($string, Console::FG_YELLOW);
+		$this->line($string, Console::FG_YELLOW);
+
+		return ExitCode::UNSPECIFIED_ERROR;
 	}
 
 	/**
 	 * Prints a yellow line to STDOUT.
 	 *
 	 * @param string $string the string to print
-	 * @return int|bool Number of bytes printed or false on error
+	 * @return int Exit code status
 	 */
 	protected function success($string)
 	{
-		return $this->line($string, Console::FG_GREEN);
-	}
+		$this->line($string, Console::FG_GREEN);
 
+		return ExitCode::OK;
+	}
 }
