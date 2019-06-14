@@ -42,7 +42,7 @@ abstract class Controller extends \yii\console\Controller
 	{
 		$this->line($string, Console::FG_YELLOW);
 
-		return ExitCode::UNSPECIFIED_ERROR;
+		return ExitCode::TEMPFAIL;
 	}
 
 	/**
