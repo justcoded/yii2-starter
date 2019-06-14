@@ -2,8 +2,6 @@
 
 namespace app\console;
 
-
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use yii\console\ExitCode;
 use yii\helpers\Console;
 
