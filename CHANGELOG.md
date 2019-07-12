@@ -3,6 +3,11 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+Develop
+---------------------
+* Added APP_KEY hash generator console command.
+* Base module has been removed 
+
 v0.9.6
 ---------------------
 * Fix register page, controller missed use statement for RegisterForm.

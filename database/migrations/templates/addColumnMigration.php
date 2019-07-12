@@ -9,40 +9,44 @@
 /* @var $table string the name table */
 /* @var $fields array the fields */
 
+preg_match('/^add_(.+)_columns?_to_(.+)_table$/', $name, $matches);
+$columns = str_replace('_column_', ', ', $matches[1]);
+
 echo "<?php\n";
 if (!empty($namespace)) {
-    echo "\nnamespace {$namespace};\n";
+	echo "\nnamespace {$namespace};\n";
 }
 ?>
 
-use app\modules\base\db\Migration;
+use yii\db\Migration;
 
 /**
- * Handles the dropping of table `<?= $table ?>`.
+ * Handles adding <?= $columns ?> to table `<?= $table ?>`.
 <?= $this->render('_foreignTables', [
-	'foreignKeys' => $foreignKeys,
-]) ?>
+	 'foreignKeys' => $foreignKeys,
+ ]) ?>
  */
 class <?= $className ?> extends Migration
 {
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function up()
+	public function safeUp()
 	{
-<?= $this->render('_dropTable', [
+<?= $this->render('_addColumns', [
 	'table' => $table,
+	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,
 ])
 ?>
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function down()
+	public function safeDown()
 	{
-<?= $this->render('_createTable', [
+<?= $this->render('_dropColumns', [
 	'table' => $table,
 	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,

@@ -8,53 +8,44 @@
 /* @var $namespace string the new migration class namespace */
 /* @var $table string the name table */
 /* @var $fields array the fields */
-preg_match('/^drop_(.+)_columns?_from_(.+)_table$/', $name, $matches);
-$columns = $matches[1];
-
-if (empty($fields)) {
-	$fields = [
-		[
-			'property' => $columns,
-			'decorators' => 'string()',
-		],
-	];
-}
 
 echo "<?php\n";
 if (!empty($namespace)) {
-    echo "\nnamespace {$namespace};\n";
+	echo "\nnamespace {$namespace};\n";
 }
 ?>
 
-use app\modules\base\db\Migration;
+use yii\db\Migration;
+use app\traits\migrations\CreateTableOptions;
 
 /**
- * Handles dropping <?= $columns ?> from table `<?= $table ?>`.
+ * Handles the dropping of table `<?= $table ?>`.
 <?= $this->render('_foreignTables', [
-    'foreignKeys' => $foreignKeys,
+	'foreignKeys' => $foreignKeys,
 ]) ?>
  */
 class <?= $className ?> extends Migration
 {
+	use CreateTableOptions;
+
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function up()
+	public function safeUp()
 	{
-<?= $this->render('_dropColumns', [
+<?= $this->render('_dropTable', [
 	'table' => $table,
-	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,
 ])
 ?>
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function down()
+	public function safeDown()
 	{
-<?= $this->render('_addColumns', [
+<?= $this->render('_createTable', [
 	'table' => $table,
 	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,

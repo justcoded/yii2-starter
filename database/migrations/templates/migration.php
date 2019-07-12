@@ -9,11 +9,11 @@
 
 echo "<?php\n";
 if (!empty($namespace)) {
-    echo "\nnamespace {$namespace};\n";
+	echo "\nnamespace {$namespace};\n";
 }
 ?>
 
-use app\modules\base\db\Migration;
+use yii\db\Migration;
 
 /**
  * Class <?= $className . "\n" ?>
@@ -21,7 +21,7 @@ use app\modules\base\db\Migration;
 class <?= $className ?> extends Migration
 {
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function safeUp()
 	{
@@ -29,7 +29,7 @@ class <?= $className ?> extends Migration
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function safeDown()
 	{

@@ -8,7 +8,7 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.0",
-    "yiisoft/yii2": "~2.0.12",
+    "yiisoft/yii2": "~2.0.22",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
     "yiisoft/yii2-faker": "~2.0.0",
@@ -51,12 +51,12 @@
       "yii\\composer\\Installer::postInstall",
       "@php tests/_phpstorm.php"
     ],
-    "post-update-cmd": [
-      "@php tests/_phpstorm.php"
-    ],
     "post-create-project-cmd": [
       "yii\\composer\\Installer::postCreateProject",
-      "yii\\composer\\Installer::postInstall"
+      "yii\\composer\\Installer::postInstall",
+      "cp -n .env.example .env",
+      "cp -n public/.htaccess.example public/.htaccess",
+      "php yii security/app-key"
     ]
   },
   "extra": {

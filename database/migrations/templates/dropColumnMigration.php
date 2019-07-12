@@ -8,41 +8,31 @@
 /* @var $namespace string the new migration class namespace */
 /* @var $table string the name table */
 /* @var $fields array the fields */
-
-preg_match('/^add_(.+)_columns?_to_(.+)_table$/', $name, $matches);
+preg_match('/^drop_(.+)_columns?_from_(.+)_table$/', $name, $matches);
 $columns = $matches[1];
-
-if (empty($fields)) {
-	$fields = [
-		[
-			'property' => $columns,
-			'decorators' => 'string()',
-		],
-	];
-}
 
 echo "<?php\n";
 if (!empty($namespace)) {
-    echo "\nnamespace {$namespace};\n";
+	echo "\nnamespace {$namespace};\n";
 }
 ?>
 
-use app\modules\base\db\Migration;
+use yii\db\Migration;
 
 /**
- * Handles adding <?= $columns ?> to table `<?= $table ?>`.
+ * Handles dropping <?= $columns ?> from table `<?= $table ?>`.
 <?= $this->render('_foreignTables', [
-     'foreignKeys' => $foreignKeys,
- ]) ?>
+	'foreignKeys' => $foreignKeys,
+]) ?>
  */
 class <?= $className ?> extends Migration
 {
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function up()
+	public function safeUp()
 	{
-<?= $this->render('_addColumns', [
+<?= $this->render('_dropColumns', [
 	'table' => $table,
 	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,
@@ -51,11 +41,11 @@ class <?= $className ?> extends Migration
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function down()
+	public function safeDown()
 	{
-<?= $this->render('_dropColumns', [
+<?= $this->render('_addColumns', [
 	'table' => $table,
 	'fields' => $fields,
 	'foreignKeys' => $foreignKeys,
