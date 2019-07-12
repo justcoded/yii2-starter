@@ -2,20 +2,22 @@
 
 namespace app\modules\admin\assets;
 
+use rmrevin\yii\fontawesome\FontAwesome;
+use yii\bootstrap4\BootstrapAsset;
+use yii\web\YiiAsset;
+
 class AssetBundle extends \yii\web\AssetBundle
 {
 	public $sourcePath = '@app/modules/admin/assets';
 
 	public $css = [
-		'css/extra.css'
+		'css/admin.css'
 	];
 
 	public $js = [];
 
 	public $depends = [
-		'dmstr\web\AdminLteAsset',
-		//'app\modules\admin\assets\AdminltePluginsAssetBundle',
-		'yii\web\YiiAsset',
-		'yii\bootstrap\BootstrapAsset',
+		AdminLteAssetBundle::class,
+		FontAwesomeAssetBundle::class,
 	];
 }
