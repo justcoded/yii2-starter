@@ -54,7 +54,8 @@
     "post-create-project-cmd": [
       "yii\\composer\\Installer::postCreateProject",
       "yii\\composer\\Installer::postInstall",
-      "cp -n .env-example .env",
+      "cp -n .env.example .env",
+      "cp -n public/.htaccess.example public/.htaccess",
       "php yii security/app-key"
     ]
   },
