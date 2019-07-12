@@ -85,10 +85,10 @@ Instead you can accept different parameters from server environment with `env()`
 Server environment variables can be set through web server vhost configuration, .htaccess file, 
 or .env file in project root (the simplest option).
 
-To start using the project template copy .env-example as .env in the project root and setup it.
+To start using the project template copy .env.example as .env in the project root and setup it.
 
 ### Web
-Copy `/public/.htaccess-example` as `/public/.htaccess` to enable pretty URLs support and cache/expire 
+Copy `/public/.htaccess.example` as `/public/.htaccess` to enable pretty URLs support and cache/expire 
 tokens required by Google PageSpeed Insights test.
 
 Furthermore you should check such options inside .env:
