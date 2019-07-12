@@ -25,9 +25,14 @@ class SecurityController extends Controller
 
 		if (file_exists($envPath)) {
 			$envData = file_get_contents($envPath);
+
+			if (! preg_match('/APP_KEY=(\w+)?/', $envData)) {
+				return $this->warning('No APP_KEY has been found in your .env file');
+			}
+
 			$updatedEnvData = preg_replace('/APP_KEY=(\w+)?/', "APP_KEY={$key}", $envData);
 			if (! $updatedEnvData) {
-				return $this->warning('No APP_KEY has been found in your .env file');
+				return $this->stderr('Error during the app key setup');
 			}
 
 			file_put_contents($envPath, $updatedEnvData);
