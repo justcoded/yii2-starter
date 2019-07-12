@@ -1,8 +1,8 @@
 <?php
 
 echo  $this->render('_dropForeignKeys', [
-    'table' => $table,
-    'foreignKeys' => $foreignKeys,
+	'table' => $table,
+	'foreignKeys' => $foreignKeys,
 ]);
 
 foreach ($fields as $field): ?>

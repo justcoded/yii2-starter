@@ -23,7 +23,6 @@ $config = [
 	],
 	'components' => [
 		'request'      => [
-			// TODO: move generator to console command.
 			'cookieValidationKey' => env('APP_KEY'),
 		],
 		'response' => [

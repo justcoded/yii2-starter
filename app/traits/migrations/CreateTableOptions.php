@@ -1,14 +1,14 @@
 <?php
-namespace app\modules\base\db;
+namespace app\traits\migrations;
 
-class Migration extends \yii\db\Migration
+trait CreateTableOptions
 {
 	/**
 	 * Prepare table options based on DB driver
 	 *
 	 * @return null|string
 	 */
-	protected function tableOptions()
+	protected function createTableOptions()
 	{
 		$tableOptions = null;
 		if ($this->db->driverName === 'mysql') {
