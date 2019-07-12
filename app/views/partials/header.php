@@ -3,19 +3,19 @@
 /* @var $this \yii\web\View */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use justcoded\yii2\rbac\models\Item as RbacItem;
 
 NavBar::begin([
 	'brandLabel' => 'My Company',
 	'brandUrl'   => Yii::$app->homeUrl,
 	'options'    => [
-		'class' => 'navbar-inverse navbar-fixed-top',
+		'class' => ['navbar-dark', 'bg-dark', 'navbar-expand-md'],
 	],
 ]);
 echo Nav::widget([
-	'options' => ['class' => 'navbar-nav navbar-right'],
+	'options' => ['class' => 'navbar-nav ml-auto'],
 	'items'   => [
 		['label' => 'Home', 'url' => ['/site/index']],
 		['label' => 'About', 'url' => ['/site/about']],
