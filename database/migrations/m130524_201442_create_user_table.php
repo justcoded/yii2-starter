@@ -1,10 +1,19 @@
 <?php
 
-use app\modules\base\db\Migration;
+use yii\db\Migration;
+use app\traits\migrations\CreateTableOptions;
 
+/**
+ * Handles the creation of table `{{%user}}`.
+ */
 class m130524_201442_create_user_table extends Migration
 {
-	public function up()
+	use CreateTableOptions;
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function safeUp()
 	{
 		$this->createTable('{{%user}}', [
 			'id'                   => $this->primaryKey(),
@@ -19,10 +28,13 @@ class m130524_201442_create_user_table extends Migration
 			'status'     => $this->smallInteger()->notNull()->defaultValue(10),
 			'created_at' => $this->integer(),
 			'updated_at' => $this->integer(),
-		], $this->tableOptions());
+		], $this->createTableOptions());
 	}
 
-	public function down()
+	/**
+	 * {@inheritdoc}
+	 */
+	public function safeDown()
 	{
 		$this->dropTable('{{%user}}');
 	}

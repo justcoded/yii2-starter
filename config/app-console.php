@@ -8,7 +8,7 @@ $db       = require __DIR__ . '/db.php';
 $settings = require __DIR__ . '/settings.php';
 
 $config = [
-	'id'                  => 'main-console',
+	'id'         => 'main-console',
 	'basePath'   => '@app',
 	'runtimePath'   => '@srcPath/runtime',
 	'vendorPath'   => '@srcPath/vendor',
@@ -22,7 +22,15 @@ $config = [
 	],
 	'controllerMap' => [
 		'migrate' => [
-			'class' => \app\modules\base\console\MigrateController::class,
+			'class' => \yii\console\controllers\MigrateController::class,
+			'templateFile' => '@migrations/templates/migration.php',
+			'generatorTemplateFiles' => [
+				'create_table' => '@migrations/templates/createTableMigration.php',
+				'drop_table' => '@migrations/templates/dropTableMigration.php',
+				'add_column' => '@migrations/templates/addColumnMigration.php',
+				'drop_column' => '@migrations/templates/dropColumnMigration.php',
+				'create_junction' => '@migrations/templates/createTableMigration.php',
+			],
 			'migrationPath' => [
 				'@migrations',
 				'@yii/rbac/migrations',

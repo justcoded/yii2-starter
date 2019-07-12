@@ -29,7 +29,7 @@ class UserForm extends User
 	public function rules()
 	{
 		return array_merge(parent::rules(), [
-			['password', 'safe'],
+			[['password', 'passwordRepeat'], 'string'],
 			[
 				'passwordRepeat',
 				'required',
@@ -53,11 +53,19 @@ class UserForm extends User
 			$this->setPassword($this->password);
 		}
 		
-		$this->updateUserRoles($this->roles);
-		
 		return parent::beforeSave($insert);
 	}
-	
+
+	/**
+	 * @inheritDoc
+	 */
+	public function afterSave($insert, $changedAttributes)
+	{
+		parent::afterSave($insert, $changedAttributes);
+
+		$this->updateUserRoles($this->roles);
+	}
+
 	/**
 	 * @inheritdoc
 	 */

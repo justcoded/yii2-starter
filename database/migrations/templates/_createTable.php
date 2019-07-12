@@ -8,14 +8,14 @@
 /* @var $foreignKeys array the foreign keys */
 
 ?>		$this->createTable('<?= $table ?>', [
-<?php foreach ($fields as $field):
-	if (empty($field['decorators'])): ?>
+<?php foreach ($fields as $field) :
+	if (empty($field['decorators'])) : ?>
 			'<?= $field['property'] ?>',
-<?php else: ?>
+<?php else : ?>
 			<?= "'{$field['property']}' => \$this->{$field['decorators']}" ?>,
 <?php endif;
 endforeach; ?>
-		], $this->tableOptions());
+		], $this->createTableOptions());
 <?= $this->render('_addForeignKeys', [
 	'table' => $table,
 	'foreignKeys' => $foreignKeys,
