@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\widgets;
 
+use yii\bootstrap4\LinkPager;
 use yii\grid\GridView;
 
 class BoxGridView extends GridView
@@ -10,7 +11,7 @@ class BoxGridView extends GridView
 	 * @inheritdoc
 	 */
 	public $options = [
-		'class' => 'grid-view box',
+		'class' => 'grid-view card',
 	];
 
 	/**
@@ -23,12 +24,20 @@ class BoxGridView extends GridView
 	/**
 	 * @inheritdoc
 	 */
+	public $pager = [
+		'class' => LinkPager::class,
+		'listOptions' => ['class' => ['pagination pagination-sm m-0']],
+	];
+
+	/**
+	 * @inheritdoc
+	 */
 	public $layout = '
-		<div class="box-header">
-			<div class="pull-right">{pager}</div>
-			{summary}
+		<div class="card-header">
+			<div class="float-right">{pager}</div>
+			<span class="text-muted">{summary}</span>
 		</div>
-		<div class="box-body no-padding">{items}</div>
-		<div class="box-footer"><div class="pull-right">{pager}</div></div>
+		<div class="card-body p-0">{items}</div>
+		<div class="card-footer"><div class="float-right">{pager}</div></div>
 		';
 }

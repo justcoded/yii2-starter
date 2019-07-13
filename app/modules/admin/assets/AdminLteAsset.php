@@ -8,7 +8,7 @@ use yii\jui\JuiAsset;
 use yii\web\JqueryAsset;
 use yii\web\YiiAsset;
 
-class AdminLteAssetBundle extends \yii\web\AssetBundle
+class AdminLteAsset extends \yii\web\AssetBundle
 {
 	public $sourcePath = '@vendor/almasaeed2010/adminlte/dist/';
 

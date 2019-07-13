@@ -18,11 +18,10 @@ use app\modules\admin\widgets\Menu;
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			<div class="image">
-				<img src="<?= $adminlteAssets; ?>/img/user2-160x160.jpg" class="img-circle elevation-2"
-					 alt="User Image">
+				<i class="fas fa-user-tie img-circle elevation-2"></i>
 			</div>
 			<div class="info flex-grow-1">
-				<a href="#" class="d-block"><?= Html::encode(Yii::$app->user->identity->getFullName()) ?></a>
+				<a href="#" class="d-block"><?= Html::encode(Yii::$app->user->identity->getShortName()) ?></a>
 			</div>
 			<div class="align-self-end">
 				<?= Html::a(
@@ -41,36 +40,33 @@ use app\modules\admin\widgets\Menu;
 		<nav class="mt-2">
 			<?= Menu::widget([
 				'options' => [
-					'class'          => 'nav nav-pills nav-sidebar flex-column',
-					'data-widget'    => 'treeview',
+					'class' => 'nav nav-pills nav-sidebar flex-column',
+					'data-widget' => 'treeview',
 					'role'           => 'menu',
 					'data-accordion' => 'false',
-				],
-				'itemOptions' => [
-					'class' => 'nav-item',
 				],
 				'items'   => [
 					[
 						'label' => 'Dashboard',
-						'icon' => 'tachometer-alt',
+						'icon' => 'fas fa-tachometer-alt',
 						'url' => ['/admin/dashboard'],
 						'active' => 'dashboard' === Yii::$app->controller->id,
 					],
 					[
 						'label'  => 'Users',
-						'icon'   => 'users',
+						'icon'   => 'fas fa-users',
 						'url'    => ['/admin/users'],
 						'active' => 'users' === Yii::$app->controller->id,
 					],
 					[
 						'label'  => 'Permissions',
-						'icon'   => 'lock',
+						'icon'   => 'fas fa-lock',
 						'url'    => ['/admin/rbac/permissions'],
 						'active' => 'permissions' === Yii::$app->controller->id,
 					],
 					[
 						'label' => 'Settings',
-						'icon'  => 'cog',
+						'icon'  => 'fas fa-cog',
 						'url'   => '#',
 						'items' => [
 							[
@@ -81,11 +77,11 @@ use app\modules\admin\widgets\Menu;
 					],
 					[
 						'label' => 'Developer',
-						'icon'  => 'code',
+						'icon'  => 'fas fa-code',
 						'url'   => '#',
 						'items' => [
-							['label' => 'Gii', 'url' => ['/gii'],],
-							['label' => 'Debug', 'url' => ['/debug'],],
+							['label' => 'Gii', 'url' => ['/gii'], 'attributes' => 'target="_blank"'],
+							['label' => 'Debug', 'url' => ['/debug'], 'attributes' => 'target="_blank"'],
 						],
 					],
 				],

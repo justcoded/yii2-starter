@@ -1,15 +1,15 @@
 <?php
-use dmstr\widgets\Alert;
+
+use app\widgets\Block;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use app\modules\admin\assets\ThemeHelper;
+use app\modules\admin\Module as AdminModule;
 
 /* @var $this \yii\web\View */
-
 ?>
 
-<?php if (! ThemeHelper::printBlock(ThemeHelper::BLOCK_CONTENT_HEADER)) : ?>
+<?php Block::begin(['id' => AdminModule::BLOCK_CONTENT_HEADER]) ?>
 	<!-- Content Header (Page header) -->
 	<div class="content-header">
 		<div class="container-fluid">
@@ -18,10 +18,10 @@ use app\modules\admin\assets\ThemeHelper;
 					<h1 class="m-0 text-dark">
 						<?= Html::encode(ArrayHelper::getValue($this->params, 'heading', $this->title)) ?>
 						<?php if (!empty($this->params['subheading'])) : ?>
-							<small><?= Html::encode($this->params['subheading']); ?></small>
+							<small class="text-muted"><?= Html::encode($this->params['subheading']); ?></small>
 						<?php endif; ?>
 
-						<?php ThemeHelper::printBlock(ThemeHelper::BLOCK_HEADER_BUTTONS); ?>
+						<?= Block::widget(['id' => AdminModule::BLOCK_CONTENT_TITLE]) ?>
 					</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
@@ -43,4 +43,4 @@ use app\modules\admin\assets\ThemeHelper;
 			</div><!-- /.row -->
 		</div><!-- /.container-fluid -->
 	</div>
-<?php endif; ?>
+<?php Block::end(); ?>

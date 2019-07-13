@@ -22,6 +22,8 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property-read string fullName
+ * @property-read string shortName
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -62,6 +64,17 @@ class User extends ActiveRecord implements IdentityInterface
 	public function getFullName()
 	{
 		return "{$this->first_name} {$this->last_name}";
+	}
+
+	/**
+	 * User short name
+	 * (as first name, last name first letter)
+	 *
+	 * @return string
+	 */
+	public function getShortName()
+	{
+		return trim($this->first_name . ' ' . ($this->last_name ? $this->last_name{0} . '.' : ''));
 	}
 	
 	/**

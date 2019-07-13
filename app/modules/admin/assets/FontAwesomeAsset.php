@@ -5,7 +5,7 @@ namespace app\modules\admin\assets;
 use yii\bootstrap4\BootstrapAsset;
 use yii\web\YiiAsset;
 
-class FontAwesomeAssetBundle extends \yii\web\AssetBundle
+class FontAwesomeAsset extends \yii\web\AssetBundle
 {
 	public $sourcePath = '@vendor/almasaeed2010/adminlte/plugins/fontawesome-free/';
 

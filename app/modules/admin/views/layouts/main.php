@@ -1,11 +1,7 @@
 <?php
-//use dmstr\widgets\Alert;
-//use yii\widgets\Breadcrumbs;
-use yii\bootstrap4\Alert;
-use yii\bootstrap4\Breadcrumbs;
+use app\widgets\FlashAlert;
 use app\modules\admin\assets\AssetBundle;
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -39,8 +35,9 @@ $this->beginPage() ?>
 
 		<section class="content">
 			<div class="container-fluid">
-				<?= 0 && Alert::widget() ?>
+				<?= FlashAlert::widget() ?>
 				<?= $content ?>
+				<br>
 			</div>
 		</section>
 	</div>

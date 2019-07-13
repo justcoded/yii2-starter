@@ -1,7 +1,7 @@
 <?php
 
 use app\models\User;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
 /**
@@ -11,13 +11,13 @@ use yii\helpers\Html;
  */
 ?>
 
-<div class="user-form box">
+<div class="user-form card">
 	
 	<?php $form = ActiveForm::begin([
 		'layout' => 'horizontal',
 	]); ?>
 
-	<div class="box-body">
+	<div class="card-body">
 		<?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 		
 		<?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
@@ -36,8 +36,8 @@ use yii\helpers\Html;
 			'multiple' => 'multiple',
 		]) ?>
 	</div>
-	<div class="box-footer text-right">
-		<?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => 'btn btn-success']) ?>
+	<div class="card-footer text-right">
+		<?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => 'btn btn-primary']) ?>
 	</div>
 	
 	<?php ActiveForm::end(); ?>
