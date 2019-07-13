@@ -17,7 +17,6 @@ $this->params['subheading']    = 'App';
 
 	<?php $form = ActiveForm::begin([
 		'layout' => 'horizontal',
-		'enableClientValidation' => false,
 	]); ?>
 
 	<?= $form->errorSummary($model); ?>
