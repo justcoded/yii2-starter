@@ -23,7 +23,7 @@ use Yii;
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @author Alexander Makarov <sam@rmcreative.ru>
  */
-class FlashAlert extends \yii\bootstrap\Widget
+class FlashAlert extends \yii\bootstrap4\Widget
 {
 	/**
 	 * @var array the alert types configuration for the flash messages.
@@ -59,7 +59,7 @@ class FlashAlert extends \yii\bootstrap\Widget
 			}
 
 			foreach ((array)$flash as $i => $message) {
-				echo \yii\bootstrap\Alert::widget([
+				echo \yii\bootstrap4\Alert::widget([
 					'body'        => $message,
 					'closeButton' => $this->closeButton,
 					'options'     => array_merge($this->options, [

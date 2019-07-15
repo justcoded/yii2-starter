@@ -2,6 +2,9 @@
 
 namespace app\modules\admin\controllers;
 
+use justcoded\yii2\settings\actions\SettingsAction;
+use justcoded\yii2\settings\forms\AppSettingsForm;
+
 /**
  * Class SettingsController
  *
@@ -16,8 +19,8 @@ class SettingsController extends Controller
 	{
 		return [
 			'app' => [
-				'class' => 'justcoded\yii2\settings\actions\SettingsAction',
-				'modelClass' => 'justcoded\yii2\settings\forms\AppSettingsForm',
+				'class' => SettingsAction::class,
+				'modelClass' => AppSettingsForm::class,
 			],
 		];
 	}

@@ -1,5 +1,16 @@
-.grid-view .pagination{
-	margin: 0;
+.sidebar .user-panel {
+	width: 100%;
+}
+.sidebar .user-panel .image i {
+	background: #fff;
+	font-size: 2em;
+	width: 32px;
+	text-align: center;
+}
+
+.page-item.active .page-link{
+	background: #17a2b8;
+	border-color: #17a2b8!important;
 }
 
 .grid-view table thead:first-child > tr:first-child a{
@@ -14,17 +25,17 @@
 	bottom: 0px;
 	right: 8px;
 	display: block;
-	font-family: 'Glyphicons Halflings';
+	font-family: 'Font Awesome 5 Free';
 	opacity: 0.7;
 	color: #333;
 }
 .grid-view table thead:first-child > tr:first-child a:after {
-	content: "\e150";
+	content: "\f0dc";
 	opacity: 0.2;
 }
 .grid-view table thead:first-child > tr:first-child a.asc:after {
-	content: "\e155";
+	content: "\f0dd";
 }
 .grid-view table thead:first-child > tr:first-child a.desc:after {
-	content: "\e156";
+	content: "\f0de";
 }

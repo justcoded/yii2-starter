@@ -6,7 +6,7 @@
 
 use app\widgets\FlashAlert;
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+use yii\bootstrap4\Breadcrumbs;
 use app\assets\AssetBundle;
 
 AssetBundle::register($this);
