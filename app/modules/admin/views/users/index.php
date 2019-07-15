@@ -3,8 +3,8 @@
 use app\models\User;
 use app\modules\admin\widgets\LinkedColumn;
 use yii\helpers\Html;
-use app\modules\admin\assets\ThemeHelper;
 use app\modules\admin\widgets\BoxGridView;
+use app\modules\admin\Module as AdminModule;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\UserSearch */
@@ -13,7 +13,7 @@ use app\modules\admin\widgets\BoxGridView;
 $this->title                   = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php $this->beginBlock(ThemeHelper::BLOCK_HEADER_BUTTONS); ?>
+<?php $this->beginBlock('content-title'); ?>
 	<?= Html::a('Add New', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
 <?php $this->endBlock(); ?>
 

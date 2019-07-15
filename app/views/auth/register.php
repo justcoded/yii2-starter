@@ -5,25 +5,23 @@
  * @var \app\forms\RegisterForm $model
  */
 
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 
 $this->title = 'Register';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<div class="site-register">
+<div class="site-register col-md-6 mx-auto">
 	<h1><?= Html::encode($this->title) ?></h1>
 
 	<p>Please fill out the following fields to login:</p>
 	
 	<?php $form = ActiveForm::begin([
 		'id'          => 'register-form',
-		'layout'      => 'horizontal',
 	]); ?>
 	
 	<?= $form->field($model, 'email')->textInput([
-		'autofocus' => true,
 		'type'      => 'email',
 	]) ?>
 	<?= $form->field($model, 'firstName')->textInput() ?>
@@ -32,16 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= $form->field($model, 'passwordRepeat')->passwordInput() ?>
 
 	<div class="form-group">
-		<div class="col-md-6 col-md-offset-3">
-			<?= Html::submitButton('Register', ['class' => 'btn btn-primary']) ?>
-		</div>
+		<?= Html::submitButton('Register', ['class' => 'btn btn-primary']) ?>
 	</div>
 	
 	<?php ActiveForm::end(); ?>
 
-	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<p>Already have an account? <?= Html::a('Login!', ['auth/login']) ?></p>
-		</div>
+	<div class="pt-3">
+		<p>Already have an account? <?= Html::a('Login!', ['auth/login']) ?></p>
 	</div>
 </div>

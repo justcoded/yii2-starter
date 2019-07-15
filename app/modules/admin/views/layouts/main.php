@@ -1,9 +1,7 @@
 <?php
-use dmstr\widgets\Alert;
-use yii\widgets\Breadcrumbs;
+use app\widgets\FlashAlert;
 use app\modules\admin\assets\AssetBundle;
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -21,8 +19,9 @@ $this->beginPage() ?>
 	<?= Html::csrfMetaTags() ?>
 	<title><?= Html::encode($this->title) ?></title>
 	<?php $this->head() ?>
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
@@ -35,8 +34,11 @@ $this->beginPage() ?>
 		<?= $this->render('../partials/content-header'); ?>
 
 		<section class="content">
-			<?= Alert::widget() ?>
-			<?= $content ?>
+			<div class="container-fluid">
+				<?= FlashAlert::widget() ?>
+				<?= $content ?>
+				<br>
+			</div>
 		</section>
 	</div>
 

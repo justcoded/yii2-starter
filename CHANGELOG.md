@@ -3,6 +3,12 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v2.0
+---------------------
+* Replaced Bootstrap 3 with Bootstrap 4
+* Replaced AdmitLTE 2.x admin theme (based on Bootstrap 3) with AdminLTE 3.0-beta (based on Bootstrap 4)
+* Refactored using View blocks: new Block widget
+
 v1.0
 ---------------------
 * Added APP_KEY hash generator console command.

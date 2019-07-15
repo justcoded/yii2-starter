@@ -2,6 +2,9 @@
 
 namespace app\assets;
 
+use yii\bootstrap4\BootstrapAsset;
+use yii\web\YiiAsset;
+
 class AssetBundle extends \yii\web\AssetBundle
 {
 	public $sourcePath = '@app/assets';
@@ -12,7 +15,8 @@ class AssetBundle extends \yii\web\AssetBundle
 	public $js = [
 	];
 	public $depends = [
-		'yii\web\YiiAsset',
-		'yii\bootstrap\BootstrapAsset',
+		YiiAsset::class,
+		BootstrapAsset::class,
+		FontAwesomeAsset::class,
 	];
 }
