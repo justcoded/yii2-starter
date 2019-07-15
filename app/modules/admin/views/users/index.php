@@ -13,7 +13,7 @@ use app\modules\admin\Module as AdminModule;
 $this->title                   = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php $this->beginBlock(AdminModule::BLOCK_CONTENT_TITLE); ?>
+<?php $this->beginBlock('content-title'); ?>
 	<?= Html::a('Add New', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
 <?php $this->endBlock(); ?>
 

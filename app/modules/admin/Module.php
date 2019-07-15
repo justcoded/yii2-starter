@@ -6,9 +6,6 @@ use Yii;
 
 class Module extends \yii\base\Module
 {
-	const BLOCK_CONTENT_HEADER = 'content-header';
-	const BLOCK_CONTENT_TITLE = 'content-title';
-
 	/**
 	 * @inheritdoc
 	 */

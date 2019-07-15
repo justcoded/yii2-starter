@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\admin\assets;
+namespace app\assets;
 
 use yii\bootstrap4\BootstrapAsset;
 use yii\web\YiiAsset;

@@ -9,7 +9,7 @@ use app\modules\admin\Module as AdminModule;
 /* @var $this \yii\web\View */
 ?>
 
-<?php Block::begin(['id' => AdminModule::BLOCK_CONTENT_HEADER]) ?>
+<?php Block::begin(['id' => 'content-header']) ?>
 	<!-- Content Header (Page header) -->
 	<div class="content-header">
 		<div class="container-fluid">
@@ -21,7 +21,7 @@ use app\modules\admin\Module as AdminModule;
 							<small class="text-muted"><?= Html::encode($this->params['subheading']); ?></small>
 						<?php endif; ?>
 
-						<?= Block::widget(['id' => AdminModule::BLOCK_CONTENT_TITLE]) ?>
+						<?= Block::widget(['id' => 'content-title']) ?>
 					</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">

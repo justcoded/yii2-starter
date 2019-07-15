@@ -2,6 +2,8 @@
 
 namespace app\modules\admin\assets;
 
+use app\assets\FontAwesomeAsset;
+
 class AssetBundle extends \yii\web\AssetBundle
 {
 	public $sourcePath = '@app/modules/admin/assets';
