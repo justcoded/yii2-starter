@@ -88,6 +88,10 @@ $config = [
 		],
 		'settings' => $settings,
 	],
+	// enable Bootstrap4 in Kartik widgets like Select2.
+	'params' => [
+		'bsVersion' => 4,
+	],
 ];
 
 if (YII_ENV_DEV) {
