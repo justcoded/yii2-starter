@@ -3,6 +3,10 @@ CHANGELOG for Yii2 STARTER PROJECT TEMPLATE
 
 *should be replaced with real project changelog later*
 
+v2.0.1
+---------------------
+* Fixed admin panel pages with Select2 Kartik widgets (enabled Bootstrap4 mode through Yii::$app params)
+
 v2.0
 ---------------------
 * Replaced Bootstrap 3 with Bootstrap 4
