@@ -74,7 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
 	 */
 	public function getShortName()
 	{
-		return trim($this->first_name . ' ' . ($this->last_name ? $this->last_name{0} . '.' : ''));
+		return trim($this->first_name . ' ' . ($this->last_name ? $this->last_name[0] . '.' : ''));
 	}
 	
 	/**
